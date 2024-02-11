@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "ui.h": "c",
+        "ui_helpers.h": "c",
+        "typeinfo": "c",
+        "lv_freetype.h": "c",
+        "lv_assert.h": "c",
+        "lv_chart.h": "c"
+    },
+    "C_Cpp.errorSquiggles": "disabled"
+}
