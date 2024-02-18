@@ -1,7 +1,7 @@
-#ifndef ui_Screen1_H_
-#define ui_Screen1_H_
+#ifndef data_struct_H_
+#define data_struct
 
-// #include <stdio.h>
+#include "stdio.h"
 
 typedef struct Temperature
 {
@@ -32,6 +32,22 @@ typedef struct TempText
 
 }TempText;
 
-void ui_Screen1_screen_init();
+typedef struct Devicename
+{
+    char device1[32];
+    char device2[32];
+    char device3[32];
+    char device4[32];
+    char device5[32];
+    char device6[32];
+    char device7[32];
+    char device8[32];
+    char device9[32];
+    char device10[32];
+}Devicename;
+
+Temperature temp;
+TempText t_text;
+Devicename name;
 
 #endif

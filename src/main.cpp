@@ -13,15 +13,15 @@
 #include <ui.h>
 #include <esp_now.h>
 #include <WiFi.h>
+#include <Arduino.h>
 
-#include <C:\Users\nsiri\OneDrive\Desktop\NewLVGL\src\screens\ui_Screen1.h>
+#include "C:\Users\nsiri\OneDrive\Desktop\NewLVGL\src\screens\data_struct.h"
 //////////////////////////////////////////////////
 
 ///////////////// GLOBAL VARIABLE ////////////////
-float temp1_arc_value;
+extern Temperature temp;
 static lv_disp_draw_buf_t draw_buf;
 static lv_color_t buf[screenWidth * 10];
-// int temp_arc1_value;
 //////////////////////////////////////////////////
 
 /////////////////// STRUCTURE ////////////////////
@@ -129,10 +129,10 @@ public:
 typedef struct struct_message
 {
   String num_node;
-  String temperature_string;
+  float temperature_data;
   int fact_new_route;
+ 
 } struct_message;
-
 //////////////////////////////////////////////////
 
 ////////////// FUNCTION PROTOTYPE ////////////////
@@ -146,7 +146,7 @@ static LGFX tft;
 
 int recv_fact_new_route = 0;
 String recv_num_node = "node: ";
-String recv_temperature_message = "00.0";
+float recv_temperature_message = 00.0;
 struct_message my_message;
 
 // callback function that will be executed when data is received
@@ -154,19 +154,22 @@ void OnDataRecv(const uint8_t *mac, const uint8_t *incomingData, int len)
 {
   memcpy(&my_message, incomingData, sizeof(my_message));
   recv_num_node = my_message.num_node;
-  recv_temperature_message = my_message.temperature_string;
+  recv_temperature_message = my_message.temperature_data;
   recv_fact_new_route = my_message.fact_new_route;
   if (recv_num_node == "node:1")
   {
-    // TempNode1 = recv_temperature_message;
+    temp.Node1 = recv_temperature_message;  
   }
   else if (recv_num_node == "node:2")
   {
-
+    temp.Node2 = recv_temperature_message;
+    lv_arc_set_value(ui_ArcTemp2, temp.Node2);
+    sprintf(t_text.temp_text2, "%.1f°C", temp.Node2);
+    lv_label_set_text(ui_TempCard2, t_text.temp_text2);
   }
   else if (recv_num_node == "node:3")
   {
-
+    temp.Node3 = recv_temperature_message;
   }
   else
   {
@@ -196,7 +199,7 @@ void my_touch_read(lv_indev_drv_t *indev_driver, lv_indev_data_t *data) {
 }
 
 void setup() {
-  // Serial.begin(115200);
+  Serial.begin(115200);
 
   tft.begin();
   tft.setRotation(3);
@@ -228,10 +231,13 @@ void setup() {
   lv_indev_drv_register(&indev_drv);
   
   ui_init();
+
+  
 }
 
 void loop() {
   // while(1){
-    lv_task_handler();                                                                          
+    lv_task_handler();
+    delay(5);                                                                          
   // }
 }

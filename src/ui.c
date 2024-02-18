@@ -2,21 +2,28 @@
 // SquareLine Studio version: SquareLine Studio 1.3.4
 // LVGL version: 8.3.6
 // Project name: TestDesign
-
+#include "Arduino.h"
 #include "ui.h"
 #include "ui_helpers.h"
+#include "C:\Users\nsiri\OneDrive\Desktop\NewLVGL\src\screens\data_struct.h"
 
+extern Temperature temp;
+extern TempText t_text;
+extern Devicename name;
+char GetName[32];
 ///////////////////// VARIABLES ////////////////////
-void test_Animation(lv_obj_t * TargetObject, int delay);
+lv_obj_t * ui_HeaderPanel;
+lv_obj_t * ui_DateHeader;
+lv_obj_t * BacktoMainBtn;
+lv_obj_t * CardInfo;
 
+/************ FUNCTION PROTOTYPE ************/
 
 // SCREEN: ui_Screen1
 void ui_Screen1_screen_init(void);
 lv_obj_t * ui_Screen1;
-lv_obj_t * ui_HeaderPanel1;
-lv_obj_t * ui_DateHeader1;
 lv_obj_t * ui_Card1;
-void ui_event_ArcTemp1(lv_event_t * e);
+// void ui_event_ArcTemp1(lv_event_t * e);
 lv_obj_t * ui_ArcTemp1;
 lv_obj_t * ui_ArcBg1;
 lv_obj_t * ui_Arc1inner1;
@@ -25,7 +32,7 @@ lv_obj_t * ui_DeviceName1;
 lv_obj_t * ui_LastUp1;
 lv_obj_t * ui_Card2;
 lv_obj_t * ui_DeviceName2;
-void ui_event_ArcTemp2(lv_event_t * e);
+// void ui_event_ArcTemp2(lv_event_t * e);
 lv_obj_t * ui_ArcTemp2;
 lv_obj_t * ui_ArcBg2;
 lv_obj_t * ui_Arc1inner2;
@@ -33,7 +40,7 @@ lv_obj_t * ui_TempCard2;
 lv_obj_t * ui_LastUp2;
 lv_obj_t * ui_Card3;
 lv_obj_t * ui_DeviceName3;
-void ui_event_ArcTemp3(lv_event_t * e);
+// void ui_event_ArcTemp3(lv_event_t * e);
 lv_obj_t * ui_ArcTemp3;
 void ui_event_ArcBg3(lv_event_t * e);
 lv_obj_t * ui_ArcBg3;
@@ -42,7 +49,7 @@ lv_obj_t * ui_TempCard3;
 lv_obj_t * ui_LastUp3;
 lv_obj_t * ui_Card4;
 lv_obj_t * ui_DeviceName4;
-void ui_event_ArcTemp4(lv_event_t * e);
+// void ui_event_ArcTemp4(lv_event_t * e);
 lv_obj_t * ui_ArcTemp4;
 lv_obj_t * ui_ArcBg4;
 lv_obj_t * ui_Arc1inner4;
@@ -50,7 +57,7 @@ lv_obj_t * ui_TempCard4;
 lv_obj_t * ui_LastUp4;
 lv_obj_t * ui_Card5;
 lv_obj_t * ui_DeviceName5;
-void ui_event_ArcTemp5(lv_event_t * e);
+// void ui_event_ArcTemp5(lv_event_t * e);
 lv_obj_t * ui_ArcTemp5;
 lv_obj_t * ui_ArcBg5;
 lv_obj_t * ui_Arc1inner5;
@@ -58,79 +65,21 @@ lv_obj_t * ui_TempCard5;
 lv_obj_t * ui_LastUp5;
 lv_obj_t * ui_Card6;
 lv_obj_t * ui_DeviceName6;
-void ui_event_ArcTemp6(lv_event_t * e);
+// void ui_event_ArcTemp6(lv_event_t * e);
 lv_obj_t * ui_ArcTemp6;
 lv_obj_t * ui_ArcBg6;
 lv_obj_t * ui_Arc1inner6;
 lv_obj_t * ui_TempCard6;
 lv_obj_t * ui_LastUp6;
-
-lv_obj_t * ui_TabViewScr1;
-lv_obj_t * ui_Monitoring1;
-lv_obj_t * ui_Rename1;
-lv_obj_t * ui_Add_Device1;
-void ui_event_changetoScr2btn(lv_event_t * e);
 lv_obj_t * ui_changetoScr2btn;
-
-
-// // SCREEN: ui_Screen3
-// void ui_Screen3_screen_init(void);
-// lv_obj_t * ui_Screen3;
-// lv_obj_t * ui_HeaderPanel3;
-// lv_obj_t * ui_DateHeader3;
-// lv_obj_t * ui_CardChangename1;
-
-// lv_obj_t * ui_TabViewScr3;
-// lv_obj_t * ui_Monitoring3;
-// lv_obj_t * ui_Rename3;
-// lv_obj_t * ui_Add_Device3;
-// lv_obj_t * ui_Button3;
-// lv_obj_t * ui_ChangeName1;
-// lv_obj_t * ui_SubmitBtn1;
-// lv_obj_t * ui_CancleBtn1;
-// lv_obj_t * ui_CardChangename2;
-// lv_obj_t * ui_ChangeName2;
-// lv_obj_t * ui_SubmitBtn2;
-// lv_obj_t * ui_CancleBtn2;
-// lv_obj_t * ui_CardChangename3;
-// lv_obj_t * ui_ChangeName3;
-// lv_obj_t * ui_SubmitBtn3;
-// lv_obj_t * ui_CancleBtn3;
-// lv_obj_t * ui_CardChangename4;
-// lv_obj_t * ui_ChangeName4;
-// lv_obj_t * ui_SubmitBtn4;
-// lv_obj_t * ui_CancleBtn4;
-// lv_obj_t * ui_CardChangename5;
-// lv_obj_t * ui_ChangeName5;
-// lv_obj_t * ui_SubmitBtn5;
-// lv_obj_t * ui_CancleBtn5;
-// lv_obj_t * ui_CardChangename6;
-// lv_obj_t * ui_ChangeName6;
-// lv_obj_t * ui_SubmitBtn6;
-// lv_obj_t * ui_CancleBtn6;
-// lv_obj_t * ui_CardChangename7;
-// lv_obj_t * ui_CardChangename8;
-// lv_obj_t * ui_CardChangename9;
-// lv_obj_t * ui_ChangeName7;
-// lv_obj_t * ui_ChangeName8;
-// lv_obj_t * ui_SubmitBtn9;
-// lv_obj_t * ui_SubmitBtn7;
-// lv_obj_t * ui_CancleBtn7;
-// lv_obj_t * ui_SubmitBtn8;
-// lv_obj_t * ui_CancleBtn8;
-// lv_obj_t * ui_CancleBtn9;
-// lv_obj_t * ui_SubmitBtn9;
-// lv_obj_t * ui_changetoRe2btn;
-// void ui_event_changetoRe2btn(lv_event_t * e);
-
+void ui_event_changetoScr2btn(lv_event_t * e);
+void ui_Card1_event(lv_event_t * e);
 
 // SCREEN: ui_Screen2
 void ui_Screen2_screen_init(void);
 lv_obj_t * ui_Screen2;
-lv_obj_t * ui_HeaderPanel2;
-lv_obj_t * ui_DateHeader2;
 lv_obj_t * ui_Card7;
-void ui_event_ArcTemp7(lv_event_t * e);
+// void ui_event_ArcTemp7(lv_event_t * e);
 lv_obj_t * ui_ArcTemp7;
 lv_obj_t * ui_ArcBg7;
 lv_obj_t * ui_Arc1inner7;
@@ -139,7 +88,7 @@ lv_obj_t * ui_DeviceName7;
 lv_obj_t * ui_LastUp7;
 lv_obj_t * ui_Card8;
 lv_obj_t * ui_DeviceName8;
-void ui_event_ArcTemp8(lv_event_t * e);
+// void ui_event_ArcTemp8(lv_event_t * e);
 lv_obj_t * ui_ArcTemp8;
 lv_obj_t * ui_ArcBg8;
 lv_obj_t * ui_Arc1inner8;
@@ -147,196 +96,164 @@ lv_obj_t * ui_TempCard8;
 lv_obj_t * ui_LastUp8;
 lv_obj_t * ui_Card9;
 lv_obj_t * ui_DeviceName9;
-void ui_event_ArcTemp9(lv_event_t * e);
+// void ui_event_ArcTemp9(lv_event_t * e);
 lv_obj_t * ui_ArcTemp9;
-void ui_event_ArcBg9(lv_event_t * e);
+// void ui_event_ArcBg9(lv_event_t * e);
 lv_obj_t * ui_ArcBg9;
 lv_obj_t * ui_Arc1inner9;
 lv_obj_t * ui_TempCard9;
 lv_obj_t * ui_LastUp9;
 lv_obj_t * ui_Card10;
 lv_obj_t * ui_DeviceName10;
-void ui_event_ArcTemp10(lv_event_t * e);
+// void ui_event_ArcTemp10(lv_event_t * e);
 lv_obj_t * ui_ArcTemp10;
 lv_obj_t * ui_ArcBg10;
 lv_obj_t * ui_Arc1inner10;
 lv_obj_t * ui_TempCard10;
 lv_obj_t * ui_LastUp10;
-
-lv_obj_t * ui_TabViewScr2;
-lv_obj_t * ui_Monitoring2;
-lv_obj_t * ui_Rename2;
-lv_obj_t * ui_Add_Device2;
 void ui_event_changetoScr1btn(lv_event_t * e);
 lv_obj_t * ui_changetoScr1btn;
 lv_obj_t * ui____initial_actions0;
 
-// // SCREEN: ui_Screen3
-// void ui_Screen4_screen_init(void);
-// lv_obj_t * ui_Screen4;
-// lv_obj_t * ui_HeaderPanel4;
-// lv_obj_t * ui_DateHeader4;
-// lv_obj_t * ui_CardChangename9;
-
-// lv_obj_t * ui_TabViewScr4;
-// lv_obj_t * ui_Monitoring4;
-// lv_obj_t * ui_Rename4;
-// lv_obj_t * ui_Add_Device4;
-// lv_obj_t * ui_Button4;
-// lv_obj_t * ui_ChangeName9;
-// lv_obj_t * ui_SubmitBtn9;
-// lv_obj_t * ui_CancleBtn9;
-// lv_obj_t * ui_CardChangename10;
-// lv_obj_t * ui_ChangeName10;
-// lv_obj_t * ui_SubmitBtn10;
-// lv_obj_t * ui_CancleBtn10;
-// lv_obj_t * ui_changetoRe1btn;
-
-void ui_event_TabviewScr1(lv_event_t * e);
-void ui_event_TabviewScr2(lv_event_t * e);
-// void ui_event_TabviewScr3(lv_event_t * e);
-// void ui_event_TabviewScr4(lv_event_t * e);
-
+//Device1 Infromation screen
 void ui_InforScr1_screen_init(void);
 lv_obj_t * ui_InfoScr1;
-lv_obj_t * ui_HeaderPanelInfo1;
-lv_obj_t * ui_DateHeaderInfo1;
-lv_obj_t * CardInfo1;
 lv_obj_t * LastUpInfo1;
-lv_obj_t * ui_TabviewInfo1;
 lv_obj_t * TextAreaInfo1;
 lv_obj_t * SaveNamebtn1;
 lv_obj_t * CancleNamebtn1;
 lv_obj_t * ChartTempInfo1;
 lv_obj_t * KeyboardInfo1;
-lv_obj_t * NextPageBtnInfo1;
+void ui_event_SaveNamebtn1(lv_event_t * e);
+void ui_event_KeyboardInfo1(lv_event_t * e);
+void ui_event_TextAreaInfo1(lv_event_t * e);
+void ui_event_CancleNamebtn1(lv_event_t * e);
 
+//Device2 Information Screen
 void ui_InforScr2_screen_init(void);
 lv_obj_t * ui_InfoScr2;
-lv_obj_t * ui_HeaderPanelInfo2;
-lv_obj_t * ui_DateHeaderInfo2;
-lv_obj_t * CardInfo2;
 lv_obj_t * LastUpInfo2;
-lv_obj_t * ui_TabviewInfo2;
 lv_obj_t * TextAreaInfo2;
 lv_obj_t * SaveNamebtn2;
 lv_obj_t * CancleNamebtn2;
 lv_obj_t * ChartTempInfo2;
 lv_obj_t * KeyboardInfo2;
-lv_obj_t * NextPageBtnInfo2;
+void ui_event_SaveNamebtn2(lv_event_t * e);
+void ui_event_KeyboardInfo2(lv_event_t * e);
+void ui_event_TextAreaInfo2(lv_event_t * e);
+void ui_event_CancleNamebtn2(lv_event_t * e);
 
+//Device3 Information Screen
 void ui_InforScr3_screen_init(void);
 lv_obj_t * ui_InfoScr3;
-lv_obj_t * ui_HeaderPanelInfo3;
-lv_obj_t * ui_DateHeaderInfo3;
-lv_obj_t * CardInfo3;
 lv_obj_t * LastUpInfo3;
-lv_obj_t * ui_TabviewInfo3;
 lv_obj_t * TextAreaInfo3;
 lv_obj_t * SaveNamebtn3;
 lv_obj_t * CancleNamebtn3;
 lv_obj_t * ChartTempInfo3;
 lv_obj_t * KeyboardInfo3;
-lv_obj_t * NextPageBtnInfo3;
+void ui_event_SaveNamebtn3(lv_event_t * e);
+void ui_event_KeyboardInfo3(lv_event_t * e);
+void ui_event_TextAreaInfo3(lv_event_t * e);
+void ui_event_CancleNamebtn3(lv_event_t * e);
 
+//Device5 Information Screen
 void ui_InforScr4_screen_init(void);
 lv_obj_t * ui_InfoScr4;
-lv_obj_t * ui_HeaderPanelInfo4;
-lv_obj_t * ui_DateHeaderInfo4;
-lv_obj_t * CardInfo4;
 lv_obj_t * LastUpInfo4;
-lv_obj_t * ui_TabviewInfo4;
 lv_obj_t * TextAreaInfo4;
 lv_obj_t * SaveNamebtn4;
 lv_obj_t * CancleNamebtn4;
 lv_obj_t * ChartTempInfo4;
 lv_obj_t * KeyboardInfo4;
-lv_obj_t * NextPageBtnInfo4;
+void ui_event_SaveNamebtn4(lv_event_t * e);
+void ui_event_KeyboardInfo4(lv_event_t * e);
+void ui_event_TextAreaInfo4(lv_event_t * e);
+void ui_event_CancleNamebtn4(lv_event_t * e);
 
+//Device5 Information Screen
 void ui_InforScr5_screen_init(void);
 lv_obj_t * ui_InfoScr5;
-lv_obj_t * ui_HeaderPanelInfo5;
-lv_obj_t * ui_DateHeaderInfo5;
-lv_obj_t * CardInfo5;
 lv_obj_t * LastUpInfo5;
-lv_obj_t * ui_TabviewInfo5;
 lv_obj_t * TextAreaInfo5;
 lv_obj_t * SaveNamebtn5;
 lv_obj_t * CancleNamebtn5;
 lv_obj_t * ChartTempInfo5;
 lv_obj_t * KeyboardInfo5;
-lv_obj_t * NextPageBtnInfo5;
+void ui_event_SaveNamebtn5(lv_event_t * e);
+void ui_event_KeyboardInfo5(lv_event_t * e);
+void ui_event_TextAreaInfo5(lv_event_t * e);
+void ui_event_CancleNamebtn5(lv_event_t * e);
 
+//Device6 Information Screen
 void ui_InforScr6_screen_init(void);
 lv_obj_t * ui_InfoScr6;
-lv_obj_t * ui_HeaderPanelInfo6;
-lv_obj_t * ui_DateHeaderInfo6;
-lv_obj_t * CardInfo6;
 lv_obj_t * LastUpInfo6;
-lv_obj_t * ui_TabviewInfo6;
 lv_obj_t * TextAreaInfo6;
 lv_obj_t * SaveNamebtn6;
 lv_obj_t * CancleNamebtn6;
 lv_obj_t * ChartTempInfo6;
 lv_obj_t * KeyboardInfo6;
-lv_obj_t * NextPageBtnInfo6;
+void ui_event_SaveNamebtn6(lv_event_t * e);
+void ui_event_KeyboardInfo6(lv_event_t * e);
+void ui_event_TextAreaInfo6(lv_event_t * e);
+void ui_event_CancleNamebtn6(lv_event_t * e);
 
+//Device7 Information Screen
 void ui_InforScr7_screen_init(void);
 lv_obj_t * ui_InfoScr7;
-lv_obj_t * ui_HeaderPanelInfo7;
-lv_obj_t * ui_DateHeaderInfo7;
-lv_obj_t * CardInfo7;
 lv_obj_t * LastUpInfo7;
-lv_obj_t * ui_TabviewInfo7;
 lv_obj_t * TextAreaInfo7;
 lv_obj_t * SaveNamebtn7;
 lv_obj_t * CancleNamebtn7;
 lv_obj_t * ChartTempInfo7;
 lv_obj_t * KeyboardInfo7;
-lv_obj_t * NextPageBtnInfo7;
+void ui_event_SaveNamebtn7(lv_event_t * e);
+void ui_event_KeyboardInfo7(lv_event_t * e);
+void ui_event_TextAreaInfo7(lv_event_t * e);
+void ui_event_CancleNamebtn7(lv_event_t * e);
 
-
+//Device8 Information Screen
 void ui_InforScr8_screen_init(void);
 lv_obj_t * ui_InfoScr8;
-lv_obj_t * ui_HeaderPanelInfo8;
-lv_obj_t * ui_DateHeaderInfo8;
-lv_obj_t * CardInfo8;
 lv_obj_t * LastUpInfo8;
-lv_obj_t * ui_TabviewInfo8;
 lv_obj_t * TextAreaInfo8;
 lv_obj_t * SaveNamebtn8;
 lv_obj_t * CancleNamebtn8;
 lv_obj_t * ChartTempInfo8;
 lv_obj_t * KeyboardInfo8;
-lv_obj_t * NextPageBtnInfo8;
+void ui_event_SaveNamebtn8(lv_event_t * e);
+void ui_event_KeyboardInfo8(lv_event_t * e);
+void ui_event_TextAreaInfo8(lv_event_t * e);
+void ui_event_CancleNamebtn8(lv_event_t * e);
 
+//Device9 Information Screen
 void ui_InforScr9_screen_init(void);
 lv_obj_t * ui_InfoScr9;
-lv_obj_t * ui_HeaderPanelInfo9;
-lv_obj_t * ui_DateHeaderInfo9;
-lv_obj_t * CardInfo9;
 lv_obj_t * LastUpInfo9;
-lv_obj_t * ui_TabviewInfo9;
 lv_obj_t * TextAreaInfo9;
 lv_obj_t * SaveNamebtn9;
 lv_obj_t * CancleNamebtn9;
 lv_obj_t * ChartTempInfo9;
 lv_obj_t * KeyboardInfo9;
-lv_obj_t * NextPageBtnInfo9;
+void ui_event_SaveNamebtn9(lv_event_t * e);
+void ui_event_KeyboardInfo9(lv_event_t * e);
+void ui_event_TextAreaInfo9(lv_event_t * e);
+void ui_event_CancleNamebtn9(lv_event_t * e);
 
+//Device10 Information Screen
 void ui_InforScr10_screen_init(void);
 lv_obj_t * ui_InfoScr10;
-lv_obj_t * ui_HeaderPanelInfo10;
-lv_obj_t * ui_DateHeaderInfo10;
-lv_obj_t * CardInfo10;
 lv_obj_t * LastUpInfo10;
-lv_obj_t * ui_TabviewInfo10;
 lv_obj_t * TextAreaInfo10;
 lv_obj_t * SaveNamebtn10;
 lv_obj_t * CancleNamebtn10;
 lv_obj_t * ChartTempInfo10;
 lv_obj_t * KeyboardInfo10;
-lv_obj_t * NextPageBtnInfo10;
+void ui_event_SaveNamebtn10(lv_event_t * e);
+void ui_event_KeyboardInfo10(lv_event_t * e);
+void ui_event_TextAreaInfo10(lv_event_t * e);
+void ui_event_CancleNamebtn10(lv_event_t * e);
 
 ///////////////////// TEST LVGL SETTINGS ////////////////////
 #if LV_COLOR_DEPTH != 16
@@ -347,128 +264,34 @@ lv_obj_t * NextPageBtnInfo10;
 #endif
 
 ///////////////////// ANIMATIONS ////////////////////
-void test_Animation(lv_obj_t * TargetObject, int delay)
-{
-    ui_anim_user_data_t * PropertyAnimation_0_user_data = lv_mem_alloc(sizeof(ui_anim_user_data_t));
-    PropertyAnimation_0_user_data->target = TargetObject;
-    PropertyAnimation_0_user_data->val = -1;
-    lv_anim_t PropertyAnimation_0;
-    lv_anim_init(&PropertyAnimation_0);
-    lv_anim_set_time(&PropertyAnimation_0, 500);
-    lv_anim_set_user_data(&PropertyAnimation_0, PropertyAnimation_0_user_data);
-    lv_anim_set_custom_exec_cb(&PropertyAnimation_0, _ui_anim_callback_set_x);
-    lv_anim_set_values(&PropertyAnimation_0, 50, 100);
-    lv_anim_set_path_cb(&PropertyAnimation_0, lv_anim_path_linear);
-    lv_anim_set_delay(&PropertyAnimation_0, delay + 0);
-    lv_anim_set_deleted_cb(&PropertyAnimation_0, _ui_anim_callback_free_user_data);
-    lv_anim_set_playback_time(&PropertyAnimation_0, 10);
-    lv_anim_set_playback_delay(&PropertyAnimation_0, 10);
-    lv_anim_set_repeat_count(&PropertyAnimation_0, 10);
-    lv_anim_set_repeat_delay(&PropertyAnimation_0, 10);
-    lv_anim_set_early_apply(&PropertyAnimation_0, false);
-    lv_anim_start(&PropertyAnimation_0);
 
-}
 
-///////////////////// FUNCTIONS ////////////////////
-void ui_event_ArcTemp1(lv_event_t * e)
+/////////////////////FUNCTIONS ////////////////////
+
+/************* Co-Event (Use in many screen) *************/
+
+//From Information screen back to Screen1
+void ui_event_BacktoMain1btn(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_VALUE_CHANGED) {
-        _ui_arc_set_text_value(ui_TempCard1, target, "", "° C");
-    }
-}
-void ui_event_ArcTemp2(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_VALUE_CHANGED) {
-        _ui_arc_set_text_value(ui_TempCard2, target, "", "° C");
-    }
-}
-void ui_event_ArcTemp3(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_VALUE_CHANGED) {
-        _ui_arc_set_text_value(ui_TempCard3, target, "", "° C");
-    }
-}
-void ui_event_ArcBg3(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_VALUE_CHANGED) {
-        _ui_arc_set_text_value(ui_TempCard4, target, "", "° C");
-    }
-}
-void ui_event_ArcTemp4(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_VALUE_CHANGED) {
-        _ui_arc_set_text_value(ui_TempCard4, target, "", "° C");
-    }
-}
-void ui_event_ArcTemp5(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_VALUE_CHANGED) {
-        _ui_arc_set_text_value(ui_TempCard5, target, "", "° C");
-    }
-}
-void ui_event_ArcTemp6(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_VALUE_CHANGED) {
-        _ui_arc_set_text_value(ui_TempCard6, target, "", "° C");
+    if(event_code == LV_EVENT_CLICKED) {
+        _ui_screen_change(&ui_Screen1, LV_SCR_LOAD_ANIM_NONE, 100, 0, &ui_Screen1_screen_init);
     }
 }
 
-void ui_event_ArcTemp7(lv_event_t * e)
+void ui_event_BacktoMain2btn(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_VALUE_CHANGED) {
-        _ui_arc_set_text_value(ui_TempCard7, target, "", "° C");
-    }
-}
-void ui_event_ArcTemp8(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_VALUE_CHANGED) {
-        _ui_arc_set_text_value(ui_TempCard8, target, "", "° C");
-    }
-}
-void ui_event_ArcTemp9(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_VALUE_CHANGED) {
-        _ui_arc_set_text_value(ui_TempCard9, target, "", "° C");
-    }
-}
-void ui_event_ArcBg9(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_VALUE_CHANGED) {
-        _ui_arc_set_text_value(ui_TempCard10, target, "", "° C");
-    }
-}
-void ui_event_ArcTemp10(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_VALUE_CHANGED) {
-        _ui_arc_set_text_value(ui_TempCard10, target, "", "° C");
+    if(event_code == LV_EVENT_CLICKED) {
+        _ui_screen_change(&ui_Screen2, LV_SCR_LOAD_ANIM_NONE, 100, 0, &ui_Screen2_screen_init);
     }
 }
 
+/************* Scren1 Events *************/
+
+//Screen1 change to Screen2 button
 void ui_event_changetoScr2btn(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
@@ -478,6 +301,64 @@ void ui_event_changetoScr2btn(lv_event_t * e)
     }
 }
 
+//Tab Card1 to view device1 information
+void ui_Card1_event(lv_event_t * e){
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED){
+        _ui_screen_change(&ui_InfoScr1, LV_SCR_LOAD_ANIM_NONE, 100, 0, &ui_InforScr1_screen_init);
+    }
+}
+
+//Tab Card2 to view device2 information
+void ui_Card2_event(lv_event_t * e){
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED){
+        _ui_screen_change(&ui_InfoScr2, LV_SCR_LOAD_ANIM_NONE, 100, 0, &ui_InforScr2_screen_init);
+    }
+}
+
+//Tab Card3 to view device3 information
+void ui_Card3_event(lv_event_t * e){
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED){
+        _ui_screen_change(&ui_InfoScr3, LV_SCR_LOAD_ANIM_NONE, 100, 0, &ui_InforScr3_screen_init);
+    }
+}
+
+//Tab Card4 to view device4 information
+void ui_Card4_event(lv_event_t * e){
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED){
+        _ui_screen_change(&ui_InfoScr4, LV_SCR_LOAD_ANIM_NONE, 100, 0, &ui_InforScr4_screen_init);
+    }
+}
+
+//Tab Card5 to view device5 information
+void ui_Card5_event(lv_event_t * e){
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED){
+        _ui_screen_change(&ui_InfoScr5, LV_SCR_LOAD_ANIM_NONE, 100, 0, &ui_InforScr5_screen_init);
+    }
+}
+
+//Tab Card6 to view device6 information
+void ui_Card6_event(lv_event_t * e){
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED){
+        _ui_screen_change(&ui_InfoScr6, LV_SCR_LOAD_ANIM_NONE, 100, 0, &ui_InforScr6_screen_init);
+    }
+}
+
+
+/************* Scren2 Events *************/
+
+//Screen2 change to Screen1 button
 void ui_event_changetoScr1btn(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
@@ -487,128 +368,526 @@ void ui_event_changetoScr1btn(lv_event_t * e)
     }
 }
 
-// void ui_event_changetoRe2btn(lv_event_t * e)
-// {
-//     lv_event_code_t event_code = lv_event_get_code(e);
-//     lv_obj_t * target = lv_event_get_target(e);
-//     if(event_code == LV_EVENT_PRESSED) {
-//         _ui_screen_change(&ui_Screen4, LV_SCR_LOAD_ANIM_NONE, 100, 0, &ui_Screen4_screen_init);
-//     }
-// }
-
-// void ui_event_changetoRe1btn(lv_event_t * e)
-// {
-//     lv_event_code_t event_code = lv_event_get_code(e);
-//     lv_obj_t * target = lv_event_get_target(e);
-//     if(event_code == LV_EVENT_PRESSED) {
-//         _ui_screen_change(&ui_Screen3, LV_SCR_LOAD_ANIM_NONE, 100, 0, &ui_Screen3_screen_init);
-//     }
-// }
-
-void ui_event_TabviewScr1(lv_event_t * e){
+//Tab Card7 to view device7 information
+void ui_Card7_event(lv_event_t * e){
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
-
-    //If press Tabview Screen1
-    if(event_code == LV_EVENT_VALUE_CHANGED){
-        uint16_t active_tab_id = lv_tabview_get_tab_act(ui_TabViewScr1);
-        
-
-        switch(active_tab_id){
-
-            case 0 :
-                _ui_screen_change(&ui_Screen1, LV_SCR_LOAD_ANIM_NONE, 100, 0, &ui_Screen1_screen_init);
-            break;
-
-            // case 1 :
-            //     _ui_screen_change(&ui_Screen3, LV_SCR_LOAD_ANIM_NONE, 100, 0, &ui_Screen3_screen_init);
-            // break;
-
-            // case 2:
-            //     _ui_screen_change(&ui_Screen5, LV_SCR_LOAD_ANIM_FADE_ON, 100, 0, &ui_Screen5_screen_init);
-            // break;
-
-        }
-
+    if(event_code == LV_EVENT_CLICKED){
+        _ui_screen_change(&ui_InfoScr7, LV_SCR_LOAD_ANIM_NONE, 100, 0, &ui_InforScr7_screen_init);
     }
 }
 
-void ui_event_TabviewScr2(lv_event_t * e){
+//Tab Card8 to view device8 information
+void ui_Card8_event(lv_event_t * e){
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
-
-    //If press Tabview Screen1
-    if(event_code == LV_EVENT_VALUE_CHANGED){
-        uint16_t active_tab_id = lv_tabview_get_tab_act(ui_TabViewScr2);
-
-        switch(active_tab_id){
-
-            case 0 :
-                _ui_screen_change(&ui_Screen1, LV_SCR_LOAD_ANIM_NONE, 100, 0, &ui_Screen1_screen_init);
-            break;
-
-            // case 1 :
-            //     _ui_screen_change(&ui_Screen3, LV_SCR_LOAD_ANIM_NONE, 100, 0, &ui_Screen3_screen_init);
-            // break;
-
-            // case 2:
-            //     _ui_screen_change(&ui_Screen5, LV_SCR_LOAD_ANIM_FADE_ON, 100, 0, &ui_Screen5_screen_init);
-            // break;
-        }
+    if(event_code == LV_EVENT_CLICKED){
+        _ui_screen_change(&ui_InfoScr8, LV_SCR_LOAD_ANIM_NONE, 100, 0, &ui_InforScr8_screen_init);
     }
 }
 
-// void ui_event_TabviewScr3(lv_event_t * e){
-//     lv_event_code_t event_code = lv_event_get_code(e);
-//     lv_obj_t * target = lv_event_get_target(e);
+//Tab Card4 to view device4 information
+void ui_Card9_event(lv_event_t * e){
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED){
+        _ui_screen_change(&ui_InfoScr9, LV_SCR_LOAD_ANIM_NONE, 100, 0, &ui_InforScr9_screen_init);
+    }
+}
 
-//     //If press Tabview Screen1
-//     if(event_code == LV_EVENT_VALUE_CHANGED){
-//         uint16_t active_tab_id = lv_tabview_get_tab_act(ui_TabViewScr3);
+//Tab Card10 to view device10 information
+void ui_Card10_event(lv_event_t * e){
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED){
+        _ui_screen_change(&ui_InfoScr10, LV_SCR_LOAD_ANIM_NONE, 100, 0, &ui_InforScr10_screen_init);
+    }
+}
 
-//         switch(active_tab_id){
- 
-//             case 0 :
-//                 _ui_screen_change(&ui_Screen1, LV_SCR_LOAD_ANIM_NONE, 100, 0, &ui_Screen1_screen_init);
-//             break;
+/************* Information Device1 screen *************/
 
-//             case 1 :
-//                 _ui_screen_change(&ui_Screen3, LV_SCR_LOAD_ANIM_NONE, 100, 0, &ui_Screen3_screen_init);
-//             break;
+//Save button : Save the new name from Textarea 
+void ui_event_SaveNamebtn1(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        strcpy(name.device1,lv_textarea_get_text(TextAreaInfo1));
+        lv_label_set_text(ui_DeviceName1,name.device1); 
+    }
+}
 
-//             // case 2:
-//             //     _ui_screen_change(&ui_Screen5, LV_SCR_LOAD_ANIM_FADE_ON, 100, 0, &ui_Screen5_screen_init);
-//             // break;
-//         }
+//Cancle button : Cancle to rename and Set old name back
+void ui_event_CancleNamebtn1(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        lv_label_set_text(ui_DeviceName1,name.device1); 
+    }
+}
 
-//     }
-// }
+//Text area : To input new name for device accept all character , Max at 32 character
+void ui_event_TextAreaInfo1(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_FOCUSED) {
+        _ui_flag_modify(KeyboardInfo1, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(BacktoMainBtn, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        lv_keyboard_set_textarea(KeyboardInfo1,TextAreaInfo1);
+    }
+    else if(event_code == LV_EVENT_DEFOCUSED) {
+        _ui_flag_modify(KeyboardInfo1, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(BacktoMainBtn, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+    }
+}
 
-// void ui_event_TabviewScr4(lv_event_t * e){
-//     lv_event_code_t event_code = lv_event_get_code(e);
-//     lv_obj_t * target = lv_event_get_target(e);
+//Keyboard
+void ui_event_KeyboardInfo1(lv_event_t * e){
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_READY){
+        _ui_flag_modify(KeyboardInfo1, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(BacktoMainBtn, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+    }
+}
 
-//     //If press Tabview Screen1
-//     if(event_code == LV_EVENT_VALUE_CHANGED){
-//         uint16_t active_tab_id = lv_tabview_get_tab_act(ui_TabViewScr4);
+/************* Information Device2 screen *************/
+//Save button : Save the new name from Textarea 
+void ui_event_SaveNamebtn2(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        strcpy(name.device2,lv_textarea_get_text(TextAreaInfo2));
+        lv_label_set_text(ui_DeviceName2,name.device2); 
+    }
+}
 
-//         switch(active_tab_id){
+//Cancle button : Cancle to rename and Set old name back
+void ui_event_CancleNamebtn2(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        lv_label_set_text(ui_DeviceName2,name.device2); 
+    }
+}
 
-//             case 0 :
-//                 _ui_screen_change(&ui_Screen4, LV_SCR_LOAD_ANIM_NONE, 100, 0, &ui_Screen1_screen_init);
-//             break;
+//Text area : To input new name for device accept all character , Max at 32 character
+void ui_event_TextAreaInfo2(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_FOCUSED) {
+        _ui_flag_modify(KeyboardInfo2, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(BacktoMainBtn, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        lv_keyboard_set_textarea(KeyboardInfo2,TextAreaInfo2);
+    }
+    else if(event_code == LV_EVENT_DEFOCUSED) {
+        _ui_flag_modify(KeyboardInfo2, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(BacktoMainBtn, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+    }
+}
 
-//             case 1 :
-//                 _ui_screen_change(&ui_Screen4, LV_SCR_LOAD_ANIM_NONE, 100, 0, &ui_Screen3_screen_init);
-//             break;
+//Keyboard
+void ui_event_KeyboardInfo2(lv_event_t * e){
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_READY){
+        _ui_flag_modify(KeyboardInfo2, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(BacktoMainBtn, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+    }
+}
 
-//         }
+/************* Information Device3 screen *************/
+//Save button : Save the new name from Textarea 
+void ui_event_SaveNamebtn3(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        strcpy(name.device3,lv_textarea_get_text(TextAreaInfo3));
+        lv_label_set_text(ui_DeviceName3,name.device3); 
+    }
+}
 
-//     }
-// }
+//Cancle button : Cancle to rename and Set old name back
+void ui_event_CancleNamebtn3(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        lv_label_set_text(ui_DeviceName3,name.device3); 
+    }
+}
+
+//Text area : To input new name for device accept all character , Max at 33 character
+void ui_event_TextAreaInfo3(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_FOCUSED) {
+        _ui_flag_modify(KeyboardInfo3, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(BacktoMainBtn, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        lv_keyboard_set_textarea(KeyboardInfo3,TextAreaInfo3);
+    }
+    else if(event_code == LV_EVENT_DEFOCUSED) {
+        _ui_flag_modify(KeyboardInfo3, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(BacktoMainBtn, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+    }
+}
+
+//Keyboard
+void ui_event_KeyboardInfo3(lv_event_t * e){
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_READY){
+        _ui_flag_modify(KeyboardInfo3, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(BacktoMainBtn, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+    }
+}
+
+/************* Information Device4 screen *************/
+//Save button : Save the new name from Textarea 
+void ui_event_SaveNamebtn4(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        strcpy(name.device4,lv_textarea_get_text(TextAreaInfo4));
+        lv_label_set_text(ui_DeviceName4,name.device4); 
+    }
+}
+
+//Cancle button : Cancle to rename and Set old name back
+void ui_event_CancleNamebtn4(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        lv_label_set_text(ui_DeviceName4,name.device4); 
+    }
+}
+
+//Text area : To input new name for device accept all character , Max at 4 character
+void ui_event_TextAreaInfo4(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_FOCUSED) {
+        _ui_flag_modify(KeyboardInfo4, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(BacktoMainBtn, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        lv_keyboard_set_textarea(KeyboardInfo4,TextAreaInfo4);
+    }
+    else if(event_code == LV_EVENT_DEFOCUSED) {
+        _ui_flag_modify(KeyboardInfo4, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(BacktoMainBtn, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+    }
+}
+
+//Keyboard
+void ui_event_KeyboardInfo4(lv_event_t * e){
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_READY){
+        _ui_flag_modify(KeyboardInfo4, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(BacktoMainBtn, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+    }
+}
+
+/************* Information Device5 screen *************/
+//Save button : Save the new name from Textarea 
+void ui_event_SaveNamebtn5(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        strcpy(name.device5,lv_textarea_get_text(TextAreaInfo5));
+        lv_label_set_text(ui_DeviceName5,name.device5); 
+    }
+}
+
+//Cancle button : Cancle to rename and Set old name back
+void ui_event_CancleNamebtn5(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        lv_label_set_text(ui_DeviceName5,name.device5); 
+    }
+}
+
+//Text area : To input new name for device accept all character , Max at 5 character
+void ui_event_TextAreaInfo5(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_FOCUSED) {
+        _ui_flag_modify(KeyboardInfo5, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(BacktoMainBtn, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        lv_keyboard_set_textarea(KeyboardInfo5,TextAreaInfo5);
+    }
+    else if(event_code == LV_EVENT_DEFOCUSED) {
+        _ui_flag_modify(KeyboardInfo5, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(BacktoMainBtn, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+    }
+}
+
+//Keyboard
+void ui_event_KeyboardInfo5(lv_event_t * e){
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_READY){
+        _ui_flag_modify(KeyboardInfo5, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(BacktoMainBtn, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+    }
+}
+
+/************* Information Device6 screen *************/
+//Save button : Save the new name from Textarea 
+void ui_event_SaveNamebtn6(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        strcpy(name.device6,lv_textarea_get_text(TextAreaInfo6));
+        lv_label_set_text(ui_DeviceName6,name.device6); 
+    }
+}
+
+//Cancle button : Cancle to rename and Set old name back
+void ui_event_CancleNamebtn6(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        lv_label_set_text(ui_DeviceName6,name.device6); 
+    }
+}
+
+//Text area : To input new name for device accept all character , Max at 6 character
+void ui_event_TextAreaInfo6(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_FOCUSED) {
+        _ui_flag_modify(KeyboardInfo6, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(BacktoMainBtn, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        lv_keyboard_set_textarea(KeyboardInfo6,TextAreaInfo6);
+    }
+    else if(event_code == LV_EVENT_DEFOCUSED) {
+        _ui_flag_modify(KeyboardInfo6, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(BacktoMainBtn, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+    }
+}
+
+//Keyboard
+void ui_event_KeyboardInfo6(lv_event_t * e){
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_READY){
+        _ui_flag_modify(KeyboardInfo6, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(BacktoMainBtn, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+    }
+}
+
+/************* Information Device7 screen *************/
+//Save button : Save the new name from Textarea 
+void ui_event_SaveNamebtn7(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        strcpy(name.device7,lv_textarea_get_text(TextAreaInfo7));
+        lv_label_set_text(ui_DeviceName7,name.device7); 
+    }
+}
+
+//Cancle button : Cancle to rename and Set old name back
+void ui_event_CancleNamebtn7(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        lv_label_set_text(ui_DeviceName7,name.device7); 
+    }
+}
+
+//Text area : To input new name for device accept all character , Max at 7 character
+void ui_event_TextAreaInfo7(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_FOCUSED) {
+        _ui_flag_modify(KeyboardInfo7, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(BacktoMainBtn, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        lv_keyboard_set_textarea(KeyboardInfo7,TextAreaInfo7);
+    }
+    else if(event_code == LV_EVENT_DEFOCUSED) {
+        _ui_flag_modify(KeyboardInfo7, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(BacktoMainBtn, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+    }
+}
+
+//Keyboard
+void ui_event_KeyboardInfo7(lv_event_t * e){
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_READY){
+        _ui_flag_modify(KeyboardInfo7, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(BacktoMainBtn, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+    }
+}
+
+/************* Information Device8 screen *************/
+//Save button : Save the new name from Textarea 
+void ui_event_SaveNamebtn8(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        strcpy(name.device8,lv_textarea_get_text(TextAreaInfo8));
+        lv_label_set_text(ui_DeviceName8,name.device8); 
+    }
+}
+
+//Cancle button : Cancle to rename and Set old name back
+void ui_event_CancleNamebtn8(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        lv_label_set_text(ui_DeviceName8,name.device8); 
+    }
+}
+
+//Text area : To input new name for device accept all character , Max at 8 character
+void ui_event_TextAreaInfo8(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_FOCUSED) {
+        _ui_flag_modify(KeyboardInfo8, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(BacktoMainBtn, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        lv_keyboard_set_textarea(KeyboardInfo8,TextAreaInfo8);
+    }
+    else if(event_code == LV_EVENT_DEFOCUSED) {
+        _ui_flag_modify(KeyboardInfo8, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(BacktoMainBtn, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+    }
+}
+
+//Keyboard
+void ui_event_KeyboardInfo8(lv_event_t * e){
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_READY){
+        _ui_flag_modify(KeyboardInfo8, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(BacktoMainBtn, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+    }
+}
+
+/************* Information Device9 screen *************/
+//Save button : Save the new name from Textarea 
+void ui_event_SaveNamebtn9(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        strcpy(name.device9,lv_textarea_get_text(TextAreaInfo9));
+        lv_label_set_text(ui_DeviceName9,name.device9); 
+    }
+}
+
+//Cancle button : Cancle to rename and Set old name back
+void ui_event_CancleNamebtn9(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        lv_label_set_text(ui_DeviceName9,name.device9); 
+    }
+}
+
+//Text area : To input new name for device accept all character , Max at 9 character
+void ui_event_TextAreaInfo9(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_FOCUSED) {
+        _ui_flag_modify(KeyboardInfo9, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(BacktoMainBtn, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        lv_keyboard_set_textarea(KeyboardInfo9,TextAreaInfo9);
+    }
+    else if(event_code == LV_EVENT_DEFOCUSED) {
+        _ui_flag_modify(KeyboardInfo9, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(BacktoMainBtn, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+    }
+}
+
+//Keyboard
+void ui_event_KeyboardInfo9(lv_event_t * e){
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_READY){
+        _ui_flag_modify(KeyboardInfo9, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(BacktoMainBtn, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+    }
+}
+
+/************* Information Device10 screen *************/
+//Save button : Save the new name from Textarea 
+void ui_event_SaveNamebtn10(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        strcpy(name.device10,lv_textarea_get_text(TextAreaInfo10));
+        lv_label_set_text(ui_DeviceName10,name.device10); 
+    }
+}
+
+//Cancle button : Cancle to rename and Set old name back
+void ui_event_CancleNamebtn10(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        lv_label_set_text(ui_DeviceName10,name.device10); 
+    }
+}
+
+//Text area : To input new name for device accept all character , Max at 10 character
+void ui_event_TextAreaInfo10(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_FOCUSED) {
+        _ui_flag_modify(KeyboardInfo10, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(BacktoMainBtn, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        lv_keyboard_set_textarea(KeyboardInfo10,TextAreaInfo10);
+    }
+    else if(event_code == LV_EVENT_DEFOCUSED) {
+        _ui_flag_modify(KeyboardInfo10, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(BacktoMainBtn, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+    }
+}
+
+//Keyboard
+void ui_event_KeyboardInfo10(lv_event_t * e){
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_READY){
+        _ui_flag_modify(KeyboardInfo10, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(BacktoMainBtn, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+    }
+}
+
+
 
 ///////////////////// SCREENS ////////////////////
-
 void ui_init(void)
 {
     LV_EVENT_GET_COMP_CHILD = lv_event_register_id();
