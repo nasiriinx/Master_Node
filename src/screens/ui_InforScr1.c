@@ -85,7 +85,6 @@ void ui_InforScr1_screen_init(void){
     lv_obj_clear_flag(SaveNamebtn1, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_set_style_bg_color(SaveNamebtn1, lv_color_hex(0x292929), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(SaveNamebtn1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    // lv_obj_set_style_bg_grad_color(SaveNamebtn1, lv_color_hex(0x2D323C), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_dir(SaveNamebtn1, LV_GRAD_DIR_VER, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_color(SaveNamebtn1, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_opa(SaveNamebtn1, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -110,7 +109,6 @@ void ui_InforScr1_screen_init(void){
     lv_obj_clear_flag(CancleNamebtn1, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_set_style_bg_color(CancleNamebtn1, lv_color_hex(0x292929), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(CancleNamebtn1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    // lv_obj_set_style_bg_grad_color(CancleNamebtn1, lv_color_hex(0x2D323C), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_dir(CancleNamebtn1, LV_GRAD_DIR_VER, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_color(CancleNamebtn1, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_opa(CancleNamebtn1, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -129,21 +127,11 @@ void ui_InforScr1_screen_init(void){
     lv_obj_set_y(ChartTempInfo1, 31);
     lv_obj_set_align(ChartTempInfo1, LV_ALIGN_CENTER);
     lv_chart_set_type(ChartTempInfo1, LV_CHART_TYPE_LINE);
-    lv_chart_set_point_count(ChartTempInfo1, 20);
-    lv_chart_set_range(ChartTempInfo1, LV_CHART_AXIS_PRIMARY_Y, -20, 10);
-    lv_chart_set_div_line_count(ChartTempInfo1, 10, 10);
-    lv_chart_set_zoom_x(ChartTempInfo1, 250);
-    lv_chart_set_zoom_y(ChartTempInfo1, 250);
-    lv_chart_set_axis_tick(ChartTempInfo1, LV_CHART_AXIS_PRIMARY_X, 2, 1, 10, 10, true, 10);
-    lv_chart_set_axis_tick(ChartTempInfo1, LV_CHART_AXIS_PRIMARY_Y, 10, 5, 5, 2, true, 20);
+    lv_chart_set_range(ChartTempInfo1, LV_CHART_AXIS_PRIMARY_Y, -20, 40);
+    lv_chart_set_update_mode(ChartTempInfo1, LV_CHART_UPDATE_MODE_SHIFT);
+    lv_chart_set_div_line_count(ChartTempInfo1, 20, 20);
+    lv_chart_set_axis_tick(ChartTempInfo1, LV_CHART_AXIS_PRIMARY_Y, 5, 5, 10, 10, true, 20);
     lv_chart_set_axis_tick(ChartTempInfo1, LV_CHART_AXIS_SECONDARY_Y, 10, 5, 5, 2, false, 25);
-    
-    lv_chart_series_t * ChartTempInfo1_series_1 = lv_chart_add_series(ChartTempInfo1, lv_color_hex(0x464B55),LV_CHART_AXIS_PRIMARY_Y);
-
-    //receive value                                                             
-    static lv_coord_t ChartTempInfo1_series_1_array[] = { -2, -5, -3, -8, -10, -15, 1, 5, 2, -4 };
-    lv_chart_set_ext_y_array(ChartTempInfo1, ChartTempInfo1_series_1, ChartTempInfo1_series_1_array);
-
     lv_obj_set_style_bg_color(ChartTempInfo1, lv_color_hex(0x464B55), LV_PART_SCROLLBAR | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ChartTempInfo1, 255, LV_PART_SCROLLBAR | LV_STATE_DEFAULT);
     lv_obj_set_style_line_color(ChartTempInfo1, lv_color_hex(0x464B55), LV_PART_ITEMS | LV_STATE_DEFAULT);
@@ -152,6 +140,9 @@ void ui_InforScr1_screen_init(void){
     lv_obj_set_style_line_rounded(ChartTempInfo1, true, LV_PART_ITEMS | LV_STATE_DEFAULT);
     lv_obj_set_style_line_color(ChartTempInfo1, lv_color_hex(0x464B55), LV_PART_TICKS | LV_STATE_DEFAULT);
     lv_obj_set_style_line_opa(ChartTempInfo1, 0, LV_PART_TICKS | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ChartTempInfo1, &lv_font_montserrat_10, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ChartTempInfo1, lv_color_hex(0xFFFFFF), LV_PART_INDICATOR | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ChartTempInfo1, 0, LV_PART_INDICATOR | LV_STATE_DEFAULT);
 
     KeyboardInfo1 = lv_keyboard_create(ui_InfoScr1);
     lv_obj_set_width(KeyboardInfo1, 478);

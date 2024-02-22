@@ -733,6 +733,7 @@ void ui_Screen1_screen_init(void)
     
     lv_obj_add_event_cb(ui_changetoScr2btn, ui_event_changetoScr2btn, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Card1,ui_Card1_event,LV_EVENT_ALL,NULL);
+    // lv_obj_add_event_cb(ui_ArcTemp2,ui_event_ArcTemp2,LV_EVENT_ALL,NULL);
     lv_obj_add_event_cb(ui_Card2,ui_Card2_event,LV_EVENT_ALL,NULL);
     lv_obj_add_event_cb(ui_Card3,ui_Card3_event,LV_EVENT_ALL,NULL);
     lv_obj_add_event_cb(ui_Card4,ui_Card4_event,LV_EVENT_ALL,NULL);

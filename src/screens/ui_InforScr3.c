@@ -129,20 +129,29 @@ void ui_InforScr3_screen_init(void){
     lv_obj_set_y(ChartTempInfo3, 31);
     lv_obj_set_align(ChartTempInfo3, LV_ALIGN_CENTER);
     lv_chart_set_type(ChartTempInfo3, LV_CHART_TYPE_LINE);
-    lv_chart_set_point_count(ChartTempInfo3, 20);
-    lv_chart_set_range(ChartTempInfo3, LV_CHART_AXIS_PRIMARY_Y, -20, 10);
-    lv_chart_set_div_line_count(ChartTempInfo3, 10, 10);
-    lv_chart_set_zoom_x(ChartTempInfo3, 250);
-    lv_chart_set_zoom_y(ChartTempInfo3, 250);
-    lv_chart_set_axis_tick(ChartTempInfo3, LV_CHART_AXIS_PRIMARY_X, 2, 1, 10, 10, true, 10);
-    lv_chart_set_axis_tick(ChartTempInfo3, LV_CHART_AXIS_PRIMARY_Y, 10, 5, 5, 2, true, 20);
+    lv_chart_set_range(ChartTempInfo3, LV_CHART_AXIS_PRIMARY_Y, -20, 40);
+    lv_chart_set_update_mode(ChartTempInfo3, LV_CHART_UPDATE_MODE_SHIFT);
+    lv_chart_set_div_line_count(ChartTempInfo3, 20, 20);
+    lv_chart_set_axis_tick(ChartTempInfo3, LV_CHART_AXIS_PRIMARY_Y, 5, 5, 10, 10, true, 20);
     lv_chart_set_axis_tick(ChartTempInfo3, LV_CHART_AXIS_SECONDARY_Y, 10, 5, 5, 2, false, 25);
     
-    lv_chart_series_t * ChartTempInfo3_series_1 = lv_chart_add_series(ChartTempInfo3, lv_color_hex(0x464B55),LV_CHART_AXIS_PRIMARY_Y);
+    
+    //Add Data series for Temperature on Y Axis
+    ChartTempInfo3_series_1 = lv_chart_add_series(ChartTempInfo3, lv_color_hex(0x464B55),LV_CHART_AXIS_PRIMARY_Y);
 
-    //receive value                                                             
-    static lv_coord_t ChartTempInfo3_series_1_array[] = { -2, -5, -3, -8, -10, -15, 1, 5, 2, -4 };
-    lv_chart_set_ext_y_array(ChartTempInfo3, ChartTempInfo3_series_1, ChartTempInfo3_series_1_array);
+    lv_obj_set_style_bg_color(ChartTempInfo3, lv_color_hex(0x464B55), LV_PART_SCROLLBAR | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ChartTempInfo3, 255, LV_PART_SCROLLBAR | LV_STATE_DEFAULT);
+    lv_obj_set_style_line_color(ChartTempInfo3, lv_color_hex(0x464B55), LV_PART_ITEMS | LV_STATE_DEFAULT);
+    lv_obj_set_style_line_opa(ChartTempInfo3, 255, LV_PART_ITEMS | LV_STATE_DEFAULT);
+    lv_obj_set_style_line_width(ChartTempInfo3, 2, LV_PART_ITEMS | LV_STATE_DEFAULT);
+    lv_obj_set_style_line_rounded(ChartTempInfo3, true, LV_PART_ITEMS | LV_STATE_DEFAULT);
+    lv_obj_set_style_line_color(ChartTempInfo3, lv_color_hex(0x464B55), LV_PART_TICKS | LV_STATE_DEFAULT);
+    lv_obj_set_style_line_opa(ChartTempInfo3, 0, LV_PART_TICKS | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ChartTempInfo3, &lv_font_montserrat_10, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ChartTempInfo3, lv_color_hex(0xFFFFFF), LV_PART_INDICATOR | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ChartTempInfo3, 0, LV_PART_INDICATOR | LV_STATE_DEFAULT);
+
+
 
     lv_obj_set_style_bg_color(ChartTempInfo3, lv_color_hex(0x464B55), LV_PART_SCROLLBAR | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ChartTempInfo3, 255, LV_PART_SCROLLBAR | LV_STATE_DEFAULT);

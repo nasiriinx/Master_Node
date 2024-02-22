@@ -1,9 +1,11 @@
 ///////////////////// DEFINE ////////////////////
 #define LGFX_USE_V1
-#define screenWidth 480
-#define screenHeight 320
-#define LENGTH_OFF_MACADDRS 6
-#define BAUD_RATE 115200
+#define screenWidth               480
+#define screenHeight              320
+#define LENGTH_OFF_MACADDRS       6
+#define BAUD_RATE                 115200
+#define BUFFER_OF_CHART           1000
+
 //////////////////////////////////////////////////
 
 ///////////////////// INCLUDE ////////////////////
@@ -14,14 +16,18 @@
 #include <esp_now.h>
 #include <WiFi.h>
 #include <Arduino.h>
+#include <WiFiMulti.h>
+#include <HttpClient.h>
 
-#include "C:\Users\nsiri\OneDrive\Desktop\NewLVGL\src\screens\data_struct.h"
+#include "C:\Users\nsiri\OneDrive\Desktop\wireless_sensor_network_master_node\src\screens\data_struct.h"
+          
 //////////////////////////////////////////////////
 
 ///////////////// GLOBAL VARIABLE ////////////////
 extern Temperature temp;
 static lv_disp_draw_buf_t draw_buf;
 static lv_color_t buf[screenWidth * 10];
+
 //////////////////////////////////////////////////
 
 /////////////////// STRUCTURE ////////////////////
@@ -156,21 +162,249 @@ void OnDataRecv(const uint8_t *mac, const uint8_t *incomingData, int len)
   recv_num_node = my_message.num_node;
   recv_temperature_message = my_message.temperature_data;
   recv_fact_new_route = my_message.fact_new_route;
+
   if (recv_num_node == "node:1")
   {
-    temp.Node1 = recv_temperature_message;  
+    static int count_position_array = 0;
+    static lv_coord_t CharTempInfo1_series_1_array[BUFFER_OF_CHART];
+    lv_chart_series_t * ChartTempInfo1_series_1 = lv_chart_add_series(ChartTempInfo1, lv_color_hex(0x464B55),LV_CHART_AXIS_PRIMARY_Y);
+    temp.Node1 = recv_temperature_message;
+    CharTempInfo1_series_1_array[count_position_array] = temp.Node1;
+
+    lv_arc_set_value(ui_ArcTemp1, temp.Node1);
+    sprintf(t_text.temp_text1, "%.1f°C", temp.Node1);
+    lv_label_set_text(ui_TempCard1, t_text.temp_text1);
+
+    if (count_position_array <= BUFFER_OF_CHART - 1)
+    {
+      count_position_array++;
+      lv_chart_set_point_count(ChartTempInfo1, count_position_array);
+      lv_chart_set_axis_tick(ChartTempInfo1, LV_CHART_AXIS_PRIMARY_X, 2, 1, 1000, 10, false, 20);
+      lv_chart_set_ext_y_array(ChartTempInfo1, ChartTempInfo1_series_1, CharTempInfo1_series_1_array);
+    }
+    else
+    {
+      count_position_array = 0;
+    }
   }
+
   else if (recv_num_node == "node:2")
   {
+    static int count_position_array = 0;
+    static lv_coord_t CharTempInfo2_series_1_array[BUFFER_OF_CHART];
     temp.Node2 = recv_temperature_message;
+    CharTempInfo2_series_1_array[count_position_array] = temp.Node2;
+
     lv_arc_set_value(ui_ArcTemp2, temp.Node2);
     sprintf(t_text.temp_text2, "%.1f°C", temp.Node2);
     lv_label_set_text(ui_TempCard2, t_text.temp_text2);
+
+    if (count_position_array <= BUFFER_OF_CHART - 1)
+    {
+      count_position_array++;
+      lv_chart_set_point_count(ChartTempInfo2, count_position_array);
+      lv_chart_set_axis_tick(ChartTempInfo2, LV_CHART_AXIS_PRIMARY_X, 2, 1, 1000, 10, false, 20);
+      lv_chart_set_ext_y_array(ChartTempInfo2, ChartTempInfo2_series_1, CharTempInfo2_series_1_array);
+    }
+    else
+    {
+      count_position_array = 0;
+    }
   }
+
   else if (recv_num_node == "node:3")
   {
+    static int count_position_array = 0;
+    static lv_coord_t CharTempInfo3_series_1_array[BUFFER_OF_CHART];
     temp.Node3 = recv_temperature_message;
+    CharTempInfo3_series_1_array[count_position_array] = temp.Node3;
+
+    lv_arc_set_value(ui_ArcTemp3, temp.Node3);
+    sprintf(t_text.temp_text3, "%.1f°C", temp.Node3);
+    lv_label_set_text(ui_TempCard3, t_text.temp_text3);
+
+    if (count_position_array <= BUFFER_OF_CHART - 1)
+    {
+      count_position_array++;
+      lv_chart_set_point_count(ChartTempInfo3, count_position_array);
+      lv_chart_set_axis_tick(ChartTempInfo3, LV_CHART_AXIS_PRIMARY_X, 2, 1, 1000, 10, false, 20);
+      lv_chart_set_ext_y_array(ChartTempInfo3, ChartTempInfo3_series_1, CharTempInfo3_series_1_array);
+    }
+    else
+    {
+      count_position_array = 0;
+    }
   }
+
+  else if (recv_num_node == "node:4")
+  {
+    static int count_position_array = 0;
+    static lv_coord_t CharTempInfo4_series_1_array[BUFFER_OF_CHART];
+    temp.Node4 = recv_temperature_message;
+    CharTempInfo4_series_1_array[count_position_array] = temp.Node4;
+
+    lv_arc_set_value(ui_ArcTemp4, temp.Node4);
+    sprintf(t_text.temp_text4, "%.1f°C", temp.Node4);
+    lv_label_set_text(ui_TempCard4, t_text.temp_text4);
+
+    if (count_position_array <= BUFFER_OF_CHART - 1)
+    {
+      count_position_array++;
+      lv_chart_set_point_count(ChartTempInfo4, count_position_array);
+      lv_chart_set_axis_tick(ChartTempInfo4, LV_CHART_AXIS_PRIMARY_X, 2, 1, 1000, 10, false, 20);
+      lv_chart_set_ext_y_array(ChartTempInfo4, ChartTempInfo4_series_1, CharTempInfo4_series_1_array);
+    }
+    else
+    {
+      count_position_array = 0;
+    }
+  }
+
+  else if (recv_num_node == "node:5")
+  {
+    static int count_position_array = 0;
+    static lv_coord_t CharTempInfo5_series_1_array[BUFFER_OF_CHART];
+    temp.Node5 = recv_temperature_message;
+    CharTempInfo5_series_1_array[count_position_array] = temp.Node5;
+
+    lv_arc_set_value(ui_ArcTemp5, temp.Node5);
+    sprintf(t_text.temp_text5, "%.1f°C", temp.Node5);
+    lv_label_set_text(ui_TempCard5, t_text.temp_text5);
+
+    if (count_position_array <= BUFFER_OF_CHART - 1)
+    {
+      count_position_array++;
+      lv_chart_set_point_count(ChartTempInfo5, count_position_array);
+      lv_chart_set_axis_tick(ChartTempInfo5, LV_CHART_AXIS_PRIMARY_X, 2, 1, 1000, 10, false, 20);
+      lv_chart_set_ext_y_array(ChartTempInfo5, ChartTempInfo5_series_1, CharTempInfo5_series_1_array);
+    }
+    else
+    {
+      count_position_array = 0;
+    }
+  }
+
+  else if (recv_num_node == "node:6")
+  {
+    static int count_position_array = 0;
+    static lv_coord_t CharTempInfo6_series_1_array[BUFFER_OF_CHART];
+    temp.Node6 = recv_temperature_message;
+    CharTempInfo6_series_1_array[count_position_array] = temp.Node6;
+
+    lv_arc_set_value(ui_ArcTemp6, temp.Node6);
+    sprintf(t_text.temp_text6, "%.1f°C", temp.Node6);
+    lv_label_set_text(ui_TempCard6, t_text.temp_text6);
+
+    if (count_position_array <= BUFFER_OF_CHART - 1)
+    {
+      count_position_array++;
+      lv_chart_set_point_count(ChartTempInfo6, count_position_array);
+      lv_chart_set_axis_tick(ChartTempInfo6, LV_CHART_AXIS_PRIMARY_X, 2, 1, 1000, 10, false, 20);
+      lv_chart_set_ext_y_array(ChartTempInfo6, ChartTempInfo6_series_1, CharTempInfo6_series_1_array);
+    }
+    else
+    {
+      count_position_array = 0;
+    }
+  }
+
+  else if (recv_num_node == "node:7")
+  {
+    static int count_position_array = 0;
+    static lv_coord_t CharTempInfo7_series_1_array[BUFFER_OF_CHART];
+    temp.Node7 = recv_temperature_message;
+    CharTempInfo7_series_1_array[count_position_array] = temp.Node7;
+
+    lv_arc_set_value(ui_ArcTemp7, temp.Node7);
+    sprintf(t_text.temp_text7, "%.1f°C", temp.Node7);
+    lv_label_set_text(ui_TempCard7, t_text.temp_text7);
+
+    if (count_position_array <= BUFFER_OF_CHART - 1)
+    {
+      count_position_array++;
+      lv_chart_set_point_count(ChartTempInfo7, count_position_array);
+      lv_chart_set_axis_tick(ChartTempInfo7, LV_CHART_AXIS_PRIMARY_X, 2, 1, 1000, 10, false, 20);
+      lv_chart_set_ext_y_array(ChartTempInfo7, ChartTempInfo7_series_1, CharTempInfo7_series_1_array);
+    }
+    else
+    {
+      count_position_array = 0;
+    }
+  }
+
+  else if (recv_num_node == "node:8")
+  {
+    static int count_position_array = 0;
+    static lv_coord_t CharTempInfo8_series_1_array[BUFFER_OF_CHART];
+    temp.Node8 = recv_temperature_message;
+    CharTempInfo8_series_1_array[count_position_array] = temp.Node8;
+
+    lv_arc_set_value(ui_ArcTemp8, temp.Node8);
+    sprintf(t_text.temp_text8, "%.1f°C", temp.Node8);
+    lv_label_set_text(ui_TempCard8, t_text.temp_text8);
+
+    if (count_position_array <= BUFFER_OF_CHART - 1)
+    {
+      count_position_array++;
+      lv_chart_set_point_count(ChartTempInfo8, count_position_array);
+      lv_chart_set_axis_tick(ChartTempInfo8, LV_CHART_AXIS_PRIMARY_X, 2, 1, 1000, 10, false, 20);
+      lv_chart_set_ext_y_array(ChartTempInfo8, ChartTempInfo8_series_1, CharTempInfo8_series_1_array);
+    }
+    else
+    {
+      count_position_array = 0;
+    }
+  }
+
+  else if (recv_num_node == "node:9")
+  {
+    static int count_position_array = 0;
+    static lv_coord_t CharTempInfo9_series_1_array[BUFFER_OF_CHART];
+    temp.Node9 = recv_temperature_message;
+    CharTempInfo9_series_1_array[count_position_array] = temp.Node9;
+
+    lv_arc_set_value(ui_ArcTemp9, temp.Node9);
+    sprintf(t_text.temp_text9, "%.1f°C", temp.Node9);
+    lv_label_set_text(ui_TempCard9, t_text.temp_text9);
+
+    if (count_position_array <= BUFFER_OF_CHART - 1)
+    {
+      count_position_array++;
+      lv_chart_set_point_count(ChartTempInfo9, count_position_array);
+      lv_chart_set_axis_tick(ChartTempInfo9, LV_CHART_AXIS_PRIMARY_X, 2, 1, 1000, 10, false, 20);
+      lv_chart_set_ext_y_array(ChartTempInfo9, ChartTempInfo9_series_1, CharTempInfo9_series_1_array);
+    }
+    else
+    {
+      count_position_array = 0;
+    }
+  }
+
+  else if (recv_num_node == "node:10")
+  {
+    static int count_position_array = 0;
+    static lv_coord_t CharTempInfo10_series_1_array[BUFFER_OF_CHART];
+    temp.Node10 = recv_temperature_message;
+    CharTempInfo10_series_1_array[count_position_array] = temp.Node10;
+
+    lv_arc_set_value(ui_ArcTemp10, temp.Node10);
+    sprintf(t_text.temp_text10, "%.1f°C", temp.Node10);
+    lv_label_set_text(ui_TempCard10, t_text.temp_text10);
+
+    if (count_position_array <= BUFFER_OF_CHART - 1)
+    {
+      count_position_array++;
+      lv_chart_set_point_count(ChartTempInfo10, count_position_array);
+      lv_chart_set_axis_tick(ChartTempInfo10, LV_CHART_AXIS_PRIMARY_X, 2, 1, 1000, 10, false, 20);
+      lv_chart_set_ext_y_array(ChartTempInfo10, ChartTempInfo10_series_1, CharTempInfo10_series_1_array);
+    }
+    else
+    {
+      count_position_array = 0;
+    
+    }
+  }
+
   else
   {
     // noting

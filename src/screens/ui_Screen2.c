@@ -82,6 +82,7 @@ void ui_Screen2_screen_init(void)
     lv_obj_set_style_radius(ui_ArcTemp7, 10, LV_PART_KNOB | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_ArcTemp7, lv_color_hex(0xFFFFFF), LV_PART_KNOB | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_ArcTemp7, 0, LV_PART_KNOB | LV_STATE_DEFAULT);
+    lv_obj_clear_flag(ui_ArcTemp7, LV_OBJ_FLAG_CLICKABLE); 
 
     ui_ArcBg7 = lv_obj_create(ui_Screen2);
     lv_obj_set_width(ui_ArcBg7, 60);
@@ -132,7 +133,7 @@ void ui_Screen2_screen_init(void)
     lv_obj_set_x(ui_DeviceName7, -125);
     lv_obj_set_y(ui_DeviceName7, -107);
     lv_obj_set_align(ui_DeviceName7, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_DeviceName7, "ESP32-Node 7");
+    lv_label_set_text(ui_DeviceName7, "Device 7");
     lv_obj_set_style_text_color(ui_DeviceName7, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_DeviceName7, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_decor(ui_DeviceName7, LV_TEXT_DECOR_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -170,7 +171,7 @@ void ui_Screen2_screen_init(void)
     lv_obj_set_x(ui_DeviceName8, 21);
     lv_obj_set_y(ui_DeviceName8, -107);
     lv_obj_set_align(ui_DeviceName8, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_DeviceName8, "ESP32-Node 8");
+    lv_label_set_text(ui_DeviceName8, "Device 8");
     lv_obj_set_style_text_color(ui_DeviceName8, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_DeviceName8, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_decor(ui_DeviceName8, LV_TEXT_DECOR_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -189,6 +190,7 @@ void ui_Screen2_screen_init(void)
     lv_obj_set_style_bg_color(ui_ArcTemp8, lv_color_hex(0x1E232D), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_ArcTemp8, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_left(ui_ArcTemp8, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_clear_flag(ui_ArcTemp8, LV_OBJ_FLAG_CLICKABLE); 
     lv_obj_set_style_pad_right(ui_ArcTemp8, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_top(ui_ArcTemp8, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_bottom(ui_ArcTemp8, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -279,7 +281,7 @@ void ui_Screen2_screen_init(void)
     lv_obj_set_x(ui_DeviceName9, 167);
     lv_obj_set_y(ui_DeviceName9, -107);
     lv_obj_set_align(ui_DeviceName9, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_DeviceName9, "ESP32-Node 9");
+    lv_label_set_text(ui_DeviceName9, "Device 9");
     lv_obj_set_style_text_color(ui_DeviceName9, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_DeviceName9, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_decor(ui_DeviceName9, LV_TEXT_DECOR_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -291,6 +293,7 @@ void ui_Screen2_screen_init(void)
     lv_obj_set_x(ui_ArcTemp9, 167);
     lv_obj_set_y(ui_ArcTemp9, -51);
     lv_obj_set_align(ui_ArcTemp9, LV_ALIGN_CENTER);
+    lv_obj_clear_flag(ui_ArcTemp9, LV_OBJ_FLAG_CLICKABLE); 
     lv_arc_set_range(ui_ArcTemp9, -20, 10);
     lv_arc_set_value(ui_ArcTemp9, temp.Node9);
     lv_arc_set_bg_angles(ui_ArcTemp9, 100, 99);
@@ -388,7 +391,7 @@ void ui_Screen2_screen_init(void)
     lv_obj_set_x(ui_DeviceName10, -125);
     lv_obj_set_y(ui_DeviceName10, 30);
     lv_obj_set_align(ui_DeviceName10, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_DeviceName10, "ESP32-Node 10");
+    lv_label_set_text(ui_DeviceName10, "Device 10");
     lv_obj_set_style_text_color(ui_DeviceName10, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_DeviceName10, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_decor(ui_DeviceName10, LV_TEXT_DECOR_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -402,6 +405,7 @@ void ui_Screen2_screen_init(void)
     lv_obj_set_align(ui_ArcTemp10, LV_ALIGN_CENTER);
     lv_arc_set_range(ui_ArcTemp10, -20, 10);
     lv_arc_set_value(ui_ArcTemp10, temp.Node10);
+    lv_obj_clear_flag(ui_ArcTemp10, LV_OBJ_FLAG_CLICKABLE); 
     lv_arc_set_bg_angles(ui_ArcTemp10, 100, 99);
     lv_obj_set_style_radius(ui_ArcTemp10, 60, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_ArcTemp10, lv_color_hex(0x1E232D), LV_PART_MAIN | LV_STATE_DEFAULT);

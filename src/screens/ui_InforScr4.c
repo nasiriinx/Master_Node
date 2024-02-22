@@ -129,20 +129,15 @@ void ui_InforScr4_screen_init(void){
     lv_obj_set_y(ChartTempInfo4, 31);
     lv_obj_set_align(ChartTempInfo4, LV_ALIGN_CENTER);
     lv_chart_set_type(ChartTempInfo4, LV_CHART_TYPE_LINE);
-    lv_chart_set_point_count(ChartTempInfo4, 20);
-    lv_chart_set_range(ChartTempInfo4, LV_CHART_AXIS_PRIMARY_Y, -20, 10);
-    lv_chart_set_div_line_count(ChartTempInfo4, 10, 10);
-    lv_chart_set_zoom_x(ChartTempInfo4, 250);
-    lv_chart_set_zoom_y(ChartTempInfo4, 250);
-    lv_chart_set_axis_tick(ChartTempInfo4, LV_CHART_AXIS_PRIMARY_X, 2, 1, 10, 10, true, 10);
-    lv_chart_set_axis_tick(ChartTempInfo4, LV_CHART_AXIS_PRIMARY_Y, 10, 5, 5, 2, true, 20);
+    lv_chart_set_range(ChartTempInfo4, LV_CHART_AXIS_PRIMARY_Y, -20, 40);
+    lv_chart_set_update_mode(ChartTempInfo4, LV_CHART_UPDATE_MODE_SHIFT);
+    lv_chart_set_div_line_count(ChartTempInfo4, 20, 20);
+    lv_chart_set_axis_tick(ChartTempInfo4, LV_CHART_AXIS_PRIMARY_Y, 5, 5, 10, 10, true, 20);
     lv_chart_set_axis_tick(ChartTempInfo4, LV_CHART_AXIS_SECONDARY_Y, 10, 5, 5, 2, false, 25);
     
-    lv_chart_series_t * ChartTempInfo4_series_1 = lv_chart_add_series(ChartTempInfo4, lv_color_hex(0x464B55),LV_CHART_AXIS_PRIMARY_Y);
-
-    //receive value                                                             
-    static lv_coord_t ChartTempInfo4_series_1_array[] = { -2, -5, -3, -8, -10, -15, 1, 5, 2, -4 };
-    lv_chart_set_ext_y_array(ChartTempInfo4, ChartTempInfo4_series_1, ChartTempInfo4_series_1_array);
+    
+    //Add Data series for Temperature on Y Axis
+    ChartTempInfo4_series_1 = lv_chart_add_series(ChartTempInfo4, lv_color_hex(0x464B55),LV_CHART_AXIS_PRIMARY_Y);
 
     lv_obj_set_style_bg_color(ChartTempInfo4, lv_color_hex(0x464B55), LV_PART_SCROLLBAR | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ChartTempInfo4, 255, LV_PART_SCROLLBAR | LV_STATE_DEFAULT);
@@ -152,6 +147,11 @@ void ui_InforScr4_screen_init(void){
     lv_obj_set_style_line_rounded(ChartTempInfo4, true, LV_PART_ITEMS | LV_STATE_DEFAULT);
     lv_obj_set_style_line_color(ChartTempInfo4, lv_color_hex(0x464B55), LV_PART_TICKS | LV_STATE_DEFAULT);
     lv_obj_set_style_line_opa(ChartTempInfo4, 0, LV_PART_TICKS | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ChartTempInfo4, &lv_font_montserrat_10, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ChartTempInfo4, lv_color_hex(0xFFFFFF), LV_PART_INDICATOR | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ChartTempInfo4, 0, LV_PART_INDICATOR | LV_STATE_DEFAULT);
+
+
 
     KeyboardInfo4 = lv_keyboard_create(ui_InfoScr4);
     lv_obj_set_width(KeyboardInfo4, 478);

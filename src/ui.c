@@ -5,7 +5,7 @@
 #include "Arduino.h"
 #include "ui.h"
 #include "ui_helpers.h"
-#include "C:\Users\nsiri\OneDrive\Desktop\NewLVGL\src\screens\data_struct.h"
+#include "C:\Users\nsiri\OneDrive\Desktop\wireless_sensor_network_master_node\src\screens\data_struct.h"
 
 extern Temperature temp;
 extern TempText t_text;
@@ -138,6 +138,7 @@ lv_obj_t * SaveNamebtn2;
 lv_obj_t * CancleNamebtn2;
 lv_obj_t * ChartTempInfo2;
 lv_obj_t * KeyboardInfo2;
+lv_chart_series_t * ChartTempInfo2_series_1;
 void ui_event_SaveNamebtn2(lv_event_t * e);
 void ui_event_KeyboardInfo2(lv_event_t * e);
 void ui_event_TextAreaInfo2(lv_event_t * e);
@@ -152,6 +153,7 @@ lv_obj_t * SaveNamebtn3;
 lv_obj_t * CancleNamebtn3;
 lv_obj_t * ChartTempInfo3;
 lv_obj_t * KeyboardInfo3;
+lv_chart_series_t * ChartTempInfo3_series_1;
 void ui_event_SaveNamebtn3(lv_event_t * e);
 void ui_event_KeyboardInfo3(lv_event_t * e);
 void ui_event_TextAreaInfo3(lv_event_t * e);
@@ -166,6 +168,7 @@ lv_obj_t * SaveNamebtn4;
 lv_obj_t * CancleNamebtn4;
 lv_obj_t * ChartTempInfo4;
 lv_obj_t * KeyboardInfo4;
+lv_chart_series_t * ChartTempInfo4_series_1;
 void ui_event_SaveNamebtn4(lv_event_t * e);
 void ui_event_KeyboardInfo4(lv_event_t * e);
 void ui_event_TextAreaInfo4(lv_event_t * e);
@@ -180,6 +183,7 @@ lv_obj_t * SaveNamebtn5;
 lv_obj_t * CancleNamebtn5;
 lv_obj_t * ChartTempInfo5;
 lv_obj_t * KeyboardInfo5;
+lv_chart_series_t * ChartTempInfo5_series_1;
 void ui_event_SaveNamebtn5(lv_event_t * e);
 void ui_event_KeyboardInfo5(lv_event_t * e);
 void ui_event_TextAreaInfo5(lv_event_t * e);
@@ -194,6 +198,7 @@ lv_obj_t * SaveNamebtn6;
 lv_obj_t * CancleNamebtn6;
 lv_obj_t * ChartTempInfo6;
 lv_obj_t * KeyboardInfo6;
+lv_chart_series_t * ChartTempInfo6_series_1;
 void ui_event_SaveNamebtn6(lv_event_t * e);
 void ui_event_KeyboardInfo6(lv_event_t * e);
 void ui_event_TextAreaInfo6(lv_event_t * e);
@@ -208,6 +213,7 @@ lv_obj_t * SaveNamebtn7;
 lv_obj_t * CancleNamebtn7;
 lv_obj_t * ChartTempInfo7;
 lv_obj_t * KeyboardInfo7;
+lv_chart_series_t * ChartTempInfo7_series_1;
 void ui_event_SaveNamebtn7(lv_event_t * e);
 void ui_event_KeyboardInfo7(lv_event_t * e);
 void ui_event_TextAreaInfo7(lv_event_t * e);
@@ -222,6 +228,7 @@ lv_obj_t * SaveNamebtn8;
 lv_obj_t * CancleNamebtn8;
 lv_obj_t * ChartTempInfo8;
 lv_obj_t * KeyboardInfo8;
+lv_chart_series_t * ChartTempInfo8_series_1;
 void ui_event_SaveNamebtn8(lv_event_t * e);
 void ui_event_KeyboardInfo8(lv_event_t * e);
 void ui_event_TextAreaInfo8(lv_event_t * e);
@@ -236,6 +243,7 @@ lv_obj_t * SaveNamebtn9;
 lv_obj_t * CancleNamebtn9;
 lv_obj_t * ChartTempInfo9;
 lv_obj_t * KeyboardInfo9;
+lv_chart_series_t * ChartTempInfo9_series_1;
 void ui_event_SaveNamebtn9(lv_event_t * e);
 void ui_event_KeyboardInfo9(lv_event_t * e);
 void ui_event_TextAreaInfo9(lv_event_t * e);
@@ -250,6 +258,7 @@ lv_obj_t * SaveNamebtn10;
 lv_obj_t * CancleNamebtn10;
 lv_obj_t * ChartTempInfo10;
 lv_obj_t * KeyboardInfo10;
+lv_chart_series_t * ChartTempInfo10_series_1;
 void ui_event_SaveNamebtn10(lv_event_t * e);
 void ui_event_KeyboardInfo10(lv_event_t * e);
 void ui_event_TextAreaInfo10(lv_event_t * e);
@@ -264,7 +273,7 @@ void ui_event_CancleNamebtn10(lv_event_t * e);
 #endif
 
 ///////////////////// ANIMATIONS ////////////////////
-
+lv_coord_t CharTempInfo2_series_1_array[1000];
 
 /////////////////////FUNCTIONS ////////////////////
 
@@ -452,6 +461,7 @@ void ui_event_KeyboardInfo1(lv_event_t * e){
         _ui_flag_modify(BacktoMainBtn, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
     }
 }
+
 
 /************* Information Device2 screen *************/
 //Save button : Save the new name from Textarea 
@@ -892,6 +902,16 @@ void ui_init(void)
 {
     LV_EVENT_GET_COMP_CHILD = lv_event_register_id();
     ui_Screen1_screen_init();
+    ui_InforScr1_screen_init();
+    // ui_InforScr2_screen_init();
+    // ui_InforScr3_screen_init();
+    // ui_InforScr4_screen_init();
+    // ui_InforScr5_screen_init();
+    // ui_InforScr6_screen_init();
+    // ui_InforScr7_screen_init();
+    // ui_InforScr8_screen_init();
+    // ui_InforScr9_screen_init();
+    // ui_InforScr10_screen_init();
     ui____initial_actions0 = lv_obj_create(NULL);
     lv_disp_load_scr(ui_Screen1);
 }
