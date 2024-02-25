@@ -12,6 +12,8 @@ extern Devicename name;
 
 void ui_Screen2_screen_init(void)
 {
+
+
     ui_Screen2 = lv_obj_create(NULL);
     lv_obj_clear_flag(ui_Screen2, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_set_style_bg_color(ui_Screen2, lv_color_hex(0x57626C), LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -527,7 +529,7 @@ void ui_Screen2_screen_init(void)
 
     ui_changetoScr1btn = lv_btn_create(ui_Screen2);
     lv_obj_set_width(ui_changetoScr1btn, 22);
-    lv_obj_set_height(ui_changetoScr1btn, 30);
+    lv_obj_set_height(ui_changetoScr1btn, 222);
     lv_obj_set_x(ui_changetoScr1btn, -219);
     lv_obj_set_y(ui_changetoScr1btn, 16);
     lv_obj_set_align(ui_changetoScr1btn, LV_ALIGN_CENTER);

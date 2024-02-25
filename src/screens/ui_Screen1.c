@@ -711,7 +711,7 @@ void ui_Screen1_screen_init(void)
 
     ui_changetoScr2btn = lv_btn_create(ui_Screen1);
     lv_obj_set_width(ui_changetoScr2btn, 22);
-    lv_obj_set_height(ui_changetoScr2btn, 30);
+    lv_obj_set_height(ui_changetoScr2btn, 222);
     lv_obj_set_x(ui_changetoScr2btn, 222);
     lv_obj_set_y(ui_changetoScr2btn, 16);
     lv_obj_set_align(ui_changetoScr2btn, LV_ALIGN_CENTER);

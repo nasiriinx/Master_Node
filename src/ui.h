@@ -24,6 +24,28 @@ extern lv_obj_t * BacktoMainBtn;
 extern lv_obj_t * CardInfo;
 void ui_event_BacktoMain1btn(lv_event_t * e);
 void ui_event_BacktoMain2btn(lv_event_t * e);
+void ui_event_SubmitSettingbtn(lv_event_t * e);
+void ui_event_kb_getstart(lv_event_t * e);
+void ui_event_SYSName_textarea(lv_event_t * e);
+
+//Get start system setting
+void ui_Getstart_screen_init(void);
+extern lv_obj_t * ui_Getstart;
+extern lv_obj_t * ui_getstart_text;
+extern lv_obj_t * ui_Wifi_card;
+extern lv_obj_t * ui_Wifi_setup_text;
+extern lv_obj_t * ui_wifi_ssid_text;
+extern lv_obj_t * ui_wifi_ssid_textarea;
+extern lv_obj_t * ui_wifi_pwd_text;
+extern lv_obj_t * ui_wifi_pwd_textarea;
+extern lv_obj_t * ui_sys_name_card;
+extern lv_obj_t * ui_sys_name_text;
+extern lv_obj_t * ui_name_text;
+extern lv_obj_t * ui_sys_name_textarea;
+extern lv_obj_t * ui_submit_setting_btn;
+extern lv_obj_t * ui_kb_setting;
+void ui_event_SSIDTextarea(lv_event_t * e);
+void ui_event_PWDTextarea(lv_event_t * e);
 
 // SCREEN: ui_Screen1
 void ui_Screen1_screen_init(void);

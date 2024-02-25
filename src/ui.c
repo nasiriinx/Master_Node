@@ -16,6 +16,29 @@ lv_obj_t * ui_HeaderPanel;
 lv_obj_t * ui_DateHeader;
 lv_obj_t * BacktoMainBtn;
 lv_obj_t * CardInfo;
+lv_obj_t * ui_submit_setting_btn;
+void ui_event_SubmitSettingbtn(lv_event_t * e);
+
+//Get start system setting
+void ui_Getstart_screen_init(void);
+lv_obj_t * ui_Getstart;
+lv_obj_t * ui_getstart_text;
+lv_obj_t * ui_Wifi_card;
+lv_obj_t * ui_Wifi_setup_text;
+lv_obj_t * ui_wifi_ssid_text;
+lv_obj_t * ui_wifi_ssid_textarea;
+lv_obj_t * ui_wifi_pwd_text;
+lv_obj_t * ui_wifi_pwd_textarea;
+lv_obj_t * ui_sys_name_card;
+lv_obj_t * ui_sys_name_text;
+lv_obj_t * ui_name_text;
+lv_obj_t * ui_sys_name_textarea;
+lv_obj_t * ui_submit_setting_btn;
+lv_obj_t * ui_kb_setting;
+void ui_event_SSIDTextarea(lv_event_t * e);
+void ui_event_kb_getstart(lv_event_t * e);
+void ui_event_SYSName_textarea(lv_event_t * e);
+
 
 /************ FUNCTION PROTOTYPE ************/
 
@@ -295,6 +318,108 @@ void ui_event_BacktoMain2btn(lv_event_t * e)
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
         _ui_screen_change(&ui_Screen2, LV_SCR_LOAD_ANIM_NONE, 100, 0, &ui_Screen2_screen_init);
+    }
+}
+
+void ui_event_SubmitSettingbtn(lv_event_t * e){
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+        if(event_code == LV_EVENT_CLICKED) {
+        _ui_screen_change(&ui_Screen1, LV_SCR_LOAD_ANIM_NONE, 100, 0, &ui_Screen1_screen_init);
+    }
+}
+
+void hide_submit_setting_btn(){
+    _ui_flag_modify(ui_submit_setting_btn, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+}
+
+void unhide_submit_setting_btn(){
+    _ui_flag_modify(ui_submit_setting_btn, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+}
+
+void normal_state_pos(){
+        _ui_basic_set_property(ui_Wifi_card,_UI_BASIC_PROPERTY_POSITION_Y,-35);
+        _ui_basic_set_property(ui_Wifi_setup_text,_UI_BASIC_PROPERTY_POSITION_Y,-75);
+        _ui_basic_set_property(ui_wifi_ssid_text,_UI_BASIC_PROPERTY_POSITION_Y,-42);
+        _ui_basic_set_property(ui_wifi_ssid_textarea,_UI_BASIC_PROPERTY_POSITION_Y,-42);
+        _ui_basic_set_property(ui_wifi_pwd_text,_UI_BASIC_PROPERTY_POSITION_Y,0);
+        _ui_basic_set_property(ui_wifi_pwd_textarea,_UI_BASIC_PROPERTY_POSITION_Y,0);
+        _ui_basic_set_property(ui_sys_name_card,_UI_BASIC_PROPERTY_POSITION_Y,73);
+        _ui_basic_set_property(ui_sys_name_text,_UI_BASIC_PROPERTY_POSITION_Y,52);
+        _ui_basic_set_property(ui_name_text,_UI_BASIC_PROPERTY_POSITION_Y,85);
+        _ui_basic_set_property(ui_sys_name_textarea,_UI_BASIC_PROPERTY_POSITION_Y,85);
+        unhide_submit_setting_btn();
+        _ui_flag_modify(ui_kb_setting, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+}
+
+/************* Screen getting start events *************/
+
+void ui_event_SSIDTextarea(lv_event_t * e){
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_FOCUSED){
+        _ui_basic_set_property(ui_Wifi_card,_UI_BASIC_PROPERTY_POSITION_Y,-90);
+        _ui_basic_set_property(ui_Wifi_setup_text,_UI_BASIC_PROPERTY_POSITION_Y,-130);
+        _ui_basic_set_property(ui_wifi_ssid_text,_UI_BASIC_PROPERTY_POSITION_Y,-97);
+        _ui_basic_set_property(ui_wifi_ssid_textarea,_UI_BASIC_PROPERTY_POSITION_Y,-97);
+        _ui_basic_set_property(ui_wifi_pwd_text,_UI_BASIC_PROPERTY_POSITION_Y,-55);
+        _ui_basic_set_property(ui_wifi_pwd_textarea,_UI_BASIC_PROPERTY_POSITION_Y,-55);
+        _ui_flag_modify(ui_kb_setting, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        hide_submit_setting_btn();
+        lv_keyboard_set_textarea(ui_kb_setting,ui_wifi_ssid_textarea);
+
+    }else if(event_code == LV_EVENT_DEFOCUSED){
+        normal_state_pos();
+    }
+}
+
+void ui_event_PWDTextarea(lv_event_t * e){
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);  
+    if(event_code == LV_EVENT_FOCUSED){
+        _ui_basic_set_property(ui_Wifi_card,_UI_BASIC_PROPERTY_POSITION_Y,-120);
+        _ui_basic_set_property(ui_Wifi_setup_text,_UI_BASIC_PROPERTY_POSITION_Y,-160);
+        _ui_basic_set_property(ui_wifi_ssid_text,_UI_BASIC_PROPERTY_POSITION_Y,-127);
+        _ui_basic_set_property(ui_wifi_ssid_textarea,_UI_BASIC_PROPERTY_POSITION_Y,-127);
+        _ui_basic_set_property(ui_wifi_pwd_text,_UI_BASIC_PROPERTY_POSITION_Y,-85);
+        _ui_basic_set_property(ui_wifi_pwd_textarea,_UI_BASIC_PROPERTY_POSITION_Y,-85);
+        _ui_flag_modify(ui_kb_setting, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        hide_submit_setting_btn();
+        lv_keyboard_set_textarea(ui_kb_setting,ui_wifi_pwd_textarea);
+    } else if(event_code == LV_EVENT_DEFOCUSED){
+        normal_state_pos();
+    }
+}
+
+void ui_event_SYSName_textarea(lv_event_t * e){
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);  
+    if(event_code == LV_EVENT_FOCUSED){
+        _ui_basic_set_property(ui_Wifi_card,_UI_BASIC_PROPERTY_POSITION_Y,35);
+        _ui_basic_set_property(ui_Wifi_setup_text,_UI_BASIC_PROPERTY_POSITION_Y,75);
+        _ui_basic_set_property(ui_wifi_ssid_text,_UI_BASIC_PROPERTY_POSITION_Y,42);
+        _ui_basic_set_property(ui_wifi_ssid_textarea,_UI_BASIC_PROPERTY_POSITION_Y,42);
+        _ui_basic_set_property(ui_wifi_pwd_text,_UI_BASIC_PROPERTY_POSITION_Y,0);
+        _ui_basic_set_property(ui_wifi_pwd_textarea,_UI_BASIC_PROPERTY_POSITION_Y,0);
+        _ui_basic_set_property(ui_sys_name_card,_UI_BASIC_PROPERTY_POSITION_Y,-95);
+        _ui_basic_set_property(ui_sys_name_text,_UI_BASIC_PROPERTY_POSITION_Y,-115);
+        _ui_basic_set_property(ui_name_text,_UI_BASIC_PROPERTY_POSITION_Y,-83);
+        _ui_basic_set_property(ui_sys_name_textarea,_UI_BASIC_PROPERTY_POSITION_Y,-83);
+        _ui_flag_modify(ui_kb_setting, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        hide_submit_setting_btn();
+        lv_keyboard_set_textarea(ui_kb_setting,ui_sys_name_textarea);
+    } else if(event_code == LV_EVENT_DEFOCUSED){
+        normal_state_pos();
+    }
+}
+
+void ui_event_kb_getstart(lv_event_t * e){
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_READY){
+        unhide_submit_setting_btn();
+        normal_state_pos();
+        _ui_flag_modify(ui_kb_setting, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
     }
 }
 
@@ -901,9 +1026,10 @@ void ui_event_KeyboardInfo10(lv_event_t * e){
 void ui_init(void)
 {
     LV_EVENT_GET_COMP_CHILD = lv_event_register_id();
+    ui_Getstart_screen_init();
     ui_Screen1_screen_init();
     ui_InforScr1_screen_init();
-    // ui_InforScr2_screen_init();
+    ui_InforScr2_screen_init();
     // ui_InforScr3_screen_init();
     // ui_InforScr4_screen_init();
     // ui_InforScr5_screen_init();
@@ -913,5 +1039,6 @@ void ui_init(void)
     // ui_InforScr9_screen_init();
     // ui_InforScr10_screen_init();
     ui____initial_actions0 = lv_obj_create(NULL);
-    lv_disp_load_scr(ui_Screen1);
+    // lv_disp_load_scr(ui_Screen2);
+    lv_disp_load_scr(ui_Getstart);
 }
