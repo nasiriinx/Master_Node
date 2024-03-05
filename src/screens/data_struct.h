@@ -46,8 +46,23 @@ typedef struct Devicename
     char device10[32];
 }Devicename;
 
+typedef struct PosName
+{
+    char device1[32];
+    char device2[32];
+    char device3[32];
+    char device4[32];
+    char device5[32];
+    char device6[32];
+    char device7[32];
+    char device8[32];
+    char device9[32];
+    char device10[32];
+}PosName;
+
 Temperature temp;
 TempText t_text;
 Devicename name;
+PosName pos_n;
 
 #endif

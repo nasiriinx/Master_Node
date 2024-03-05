@@ -14,4 +14,119 @@ extern "C" {
 } /*extern "C"*/
 #endif
 
+void ui_event_keyboard(lv_event_t * e);
+/********************************************** EVENT GET START SCREEN **********************************************/
+void ui_event_ssid_t_area(lv_event_t * e);
+void ui_event_pwd_t_area(lv_event_t * e);
+void ui_event_name_t_area(lv_event_t * e);
+void ui_event_submit_setting_btn(lv_event_t * e);
+
+/********************************************** EVENT MONITOR SCREEN 1 **********************************************/
+void ui_event_next_page_btn(lv_event_t * e);
+void ui_event_back_btn2(lv_event_t *e);
+void ui_event_card1(lv_event_t * e);
+void ui_event_card2(lv_event_t * e);
+void ui_event_card3(lv_event_t * e);
+void ui_event_card4(lv_event_t * e);
+void ui_event_card5(lv_event_t * e);
+void ui_event_card6(lv_event_t * e);
+
+/********************************************** EVENT MONITOR SCREEN 2 **********************************************/
+void ui_event_prev_page_btn(lv_event_t * e);
+void ui_event_card7(lv_event_t * e);
+void ui_event_card8(lv_event_t * e);
+void ui_event_card9(lv_event_t * e);
+void ui_event_card10(lv_event_t * e);
+
+/********************************************** INFORMATION SCREEN 1 **********************************************/
+void ui_event_back_btn1(lv_event_t *e);
+void ui_event_view_btn_dev1(lv_event_t *e);
+void ui_event_cancel_btn_dev1(lv_event_t * e);
+void ui_event_name_t_area_dev1(lv_event_t * e);
+void ui_event_pos_name_t_area_dev1(lv_event_t * e);
+void ui_event_save_dev1(lv_event_t * e);
+void ui_event_keyboard_info1(lv_event_t *e);
+
+/********************************************** INFORMATION SCREEN 2 **********************************************/
+// void ui_event_back_btn2(lv_event_t *e);
+void ui_event_view_btn_dev2(lv_event_t *e);
+void ui_event_cancel_btn_dev2(lv_event_t * e);
+void ui_event_name_t_area_dev2(lv_event_t * e);
+void ui_event_pos_name_t_area_dev2(lv_event_t * e);
+void ui_event_save_dev2(lv_event_t * e);
+void ui_event_keyboard_info2(lv_event_t *e);
+
+/********************************************** INFORMATION SCREEN 3 **********************************************/
+void ui_event_back3_btn(lv_event_t *e);
+void ui_event_view_btn_dev3(lv_event_t *e);
+void ui_event_cancel_btn_dev3(lv_event_t * e);
+void ui_event_name_t_area_dev3(lv_event_t * e);
+void ui_event_pos_name_t_area_dev3(lv_event_t * e);
+void ui_event_save_dev3(lv_event_t * e);
+void ui_event_keyboard_info3(lv_event_t *e);
+
+/********************************************** INFORMATION SCREEN 4 **********************************************/
+void ui_event_back4_btn(lv_event_t *e);
+void ui_event_view_btn_dev4(lv_event_t *e);
+void ui_event_cancel_btn_dev4(lv_event_t * e);
+void ui_event_name_t_area_dev4(lv_event_t * e);
+void ui_event_pos_name_t_area_dev4(lv_event_t * e);
+void ui_event_save_dev4(lv_event_t * e);
+void ui_event_keyboard_info4(lv_event_t *e);
+
+/********************************************** INFORMATION SCREEN 5 **********************************************/
+void ui_event_back_btn5(lv_event_t *e);
+void ui_event_view_btn_dev5(lv_event_t *e);
+void ui_event_cancel_btn_dev5(lv_event_t * e);
+void ui_event_name_t_area_dev5(lv_event_t * e);
+void ui_event_pos_name_t_area_dev5(lv_event_t * e);
+void ui_event_save_dev5(lv_event_t * e);
+void ui_event_keyboard_info5(lv_event_t *e);
+
+/********************************************** INFORMATION SCREEN 6 **********************************************/
+void ui_event_back_btn6(lv_event_t *e);
+void ui_event_view_btn_dev6(lv_event_t *e);
+void ui_event_cancel_btn_dev6(lv_event_t * e);
+void ui_event_name_t_area_dev6(lv_event_t * e);
+void ui_event_pos_name_t_area_dev6(lv_event_t * e);
+void ui_event_save_dev6(lv_event_t * e);
+void ui_event_keyboard_info6(lv_event_t *e);
+
+/********************************************** INFORMATION SCREEN 7 **********************************************/
+void ui_event_back_btn7(lv_event_t *e);
+void ui_event_view_btn_dev7(lv_event_t *e);
+void ui_event_cancel_btn_dev7(lv_event_t * e);
+void ui_event_name_t_area_dev7(lv_event_t * e);
+void ui_event_pos_name_t_area_dev7(lv_event_t * e);
+void ui_event_save_dev7(lv_event_t * e);
+void ui_event_keyboard_info7(lv_event_t *e);
+
+/********************************************** INFORMATION SCREEN 8 **********************************************/
+void ui_event_back_btn8(lv_event_t *e);
+void ui_event_view_btn_dev8(lv_event_t *e);
+void ui_event_cancel_btn_dev8(lv_event_t * e);
+void ui_event_name_t_area_dev8(lv_event_t * e);
+void ui_event_pos_name_t_area_dev8(lv_event_t * e);
+void ui_event_save_dev8(lv_event_t * e);
+void ui_event_keyboard_info8(lv_event_t *e);
+
+/********************************************** INFORMATION SCREEN 9 **********************************************/
+void ui_event_back_btn9(lv_event_t *e);
+void ui_event_view_btn_dev9(lv_event_t *e);
+void ui_event_cancel_btn_dev9(lv_event_t * e);
+void ui_event_name_t_area_dev9(lv_event_t * e);
+void ui_event_pos_name_t_area_dev9(lv_event_t * e);
+void ui_event_save_dev9(lv_event_t * e);
+void ui_event_keyboard_info9(lv_event_t *e);
+
+/********************************************** INFORMATION SCREEN 10 **********************************************/
+void ui_event_back_btn10(lv_event_t *e);
+void ui_event_view_btn_dev10(lv_event_t *e);
+void ui_event_cancel_btn_dev10(lv_event_t * e);
+void ui_event_name_t_area_dev10(lv_event_t * e);
+void ui_event_pos_name_t_area_dev10(lv_event_t * e);
+void ui_event_save_dev10(lv_event_t * e);
+void ui_event_keyboard_info10(lv_event_t *e);
+
+
 #endif

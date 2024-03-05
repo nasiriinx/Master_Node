@@ -9,7 +9,11 @@
         "lv_obj.h": "c",
         "system_error": "c",
         "data_struct.h": "c",
-        "functional": "cpp"
+        "functional": "cpp",
+        "lvgl.h": "c",
+        "object.h": "c",
+        "ui_events.h": "c",
+        "ratio": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }
