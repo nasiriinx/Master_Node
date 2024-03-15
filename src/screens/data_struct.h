@@ -3,6 +3,8 @@
 
 #include "stdio.h"
 
+
+
 typedef struct Temperature
 {
     float Node1;
@@ -60,9 +62,37 @@ typedef struct PosName
     char device10[32];
 }PosName;
 
+typedef struct GetStart
+{
+    char ssid;
+    char password;
+    char pj_name[15];
+}GetStart;
+
+typedef struct DateandTime{
+    char date_time_header[16];
+    char time_update[18];
+}DateandTime;
+
+typedef struct dev_time_up{
+    char dev1[18];
+    char dev2[18];
+    char dev3[18];
+    char dev4[18];
+    char dev5[18];
+    char dev6[18];
+    char dev7[18];
+    char dev8[18];
+    char dev9[18];
+    char dev10[18];
+}dev_time_up;
+
 Temperature temp;
 TempText t_text;
 Devicename name;
 PosName pos_n;
+GetStart getstart;
+DateandTime dt;
+dev_time_up dev_uptime;
 
 #endif

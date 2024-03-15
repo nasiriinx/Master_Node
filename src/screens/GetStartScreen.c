@@ -144,12 +144,13 @@ void get_start_screen_init(void){
 
     /********************************************** Keyboard **********************************************/
     ui_keyboard_get_st = lv_keyboard_create(ui_get_start_screen);
-    lv_obj_set_width(ui_keyboard_get_st, 478);
-    lv_obj_set_height(ui_keyboard_get_st, 214);
-    lv_obj_set_x(ui_keyboard_get_st, 0);
-    lv_obj_set_y(ui_keyboard_get_st, 51);
+    lv_obj_set_width(ui_keyboard_get_st, SIZE_WIDTH_KEYBOARD);
+    lv_obj_set_height(ui_keyboard_get_st, SIZE_HEIGHT_KEYBOARD);
+    lv_obj_set_x(ui_keyboard_get_st, POS_X_KEYBOARD);
+    lv_obj_set_y(ui_keyboard_get_st, POS_Y_KEYBOARD);
     lv_obj_set_align(ui_keyboard_get_st, LV_ALIGN_CENTER);
     lv_obj_add_flag(ui_keyboard_get_st, LV_OBJ_FLAG_HIDDEN); /// Flags675
+    lv_obj_add_event_cb(ui_keyboard_get_st,ui_event_keyboard,LV_EVENT_ALL,NULL);
 
     /********************************************** SUBMIT Button **********************************************/
     ui_submit_setting_btn = lv_btn_create(ui_get_start_screen);

@@ -1,7 +1,13 @@
 #ifndef object_H_
 #define object_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include "Arduino.h"
 #include "../ui.h"
+// #include "string.h"
 
 /***************** DEFINE PAGE NUMBER *****************/
 #define GET_START_PAGE      0
@@ -50,7 +56,7 @@
 #define POS_Y_NAME_SET_T        52
 #define POS_X_NAME_T            -154
 #define POS_Y_NAME_SYS          85
-#define POS_X_NAME_T_AREA       68
+#define POS_X_NAME_T_AREA       75
 #define SIZE_WIDTH_SUB_BTN      100
 #define SIZE_HEIGHT_SUB_BTN     36
 #define POS_X_SUB_BTN           0
@@ -85,35 +91,43 @@
 #define SIZE_WIDTH_CARD_DEVICE      143    
 #define SIZE_HEIGHT_CARD_DEVICE     135
 #define RAD_CARD                    10
-#define SIZE_WIDTH_ARC              90
-#define SIZE_HEIGHT_ARC             90
-#define MIN_RANGE_ARC               -20
-#define MAX_RANGE_ARC               40
-#define START_VALUE_ARC             0
-#define START_ANGLE_ARC             100
-#define END_ANGLE_ARC               99
-#define RAD_ARC                     90
-#define SIZE_WIDTH_ARC_INNER1       60
-#define SIZE_HEIGHT_ARC_INNER1      60
-#define RAD_INNER1_ARC              60
-#define SIZE_WIDTH_ARC_INNER2       50
-#define SIZE_HEIGHT_ARC_INNER2      50
+
+#define SIZE_WIDTH_METER              85
+#define SIZE_HEIGHT_METER             85
+#define MIN_RANGE_METER              -20
+#define MIDDLE_RANGE_METER          10
+#define MAX_RANGE_METER              40
+#define METER_ANGLE                 270
+#define METER_ROTATION              135
+
+#define SIZE_WIDTH_ARC_INNER2       55
+#define SIZE_HEIGHT_ARC_INNER2      55
 #define RAD_INNER2_ARC              50
-#define X_MID_14                    -160
-#define X_MID_25                    -13
-#define X_MID_36                    134
+
+#define POS_X_METER14               37
+#define POS_Y_METER123              65
+#define X_MID_14                    -161
+#define Y_POS_METER_123             -53
+
+#define POS_X_METER25               184
+#define X_MID_25                    -14
+
+#define POS_X_METER36               332
+#define X_MID_36                    135
+
 #define X_MID_710                   -160
 #define X_MID_8                     -13
 #define X_MID_9                     134
-#define Y_POS_CARD_123              -52
+#define Y_POS_CARD_123              -54
 #define Y_POS_NAMEDEVICE_123        -109
-#define Y_POS_ARCTEMP_123           -52
+
+#define Y_POS_METER_456             207
 #define Y_POS_TEMPT_123             -52 
 #define Y_POS_LASTUP_123            0
 #define Y_POS_CARD_456              88
 #define Y_POS_NAMEDEVICE_456        33
 #define Y_POS_ARCTEMP_456           88
-#define Y_POS_TEMPT_456             54
+#define Y_POS_TEMPT_456             88
 #define Y_POS_LASTUP_456            140
 #define SIZE_WIDTH_NEXT_BTN         22
 #define SIZE_HEIGHT_NEXT_BTN        100
@@ -157,13 +171,41 @@
 #define CHART_ARR_BUF               1000
 #define SIZE_WIDTH_T_AREA_INFO      260
 #define SIZE_HEIGHT_T_AREA_INFO     35
-#define POS_X_T_AREA_INFO           82
+#define POS_X_NAME_OP_T             25 
+#define POS_Y_NAME_OP_T             -80
+#define POS_X_POS_OP_T              28
+#define POS_Y_POS_OP_T              10
+#define POS_X_T_AREA_INFO           90
 #define POS_Y_T_AREA_NAME_INFO      -40
 #define POS_Y_T_AREA_POS_INFO       50
+#define POS_X_SAVE_BTN              110
+#define POS_Y_INFO_OP_BTN           100
+#define POS_X_CANCEL_BTN            180
 
 #define POS_Y_EVENT_NAME_T_AREA         -100
 #define POS_X_EVENT_NAME_T_AREA         0
 #define SIZE_WIDTH_EVENT_NAME_T_AREA    350
+
+#define BUFFER_OF_CHART           50
+
+#define SIZE_WIDTH_KEYBOARD         478
+#define SIZE_HEIGHT_KEYBOARD        214
+#define POS_X_KEYBOARD              0
+#define POS_Y_KEYBOARD              51 
+
+extern int count_pos_array_dev1;
+extern int count_pos_array_dev2;
+extern int count_pos_array_dev3;
+extern int count_pos_array_dev4;
+extern int count_pos_array_dev5;
+extern int count_pos_array_dev6;
+extern int count_pos_array_dev7;
+extern int count_pos_array_dev8;
+extern int count_pos_array_dev9;
+extern int count_pos_array_dev10;
+
+extern char Time;
+extern char DateTime;
 /***************** CO-OBJECT *****************/
 //Header
 lv_obj_t * ui_header_panel;            
@@ -236,7 +278,8 @@ lv_obj_t * ui_name_t_device10;
 lv_obj_t * ui_last_up_t_device10;
 
 //Information screen
-lv_obj_t * ui_infor_card;
+lv_obj_t * ui_infor_card1;
+lv_obj_t * ui_infor_card2;
 
 /***************** GET START SCREEN *****************/
 void get_start_screen_init(void);
@@ -265,7 +308,18 @@ lv_obj_t * ui_card_device4;
 lv_obj_t * ui_card_device5;
 lv_obj_t * ui_card_device6;
 lv_obj_t * ui_next_page_btn;  
-
+lv_obj_t * meter_1;
+lv_obj_t * meter_2;
+lv_obj_t * meter_3;
+lv_obj_t * meter_4;
+lv_obj_t * meter_5;
+lv_obj_t * meter_6;
+lv_meter_indicator_t * indic_1;
+lv_meter_indicator_t * indic_2;
+lv_meter_indicator_t * indic_3;
+lv_meter_indicator_t * indic_4;
+lv_meter_indicator_t * indic_5;
+lv_meter_indicator_t * indic_6;
 /***************** MONITOR SCREEN 2 *****************/
 void ui_monitor_screen_2_init(void);
 lv_obj_t * ui_monitor_screen_2;
@@ -274,8 +328,12 @@ lv_obj_t * ui_card_device8;
 lv_obj_t * ui_card_device9;
 lv_obj_t * ui_card_device10;
 lv_obj_t * ui_prev_page_btn;
-
+lv_obj_t * meter_7;
+lv_obj_t * meter_8;
+lv_obj_t * meter_9;
+lv_obj_t * meter_10;
 /***************** INFORMATION SCREEN *****************/
+
 void ui_infor_screen_1_init(void);
 lv_obj_t * ui_keyboard_info_1;
 lv_obj_t * ui_infor_screen_1;
@@ -291,7 +349,7 @@ lv_obj_t * ui_temp_t_info_device1;
 lv_obj_t * ui_name_t_info_device1;
 lv_obj_t * ui_pos_t_device1;
 lv_obj_t * ui_last_up_t_info_device1;
-static lv_coord_t chart_temp_1_array[CHART_ARR_BUF];
+static lv_coord_t chart_temp_1_array[BUFFER_OF_CHART];
 lv_chart_series_t * chart_temp_1_series;
 lv_obj_t * ui_name_t_area_device1;
 lv_obj_t * ui_pos_name_t_area_device1;
@@ -313,7 +371,7 @@ lv_obj_t * ui_temp_t_info_device2;
 lv_obj_t * ui_name_t_info_device2;
 lv_obj_t * ui_pos_t_device2;
 lv_obj_t * ui_last_up_t_info_device2;
-static lv_coord_t chart_temp_2_array[CHART_ARR_BUF];
+static lv_coord_t chart_temp_2_array[BUFFER_OF_CHART];
 lv_chart_series_t * chart_temp_2_series;
 lv_obj_t * ui_name_t_area_device2;
 lv_obj_t * ui_pos_name_t_area_device2;
@@ -335,7 +393,7 @@ lv_obj_t * ui_temp_t_info_device3;
 lv_obj_t * ui_name_t_info_device3;
 lv_obj_t * ui_pos_t_device3;
 lv_obj_t * ui_last_up_t_info_device3;
-static lv_coord_t chart_temp_3_array[CHART_ARR_BUF];
+static lv_coord_t chart_temp_3_array[BUFFER_OF_CHART];
 lv_chart_series_t * chart_temp_3_series;
 lv_obj_t * ui_name_t_area_device3;
 lv_obj_t * ui_pos_name_t_area_device3;
@@ -357,7 +415,7 @@ lv_obj_t * ui_temp_t_info_device4;
 lv_obj_t * ui_name_t_info_device4;
 lv_obj_t * ui_pos_t_device4;
 lv_obj_t * ui_last_up_t_info_device4;
-static lv_coord_t chart_temp_4_array[CHART_ARR_BUF];
+static lv_coord_t chart_temp_4_array[BUFFER_OF_CHART];
 lv_chart_series_t * chart_temp_4_series;
 lv_obj_t * ui_name_t_area_device4;
 lv_obj_t * ui_pos_name_t_area_device4;
@@ -379,7 +437,7 @@ lv_obj_t * ui_temp_t_info_device5;
 lv_obj_t * ui_name_t_info_device5;
 lv_obj_t * ui_pos_t_device5;
 lv_obj_t * ui_last_up_t_info_device5;
-static lv_coord_t chart_temp_5_array[CHART_ARR_BUF];
+static lv_coord_t chart_temp_5_array[BUFFER_OF_CHART];
 lv_chart_series_t * chart_temp_5_series;
 lv_obj_t * ui_name_t_area_device5;
 lv_obj_t * ui_pos_name_t_area_device5;
@@ -401,7 +459,7 @@ lv_obj_t * ui_temp_t_info_device6;
 lv_obj_t * ui_name_t_info_device6;
 lv_obj_t * ui_pos_t_device6;
 lv_obj_t * ui_last_up_t_info_device6;
-static lv_coord_t chart_temp_6_array[CHART_ARR_BUF];
+static lv_coord_t chart_temp_6_array[BUFFER_OF_CHART];
 lv_chart_series_t * chart_temp_6_series;
 lv_obj_t * ui_name_t_area_device6;
 lv_obj_t * ui_pos_name_t_area_device6;
@@ -423,7 +481,7 @@ lv_obj_t * ui_temp_t_info_device7;
 lv_obj_t * ui_name_t_info_device7;
 lv_obj_t * ui_pos_t_device7;
 lv_obj_t * ui_last_up_t_info_device7;
-static lv_coord_t chart_temp_7_array[CHART_ARR_BUF];
+static lv_coord_t chart_temp_7_array[BUFFER_OF_CHART];
 lv_chart_series_t * chart_temp_7_series;
 lv_obj_t * ui_name_t_area_device7;
 lv_obj_t * ui_pos_name_t_area_device7;
@@ -445,7 +503,7 @@ lv_obj_t * ui_temp_t_info_device8;
 lv_obj_t * ui_name_t_info_device8;
 lv_obj_t * ui_pos_t_device8;
 lv_obj_t * ui_last_up_t_info_device8;
-static lv_coord_t chart_temp_8_array[CHART_ARR_BUF];
+static lv_coord_t chart_temp_8_array[BUFFER_OF_CHART];
 lv_chart_series_t * chart_temp_8_series;
 lv_obj_t * ui_name_t_area_device8;
 lv_obj_t * ui_pos_name_t_area_device8;
@@ -467,7 +525,7 @@ lv_obj_t * ui_temp_t_info_device9;
 lv_obj_t * ui_name_t_info_device9;
 lv_obj_t * ui_pos_t_device9;
 lv_obj_t * ui_last_up_t_info_device9;
-static lv_coord_t chart_temp_9_array[CHART_ARR_BUF];
+static lv_coord_t chart_temp_9_array[BUFFER_OF_CHART];
 lv_chart_series_t * chart_temp_9_series;
 lv_obj_t * ui_name_t_area_device9;
 lv_obj_t * ui_pos_name_t_area_device9;
@@ -489,14 +547,22 @@ lv_obj_t * ui_temp_t_info_device10;
 lv_obj_t * ui_name_t_info_device10;
 lv_obj_t * ui_pos_t_device10;
 lv_obj_t * ui_last_up_t_info_device10;
-static lv_coord_t chart_temp_10_array[CHART_ARR_BUF];
+static lv_coord_t chart_temp_10_array[BUFFER_OF_CHART];
 lv_chart_series_t * chart_temp_10_series;
 lv_obj_t * ui_name_t_area_device10;
 lv_obj_t * ui_pos_name_t_area_device10;
 lv_obj_t * ui_view_btn10;
 lv_obj_t * ui_btn_back10;
 
-lv_obj_t * ui_btn_back;
+#define TESTSCR
+#ifdef TESTSCR
+void testscreen_init(void);
+lv_obj_t * testscreen;
 
+#endif
+
+#ifdef __cplusplus
+} /*extern "C"*/
+#endif
 
 #endif

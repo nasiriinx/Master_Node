@@ -4,7 +4,11 @@
 #define screenHeight              320
 #define LENGTH_OFF_MACADDRS       6
 #define BAUD_RATE                 115200
-#define BUFFER_OF_CHART           1000
+
+#define RESET_COUNTER             0
+
+#define CHART
+#define DEBUG 0
 /********************************************************/
 
 /************************ INCLUDE ************************/
@@ -15,14 +19,21 @@
 #include "esp_now.h"
 #include "WiFi.h"
 #include "HTTPClient.h"
+#include "NTPClient.h"
 #include "Arduino.h"
+#include <WiFiUdp.h>
+#include "time.h"
+#include "FreeRTOS.h"
+#include "FreeRTOSConfig.h"
 
 
 #include "screens/object.h"
 #include "screens/data_struct.h"
 /*********************************************************/
 
+
 /************************ STRUCTURE ************************/
+
 class LGFX : public lgfx::LGFX_Device
 {
 
@@ -149,6 +160,23 @@ const char *ssid = "Test";
 const char *password = "12345678";
 
 esp_now_peer_info_t peerInfo;
+
+const long offsetTime = 25200;
+WiFiUDP ntpUDP;
+NTPClient timeClient(ntpUDP, "pool.ntp.org", offsetTime);
+
+int count_pos_array_dev1;
+int count_pos_array_dev2;
+int count_pos_array_dev3;
+int count_pos_array_dev4;
+int count_pos_array_dev5;
+int count_pos_array_dev6;
+int count_pos_array_dev7;
+int count_pos_array_dev8;
+int count_pos_array_dev9;
+int count_pos_array_dev10;
+
+char date_time[20] = "";
 /*****************************************************************/
 
 /************************ FUNCTION PROTOTYPE ************************/
@@ -179,6 +207,57 @@ void my_touch_read(lv_indev_drv_t *indev_driver, lv_indev_data_t *data) {
       data->point.y = touchY;
     }
 }
+void send_sheet()
+{ 
+ //WiFi.begin(ssid, password);
+  if (WiFi.status() == WL_CONNECTED)
+  {
+    HTTPClient http;
+    String url = "https://script.google.com/macros/s/AKfycbzZBsXxVEVItSIlgcv4uo8Zf3Uzs-SfzHhQ_QEZaDoPTzrY8y0SGX0A2WMVkso9os7BoA/exec?device_node=" + recv_num_node + "&" + "value=" + String(temp.Node2);
+    Serial.println("Making a request");
+    http.begin(url.c_str()); // Specify the URL and certificate
+    http.setFollowRedirects(HTTPC_STRICT_FOLLOW_REDIRECTS);
+    int httpCode = http.GET();
+    String payload;
+    if (httpCode > 0)
+    { // Check for the returning code
+      payload = http.getString();
+    }
+    else
+    {
+      Serial.println("Error on HTTP request");
+    }
+    http.end();
+  }
+}
+
+void GetDateTime() {
+  // Week Days
+  String weekDays[7] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+  
+  // Month names
+  String months[12] = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+
+  timeClient.update();
+
+  unsigned long epochTime = timeClient.getEpochTime();
+  String formattedTime = timeClient.getFormattedTime();
+  int currentHour = timeClient.getHours();
+  int currentMinute = timeClient.getMinutes();
+  int currentSecond = timeClient.getSeconds();
+  String weekDay = weekDays[timeClient.getDay()];
+
+  struct tm *ptm = gmtime((time_t *)&epochTime);
+  int monthDay = ptm->tm_mday;
+  int currentMonth = ptm->tm_mon + 1;
+  String currentMonthName = months[currentMonth - 1];
+  int currentYear = ptm->tm_year + 1900;
+  
+  sprintf(dt.date_time_header, "%02d-%02d-%02d %02d:%02d:%02d",currentYear, currentMonth, monthDay, currentHour, currentMinute);
+
+  sprintf(dt.time_update, "Last update %02d:%02d", currentHour, currentMinute);
+
+}
 
 void OnDataRecv(const uint8_t *mac_addr, const uint8_t *incomingData, int len)
 {
@@ -187,242 +266,343 @@ void OnDataRecv(const uint8_t *mac_addr, const uint8_t *incomingData, int len)
   recv_num_node = my_message.num_node;
   recv_temperature_message = my_message.temperature_data;
   recv_fact_new_route = my_message.fact_new_route;
-  
 
+  //IF RECEIVE FROM NODE 1
   if (recv_num_node == "node:1")
   {
+    temp.Node1 = recv_temperature_message; 
 
-    static int count_position_array = 0;
-    temp.Node1 = recv_temperature_message;
-    chart_temp_1_series = lv_chart_add_series(ui_chart1_temp, lv_color_hex(0x464B55), LV_CHART_AXIS_SECONDARY_Y);
-    chart_temp_1_array[count_position_array] = temp.Node1;
-    lv_arc_set_value(ui_arc_temp_1, temp.Node1);
-    // lv_arc_set_value(ui_arc_temp_info_1, temp.Node1);
     sprintf(t_text.temp_text1, "%.1f°C", temp.Node1);
     lv_label_set_text(ui_temp_t_device1, t_text.temp_text1);
-    lv_label_set_text(ui_temp_t_info_device1, t_text.temp_text1);
+
+    // lv_arc_set_value(ui_arc_temp_1, temp.Node1);
+    lv_meter_set_indicator_value(meter_1,indic_1,temp.Node1);
+
+    GetDateTime();
+    strcpy(dev_uptime.dev1,dt.time_update);
+    lv_label_set_text(ui_last_up_t_device1, dev_uptime.dev1);
     
-    if (count_position_array <= BUFFER_OF_CHART - 1)
+    #ifdef DEBUG
+      Serial.println(recv_num_node);
+      Serial.println(temp.Node1);
+      Serial.print("Update");
+      Serial.println(date_time);
+      Serial.println(dev_uptime.dev1);
+      Serial.println("/");
+    #endif
+    
+#ifdef CHART
+    
+    chart_temp_1_series = lv_chart_add_series(ui_chart1_temp, lv_color_hex(0x464B55), LV_CHART_AXIS_SECONDARY_Y);
+    chart_temp_1_array[count_pos_array_dev1] = temp.Node1;
+
+    if (count_pos_array_dev1 <= BUFFER_OF_CHART - 1)
     {
-      count_position_array++;
-      lv_chart_set_point_count(ui_chart1_temp, count_position_array);
-      lv_chart_set_axis_tick(ui_chart1_temp, LV_CHART_AXIS_PRIMARY_X, 2, 1, 1000, 10, false, 20);
+      Serial.println(count_pos_array_dev1);
+      count_pos_array_dev1++;
+      lv_chart_set_point_count(ui_chart1_temp, count_pos_array_dev1);
       lv_chart_set_ext_y_array(ui_chart1_temp, chart_temp_1_series, chart_temp_1_array);
     }
     else
     {
-      count_position_array = 0;
+      count_pos_array_dev1 = RESET_COUNTER;
     }
-    
-  }else if (recv_num_node == "node:2")
+#endif
+  }
+
+  //IF RECEIVE FROM NODE 2
+  else if (recv_num_node == "node:2")
   {
 
-    static int count_position_array = 0;
-    temp.Node2 = recv_temperature_message;
-    chart_temp_2_series = lv_chart_add_series(ui_chart2_temp, lv_color_hex(0x464B55), LV_CHART_AXIS_SECONDARY_Y);
-    chart_temp_2_array[count_position_array] = temp.Node2;
-    lv_arc_set_value(ui_arc_temp_2, temp.Node2);
-    // lv_arc_set_value(ui_arc_temp_info_1, temp.Node1);
+    temp.Node2 = recv_temperature_message; 
+
     sprintf(t_text.temp_text2, "%.1f°C", temp.Node2);
     lv_label_set_text(ui_temp_t_device2, t_text.temp_text2);
-    lv_label_set_text(ui_temp_t_info_device2, t_text.temp_text2);
 
-    if (count_position_array <= BUFFER_OF_CHART - 1)
+    lv_obj_update_layout(ui_arc_temp_2);
+    lv_arc_set_value(ui_arc_temp_2, temp.Node2);
+
+    strcpy(dev_uptime.dev2,dt.time_update);
+    lv_label_set_text(ui_last_up_t_device2, dev_uptime.dev2);
+    
+    #ifdef DEBUG
+      Serial.println(recv_num_node);
+      Serial.println(temp.Node2);
+      Serial.print("System update time : ");
+      Serial.println(date_time);
+      Serial.println(dev_uptime.dev2);
+      Serial.println("/");
+    #endif
+    
+#ifdef CHART
+    
+    chart_temp_2_series = lv_chart_add_series(ui_chart2_temp, lv_color_hex(0x464B55), LV_CHART_AXIS_SECONDARY_Y);
+    chart_temp_2_array[count_pos_array_dev2] = temp.Node2;
+
+    if (count_pos_array_dev2 <= BUFFER_OF_CHART - 1)
     {
-      count_position_array++;
-      lv_chart_set_point_count(ui_chart2_temp, count_position_array);
-      lv_chart_set_axis_tick(ui_chart2_temp, LV_CHART_AXIS_PRIMARY_X, 2, 1, 1000, 10, false, 20);
+      Serial.println(count_pos_array_dev2);
+      count_pos_array_dev2++;
+      lv_chart_set_point_count(ui_chart2_temp, count_pos_array_dev2);
       lv_chart_set_ext_y_array(ui_chart2_temp, chart_temp_2_series, chart_temp_2_array);
     }
     else
     {
-      count_position_array = 0;
+      count_pos_array_dev2 = RESET_COUNTER;
     }
-  }else if (recv_num_node == "node:3")
+#endif
+  }
+
+  //IF RECEIVE FROM NODE 3
+  else if (recv_num_node == "node:3")
   {
-    static int count_position_array = 0;
-    temp.Node3 = recv_temperature_message;
-    chart_temp_3_series = lv_chart_add_series(ui_chart3_temp, lv_color_hex(0x464B55), LV_CHART_AXIS_SECONDARY_Y);
-    chart_temp_3_array[count_position_array] = temp.Node3;
-    lv_arc_set_value(ui_arc_temp_3, temp.Node3);
-    // lv_arc_set_value(ui_arc_temp_info_1, temp.Node1);
+
+    // GetDateTime();
+    temp.Node3 = recv_temperature_message; 
+
     sprintf(t_text.temp_text3, "%.1f°C", temp.Node3);
     lv_label_set_text(ui_temp_t_device3, t_text.temp_text3);
-    lv_label_set_text(ui_temp_t_info_device3, t_text.temp_text3);
 
-    if (count_position_array <= BUFFER_OF_CHART - 1)
+    lv_obj_update_layout(ui_arc_temp_3);
+    lv_arc_set_value(ui_arc_temp_3, temp.Node3);
+
+
+    strcpy(dev_uptime.dev3,dt.time_update);
+    lv_label_set_text(ui_last_up_t_device3, dev_uptime.dev3);
+    
+    #ifdef DEBUG
+      Serial.println(recv_num_node);
+      Serial.println(temp.Node3);
+      Serial.print("Update");
+      Serial.println(dev_uptime.dev3);
+      Serial.print(" ");
+    #endif
+    
+#ifdef CHART
+    
+    chart_temp_3_series = lv_chart_add_series(ui_chart3_temp, lv_color_hex(0x464B55), LV_CHART_AXIS_SECONDARY_Y);
+    chart_temp_3_array[count_pos_array_dev3] = temp.Node3;
+
+    if (count_pos_array_dev3 <= BUFFER_OF_CHART - 1)
     {
-      count_position_array++;
-      lv_chart_set_point_count(ui_chart3_temp, count_position_array);
-      lv_chart_set_axis_tick(ui_chart3_temp, LV_CHART_AXIS_PRIMARY_X, 2, 1, 1000, 10, false, 20);
+      Serial.println(count_pos_array_dev3);
+      count_pos_array_dev3++;
+      lv_chart_set_point_count(ui_chart3_temp, count_pos_array_dev3);
       lv_chart_set_ext_y_array(ui_chart3_temp, chart_temp_3_series, chart_temp_3_array);
     }
     else
     {
-      count_position_array = 0;
+      count_pos_array_dev3 = RESET_COUNTER;
     }
-  }else if (recv_num_node == "node:4")
+#endif
+  }
+
+  //IF RECEIVE FROM NODE 4
+  else if (recv_num_node == "node:4")
   {
-    static int count_position_array = 0;
-    temp.Node4 = recv_temperature_message;
-    chart_temp_4_series = lv_chart_add_series(ui_chart4_temp, lv_color_hex(0x464B55), LV_CHART_AXIS_SECONDARY_Y);
-    chart_temp_4_array[count_position_array] = temp.Node4;
-    lv_arc_set_value(ui_arc_temp_4, temp.Node4);
-    // lv_arc_set_value(ui_arc_temp_info_1, temp.Node1);
+
+    // GetDateTime();
+    temp.Node4 = recv_temperature_message; 
+
     sprintf(t_text.temp_text4, "%.1f°C", temp.Node4);
     lv_label_set_text(ui_temp_t_device4, t_text.temp_text4);
-    lv_label_set_text(ui_temp_t_info_device4, t_text.temp_text4);
 
-    if (count_position_array <= BUFFER_OF_CHART - 1)
+    lv_arc_set_value(ui_arc_temp_4, temp.Node4);
+
+    strcpy(dev_uptime.dev4,dt.time_update);
+    lv_label_set_text(ui_last_up_t_device4, dev_uptime.dev4);
+    
+    #ifdef DEBUG
+      Serial.println(recv_num_node);
+      Serial.println(temp.Node4);
+      Serial.print("Update");
+      Serial.println(dev_uptime.dev4);
+      Serial.print(" ");
+    #endif
+    
+#ifdef CHART
+    
+    chart_temp_4_series = lv_chart_add_series(ui_chart4_temp, lv_color_hex(0x464B55), LV_CHART_AXIS_SECONDARY_Y);
+    chart_temp_4_array[count_pos_array_dev4] = temp.Node4;
+
+    if (count_pos_array_dev4 <= BUFFER_OF_CHART - 1)
     {
-      count_position_array++;
-      lv_chart_set_point_count(ui_chart4_temp, count_position_array);
-      lv_chart_set_axis_tick(ui_chart4_temp, LV_CHART_AXIS_PRIMARY_X, 2, 1, 1000, 10, false, 20);
+      Serial.println(count_pos_array_dev4);
+      count_pos_array_dev4++;
+      lv_chart_set_point_count(ui_chart4_temp, count_pos_array_dev4);
       lv_chart_set_ext_y_array(ui_chart4_temp, chart_temp_4_series, chart_temp_4_array);
     }
     else
     {
-      count_position_array = 0;
+      count_pos_array_dev4 = RESET_COUNTER;
     }
-  }else if (recv_num_node == "node:5")
+#endif
+  }
+
+   //IF RECEIVE FROM NODE 5
+  else if (recv_num_node == "node:5")
   {
-    static int count_position_array = 0;
-    temp.Node5 = recv_temperature_message;
-    chart_temp_5_series = lv_chart_add_series(ui_chart5_temp, lv_color_hex(0x464B55), LV_CHART_AXIS_SECONDARY_Y);
-    chart_temp_5_array[count_position_array] = temp.Node5;
-    lv_arc_set_value(ui_arc_temp_5, temp.Node5);
-    // lv_arc_set_value(ui_arc_temp_info_1, temp.Node1);
+
+    temp.Node5 = recv_temperature_message; 
+
     sprintf(t_text.temp_text5, "%.1f°C", temp.Node5);
     lv_label_set_text(ui_temp_t_device5, t_text.temp_text5);
-    lv_label_set_text(ui_temp_t_info_device5, t_text.temp_text5);
 
-    if (count_position_array <= BUFFER_OF_CHART - 1)
+    lv_obj_update_layout(ui_arc_temp_5);
+    lv_arc_set_value(ui_arc_temp_5, temp.Node5);
+
+    strcpy(dev_uptime.dev5,dt.time_update);
+    lv_label_set_text(ui_last_up_t_device5, dt.time_update);
+    
+    #ifdef DEBUG
+      Serial.println(recv_num_node);
+      Serial.println(temp.Node5);
+      Serial.println(dev_uptime.dev5);
+      Serial.print(" ");
+    #endif
+    
+#ifdef CHART
+    
+    chart_temp_5_series = lv_chart_add_series(ui_chart5_temp, lv_color_hex(0x464B55), LV_CHART_AXIS_SECONDARY_Y);
+    chart_temp_5_array[count_pos_array_dev5] = temp.Node5;
+
+    if (count_pos_array_dev5 <= BUFFER_OF_CHART - 1)
     {
-      count_position_array++;
-      lv_chart_set_point_count(ui_chart5_temp, count_position_array);
-      lv_chart_set_axis_tick(ui_chart5_temp, LV_CHART_AXIS_PRIMARY_X, 2, 1, 1000, 10, false, 20);
+      Serial.println(count_pos_array_dev5);
+      count_pos_array_dev5++;
+      lv_chart_set_point_count(ui_chart5_temp, count_pos_array_dev5);
       lv_chart_set_ext_y_array(ui_chart5_temp, chart_temp_5_series, chart_temp_5_array);
     }
     else
     {
-      count_position_array = 0;
+      count_pos_array_dev5 = RESET_COUNTER;
     }
-  }else if (recv_num_node == "node:6")
-  {
-    static int count_position_array = 0;
-    temp.Node6 = recv_temperature_message;
-    chart_temp_6_series = lv_chart_add_series(ui_chart6_temp, lv_color_hex(0x464B55), LV_CHART_AXIS_SECONDARY_Y);
-    chart_temp_6_array[count_position_array] = temp.Node6;
-    lv_arc_set_value(ui_arc_temp_6, temp.Node6);
-    // lv_arc_set_value(ui_arc_temp_info_1, temp.Node1);
-    sprintf(t_text.temp_text6, "%.1f°C", temp.Node6);
-    lv_label_set_text(ui_temp_t_device6, t_text.temp_text6);
-    lv_label_set_text(ui_temp_t_info_device6, t_text.temp_text6);
-
-    if (count_position_array <= BUFFER_OF_CHART - 1)
-    {
-      count_position_array++;
-      lv_chart_set_point_count(ui_chart6_temp, count_position_array);
-      lv_chart_set_axis_tick(ui_chart6_temp, LV_CHART_AXIS_PRIMARY_X, 2, 1, 1000, 10, false, 20);
-      lv_chart_set_ext_y_array(ui_chart6_temp, chart_temp_6_series, chart_temp_6_array);
-    }
-    else
-    {
-      count_position_array = 0;
-    }
-  }else if (recv_num_node == "node:7")
-  {
-    static int count_position_array = 0;
-    temp.Node7 = recv_temperature_message;
-    chart_temp_7_series = lv_chart_add_series(ui_chart7_temp, lv_color_hex(0x464B55), LV_CHART_AXIS_SECONDARY_Y);
-    chart_temp_7_array[count_position_array] = temp.Node7;
-    lv_arc_set_value(ui_arc_temp_7, temp.Node7);
-    // lv_arc_set_value(ui_arc_temp_info_1, temp.Node1);
-    sprintf(t_text.temp_text7, "%.1f°C", temp.Node7);
-    lv_label_set_text(ui_temp_t_device7, t_text.temp_text7);
-    lv_label_set_text(ui_temp_t_info_device7, t_text.temp_text7);
-
-    if (count_position_array <= BUFFER_OF_CHART - 1)
-    {
-      count_position_array++;
-      lv_chart_set_point_count(ui_chart7_temp, count_position_array);
-      lv_chart_set_axis_tick(ui_chart7_temp, LV_CHART_AXIS_PRIMARY_X, 2, 1, 1000, 10, false, 20);
-      lv_chart_set_ext_y_array(ui_chart7_temp, chart_temp_7_series, chart_temp_7_array);
-    }
-    else
-    {
-      count_position_array = 0;
-    }
-  }else if (recv_num_node == "node:8")
-  {
-    static int count_position_array = 0;
-    temp.Node8 = recv_temperature_message;
-    chart_temp_8_series = lv_chart_add_series(ui_chart8_temp, lv_color_hex(0x464B55), LV_CHART_AXIS_SECONDARY_Y);
-    chart_temp_8_array[count_position_array] = temp.Node8;
-    lv_arc_set_value(ui_arc_temp_8, temp.Node8);
-    // lv_arc_set_value(ui_arc_temp_info_1, temp.Node1);
-    sprintf(t_text.temp_text8, "%.1f°C", temp.Node8);
-    lv_label_set_text(ui_temp_t_device8, t_text.temp_text8);
-    lv_label_set_text(ui_temp_t_info_device8, t_text.temp_text8);
-
-    if (count_position_array <= BUFFER_OF_CHART - 1)
-    {
-      count_position_array++;
-      lv_chart_set_point_count(ui_chart8_temp, count_position_array);
-      lv_chart_set_axis_tick(ui_chart8_temp, LV_CHART_AXIS_PRIMARY_X, 2, 1, 1000, 10, false, 20);
-      lv_chart_set_ext_y_array(ui_chart8_temp, chart_temp_8_series, chart_temp_8_array);
-    }
-    else
-    {
-      count_position_array = 0;
-    }
-  }else if (recv_num_node == "node:9")
-  {
-    static int count_position_array = 0;
-    temp.Node9 = recv_temperature_message;
-    chart_temp_9_series = lv_chart_add_series(ui_chart9_temp, lv_color_hex(0x464B55), LV_CHART_AXIS_SECONDARY_Y);
-    chart_temp_9_array[count_position_array] = temp.Node9;
-    lv_arc_set_value(ui_arc_temp_9, temp.Node9);
-    // lv_arc_set_value(ui_arc_temp_info_1, temp.Node1);
-    sprintf(t_text.temp_text9, "%.1f°C", temp.Node9);
-    lv_label_set_text(ui_temp_t_device9, t_text.temp_text9);
-    lv_label_set_text(ui_temp_t_info_device9, t_text.temp_text9);
-
-    if (count_position_array <= BUFFER_OF_CHART - 1)
-    {
-      count_position_array++;
-      lv_chart_set_point_count(ui_chart9_temp, count_position_array);
-      lv_chart_set_axis_tick(ui_chart9_temp, LV_CHART_AXIS_PRIMARY_X, 2, 1, 1000, 10, false, 20);
-      lv_chart_set_ext_y_array(ui_chart9_temp, chart_temp_9_series, chart_temp_9_array);
-    }
-    else
-    {
-      count_position_array = 0;
-    }
-  }else if (recv_num_node == "node:10")
-  {
-    static int count_position_array = 0;
-    temp.Node10 = recv_temperature_message;
-    chart_temp_10_series = lv_chart_add_series(ui_chart10_temp, lv_color_hex(0x464B55), LV_CHART_AXIS_SECONDARY_Y);
-    chart_temp_10_array[count_position_array] = temp.Node10;
-    lv_arc_set_value(ui_arc_temp_10, temp.Node10);
-    // lv_arc_set_value(ui_arc_temp_info_1, temp.Node1);
-    sprintf(t_text.temp_text10, "%.1f°C", temp.Node10);
-    lv_label_set_text(ui_temp_t_device10, t_text.temp_text10);
-    lv_label_set_text(ui_temp_t_info_device10, t_text.temp_text10);
-
-    if (count_position_array <= BUFFER_OF_CHART - 1)
-    {
-      count_position_array++;
-      lv_chart_set_point_count(ui_chart10_temp, count_position_array);
-      lv_chart_set_axis_tick(ui_chart10_temp, LV_CHART_AXIS_PRIMARY_X, 2, 1, 1000, 10, false, 20);
-      lv_chart_set_ext_y_array(ui_chart10_temp, chart_temp_10_series, chart_temp_10_array);
-    }
-    else
-    {
-      count_position_array = 0;
-    }
+#endif
   }
+  // else if (recv_num_node == "node:6")
+  // {
+  //   static int count_position_array = 0;
+  //   temp.Node6 = recv_temperature_message;
+  //   chart_temp_6_series = lv_chart_add_series(ui_chart6_temp, lv_color_hex(0x464B55), LV_CHART_AXIS_SECONDARY_Y);
+  //   chart_temp_6_array[count_position_array] = temp.Node6;
+  //   lv_arc_set_value(ui_arc_temp_6, temp.Node6);
+  //   // lv_arc_set_value(ui_arc_temp_info_1, temp.Node1);
+  //   sprintf(t_text.temp_text6, "%.1f°C", temp.Node6);
+  //   lv_label_set_text(ui_temp_t_device6, t_text.temp_text6);
+  //   lv_label_set_text(ui_temp_t_info_device6, t_text.temp_text6);
+
+  //   if (count_position_array <= BUFFER_OF_CHART - 1)
+  //   {
+  //     count_position_array++;
+  //     lv_chart_set_point_count(ui_chart6_temp, count_position_array);
+  //     lv_chart_set_axis_tick(ui_chart6_temp, LV_CHART_AXIS_PRIMARY_X, 4, 1, 1000, 10, false, 20);
+  //     lv_chart_set_ext_y_array(ui_chart6_temp, chart_temp_6_series, chart_temp_6_array);
+  //   }
+  //   else
+  //   {
+  //     count_position_array = 0;
+  //   }
+  // }
+
+  // else if (recv_num_node == "node:7")
+  // {
+  //   static int count_position_array = 0;
+  //   temp.Node7 = recv_temperature_message;
+  //   chart_temp_7_series = lv_chart_add_series(ui_chart7_temp, lv_color_hex(0x464B55), LV_CHART_AXIS_SECONDARY_Y);
+  //   chart_temp_7_array[count_position_array] = temp.Node7;
+  //   lv_arc_set_value(ui_arc_temp_7, temp.Node7);
+  //   // lv_arc_set_value(ui_arc_temp_info_1, temp.Node1);
+  //   sprintf(t_text.temp_text7, "%.1f°C", temp.Node7);
+  //   lv_label_set_text(ui_temp_t_device7, t_text.temp_text7);
+  //   lv_label_set_text(ui_temp_t_info_device7, t_text.temp_text7);
+
+  //   if (count_position_array <= BUFFER_OF_CHART - 1)
+  //   {
+  //     count_position_array++;
+  //     lv_chart_set_point_count(ui_chart7_temp, count_position_array);
+  //     lv_chart_set_axis_tick(ui_chart7_temp, LV_CHART_AXIS_PRIMARY_X, 2, 1, 1000, 10, false, 20);
+  //     lv_chart_set_ext_y_array(ui_chart7_temp, chart_temp_7_series, chart_temp_7_array);
+  //   }
+  //   else
+  //   {
+  //     count_position_array = 0;
+  //   }
+  // }
+
+  // else if (recv_num_node == "node:8")
+  // {
+  //   static int count_position_array = 0;
+  //   temp.Node8 = recv_temperature_message;
+  //   chart_temp_8_series = lv_chart_add_series(ui_chart8_temp, lv_color_hex(0x464B55), LV_CHART_AXIS_SECONDARY_Y);
+  //   chart_temp_8_array[count_position_array] = temp.Node8;
+  //   lv_arc_set_value(ui_arc_temp_8, temp.Node8);
+  //   // lv_arc_set_value(ui_arc_temp_info_1, temp.Node1);
+  //   sprintf(t_text.temp_text8, "%.1f°C", temp.Node8);
+  //   lv_label_set_text(ui_temp_t_device8, t_text.temp_text8);
+  //   lv_label_set_text(ui_temp_t_info_device8, t_text.temp_text8);
+
+  //   if (count_position_array <= BUFFER_OF_CHART - 1)
+  //   {
+  //     count_position_array++;
+  //     lv_chart_set_point_count(ui_chart8_temp, count_position_array);
+  //     lv_chart_set_axis_tick(ui_chart8_temp, LV_CHART_AXIS_PRIMARY_X, 2, 1, 1000, 10, false, 20);
+  //     lv_chart_set_ext_y_array(ui_chart8_temp, chart_temp_8_series, chart_temp_8_array);
+  //   }
+  //   else
+  //   {
+  //     count_position_array = 0;
+  //   }
+  // }
+
+  // else if (recv_num_node == "node:9")
+  // {
+  //   static int count_position_array = 0;
+  //   temp.Node9 = recv_temperature_message;
+  //   chart_temp_9_series = lv_chart_add_series(ui_chart9_temp, lv_color_hex(0x464B55), LV_CHART_AXIS_SECONDARY_Y);
+  //   chart_temp_9_array[count_position_array] = temp.Node9;
+  //   lv_arc_set_value(ui_arc_temp_9, temp.Node9);
+  //   // lv_arc_set_value(ui_arc_temp_info_1, temp.Node1);
+  //   sprintf(t_text.temp_text9, "%.1f°C", temp.Node9);
+  //   lv_label_set_text(ui_temp_t_device9, t_text.temp_text9);
+  //   lv_label_set_text(ui_temp_t_info_device9, t_text.temp_text9);
+
+  //   if (count_position_array <= BUFFER_OF_CHART - 1)
+  //   {
+  //     count_position_array++;
+  //     lv_chart_set_point_count(ui_chart9_temp, count_position_array);
+  //     lv_chart_set_axis_tick(ui_chart9_temp, LV_CHART_AXIS_PRIMARY_X, 2, 1, 1000, 10, false, 20);
+  //     lv_chart_set_ext_y_array(ui_chart9_temp, chart_temp_9_series, chart_temp_9_array);
+  //   }
+  //   else
+  //   {
+  //     count_position_array = 0;
+  //   }
+  // }
+
+  // else if (recv_num_node == "node:10")
+  // {
+  //   static int count_position_array = 0;
+  //   temp.Node10 = recv_temperature_message;
+  //   chart_temp_10_series = lv_chart_add_series(ui_chart10_temp, lv_color_hex(0x464B55), LV_CHART_AXIS_SECONDARY_Y);
+  //   chart_temp_10_array[count_position_array] = temp.Node10;
+  //   lv_arc_set_value(ui_arc_temp_10, temp.Node10);
+  //   // lv_arc_set_value(ui_arc_temp_info_1, temp.Node1);
+  //   sprintf(t_text.temp_text10, "%.1f°C", temp.Node10);
+  //   lv_label_set_text(ui_temp_t_device10, t_text.temp_text10);
+  //   lv_label_set_text(ui_temp_t_info_device10, t_text.temp_text10);
+
+  //   if (count_position_array <= BUFFER_OF_CHART - 1)
+  //   {
+  //     count_position_array++;
+  //     lv_chart_set_point_count(ui_chart10_temp, count_position_array);
+  //     lv_chart_set_axis_tick(ui_chart10_temp, LV_CHART_AXIS_PRIMARY_X, 2, 1, 1000, 10, false, 20);
+  //     lv_chart_set_ext_y_array(ui_chart10_temp, chart_temp_10_series, chart_temp_10_array);
+  //   }
+  //   else
+  //   {
+  //     count_position_array = 0;
+  //   }
+  // }
   else
   {
     // Nothing
@@ -442,22 +622,70 @@ void setup_receiver_espnow()
   Serial.println(WiFi.localIP());
   Serial.print("Wi-Fi Channel: ");
   Serial.println(WiFi.channel());
- 
-  if (esp_now_add_peer(&peerInfo) != ESP_OK)
+
+  if (esp_now_init() != ESP_OK)
   {
-    Serial.println("Failed to add peer");
+    Serial.println("Error initializing ESP-NOW");
     return;
   }
-  // Register for a callback function that will be called when data is received
   esp_now_register_recv_cb(OnDataRecv);
 }
 
-
-
-
-
 void setup()
 {
+  char start_name_1[10]   = "Device 1";
+  char start_name_2[10]   = "Device 2";
+  char start_name_3[10]   = "Device 3";
+  char start_name_4[10]   = "Device 4";
+  char start_name_5[10]   = "Device 5";
+  char start_name_6[10]   = "Device 6";
+  char start_name_7[10]   = "Device 7";
+  char start_name_8[10]   = "Device 8";
+  char start_name_9[10]   = "Device 9";
+  char start_name_10[10]  = "Device 10";
+
+  char start_temp[10] = "0 °C";
+
+  char start_project_name[13] = "Project name";
+
+  char start_update_time[18] = "Last update 00:00";
+
+  strcpy(name.device1,start_name_1);
+  strcpy(name.device2,start_name_2);
+  strcpy(name.device3,start_name_3);
+  strcpy(name.device4,start_name_4);
+  strcpy(name.device5,start_name_5);
+  strcpy(name.device6,start_name_6);
+  strcpy(name.device7,start_name_7);
+  strcpy(name.device8,start_name_8);
+  strcpy(name.device9,start_name_9);
+  strcpy(name.device10,start_name_10);
+
+  strcpy(t_text.temp_text1,start_temp);
+  strcpy(t_text.temp_text2,start_temp);
+  strcpy(t_text.temp_text3,start_temp);
+  strcpy(t_text.temp_text4,start_temp);
+  strcpy(t_text.temp_text5,start_temp);
+  strcpy(t_text.temp_text6,start_temp);
+  strcpy(t_text.temp_text7,start_temp);
+  strcpy(t_text.temp_text8,start_temp);
+  strcpy(t_text.temp_text9,start_temp);
+  strcpy(t_text.temp_text10,start_temp);
+
+  strcpy(getstart.pj_name,start_project_name);
+
+  strcpy(dev_uptime.dev1,start_update_time);
+  strcpy(dev_uptime.dev2,start_update_time);
+  strcpy(dev_uptime.dev3,start_update_time);
+  strcpy(dev_uptime.dev4,start_update_time);
+  strcpy(dev_uptime.dev5,start_update_time);
+  strcpy(dev_uptime.dev6,start_update_time);
+  strcpy(dev_uptime.dev7,start_update_time);
+  strcpy(dev_uptime.dev8,start_update_time);
+  strcpy(dev_uptime.dev9,start_update_time);
+  strcpy(dev_uptime.dev10,start_update_time);
+
+
   tft.begin();
   tft.setRotation(3);
   tft.setBrightness(255);
@@ -482,15 +710,13 @@ void setup()
   lv_indev_drv_register(&indev_drv);
 
   ui_init();
-
+  
 }
 
-void loop()
-{
-  
-  lv_task_handler();
-  
-
+void loop(){
+  while(1) {
+    uint32_t time_till_next = lv_timer_handler();
+    delay(time_till_next);
+  }
 }
-
 /***********************************************************/

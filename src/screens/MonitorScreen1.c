@@ -1,14 +1,9 @@
 #include "object.h"
 #include "ui_events.h"
+#include "data_struct.h"
 
 void ui_monitor_screen_1_init(void){
 
-    // ui_infor_screen_1_init(); 
-    // ui_infor_screen_2_init();
-    // ui_infor_screen_3_init();
-    // ui_infor_screen_4_init();
-    // ui_infor_screen_5_init();
-    // ui_infor_screen_6_init();
 
     /********************************************** MONITOR 1 SCREEN **********************************************/
     ui_monitor_screen_1 = lv_obj_create(NULL);
@@ -48,63 +43,47 @@ void ui_monitor_screen_1_init(void){
     lv_obj_set_y(ui_name_t_device1, Y_POS_NAMEDEVICE_123);
     lv_obj_set_align(ui_name_t_device1, LV_ALIGN_CENTER);
     lv_obj_clear_flag(ui_name_t_device1, LV_OBJ_FLAG_CLICKABLE);
-    lv_label_set_text(ui_name_t_device1,"Device 1"); 
+    lv_label_set_text(ui_name_t_device1,name.device1); 
     lv_obj_set_style_text_color(ui_name_t_device1, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_name_t_device1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_decor(ui_name_t_device1, LV_TEXT_DECOR_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_name_t_device1, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    //Arc temp device1
-    ui_arc_temp_1 = lv_arc_create(ui_monitor_screen_1);
-    lv_obj_set_width(ui_arc_temp_1, SIZE_WIDTH_ARC);
-    lv_obj_set_height(ui_arc_temp_1, SIZE_HEIGHT_ARC);
-    lv_obj_set_x(ui_arc_temp_1, X_MID_14);
-    lv_obj_set_y(ui_arc_temp_1, Y_POS_ARCTEMP_123);  
-    lv_obj_set_align(ui_arc_temp_1, LV_ALIGN_CENTER);
-    lv_arc_set_range(ui_arc_temp_1, MIN_RANGE_ARC, MAX_RANGE_ARC);
-    lv_arc_set_value(ui_arc_temp_1, START_VALUE_ARC);
-    lv_arc_set_bg_angles(ui_arc_temp_1, START_ANGLE_ARC, END_ANGLE_ARC);
-    lv_obj_set_style_radius(ui_arc_temp_1, RAD_ARC, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_arc_temp_1, lv_color_hex(0x1E232D), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_arc_temp_1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(ui_arc_temp_1, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(ui_arc_temp_1, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(ui_arc_temp_1, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(ui_arc_temp_1, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_arc_color(ui_arc_temp_1, lv_color_hex(0x0F1215), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_arc_opa(ui_arc_temp_1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_arc_width(ui_arc_temp_1, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_arc_rounded(ui_arc_temp_1, true, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_arc_width(ui_arc_temp_1, 5, LV_PART_INDICATOR | LV_STATE_DEFAULT);
-    lv_obj_set_style_arc_rounded(ui_arc_temp_1, true, LV_PART_INDICATOR | LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(ui_arc_temp_1, 10, LV_PART_KNOB | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_arc_temp_1, lv_color_hex(0xFFFFFF), LV_PART_KNOB | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_arc_temp_1, 0, LV_PART_KNOB | LV_STATE_DEFAULT);
-    lv_obj_clear_flag(ui_arc_temp_1, LV_OBJ_FLAG_CLICKABLE);
+    meter_1 = lv_meter_create(ui_monitor_screen_1);
+    lv_obj_set_size(meter_1, SIZE_WIDTH_METER, SIZE_HEIGHT_METER);
+    lv_obj_set_x(meter_1, POS_X_METER14);  
+    lv_obj_set_y(meter_1, POS_Y_METER123);
+    lv_obj_set_style_bg_color(meter_1, lv_color_hex(0x57626C), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(meter_1, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(meter_1, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(meter_1, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(meter_1, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    
+    /*Add a scale first*/
+    lv_meter_scale_t * scale_1 = lv_meter_add_scale(meter_1);
+    lv_meter_set_scale_range(meter_1,scale_1,MIN_RANGE_METER,MAX_RANGE_METER,METER_ANGLE,METER_ROTATION);
+    lv_meter_set_scale_ticks(meter_1, scale_1, 5, 2, 5, lv_color_hex(0xFFFFFF));
+    
+    // lv_meter_indicator_t * indic_1;
 
-    //1st inner arc
-    ui_arc_inner_1 = lv_obj_create(ui_monitor_screen_1);
-    lv_obj_set_width(ui_arc_inner_1, SIZE_WIDTH_ARC_INNER1);
-    lv_obj_set_height(ui_arc_inner_1, SIZE_HEIGHT_ARC_INNER1);
-    lv_obj_set_x(ui_arc_inner_1, X_MID_14);
-    lv_obj_set_y(ui_arc_inner_1, Y_POS_ARCTEMP_123);
-    lv_obj_set_align(ui_arc_inner_1, LV_ALIGN_CENTER);
-    lv_obj_clear_flag(ui_arc_inner_1, LV_OBJ_FLAG_CLICKABLE);      /// Flags
-    lv_obj_set_style_radius(ui_arc_inner_1, RAD_INNER1_ARC, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_arc_inner_1, lv_color_hex(0x646464), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_arc_inner_1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_color(ui_arc_inner_1, lv_color_hex(0x3C414B), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_dir(ui_arc_inner_1, LV_GRAD_DIR_VER, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_color(ui_arc_inner_1, lv_color_hex(0x2D323C), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_opa(ui_arc_inner_1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_width(ui_arc_inner_1, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    /*Add a blue arc to the start*/
+    indic_1 = lv_meter_add_arc(meter_1, scale_1, 3, lv_palette_main(LV_PALETTE_BLUE), 0);
+    lv_meter_set_indicator_start_value(meter_1, indic_1, MIN_RANGE_METER);
+    lv_meter_set_indicator_end_value(meter_1, indic_1, MIDDLE_RANGE_METER);
 
-    //2nd inner arc
+    /*Add a red arc to the end เลข Arcฝั่งสีแดง*/
+    indic_1 = lv_meter_add_arc(meter_1, scale_1, 3, lv_palette_main(LV_PALETTE_RED), 0);
+    lv_meter_set_indicator_start_value(meter_1, indic_1, MIDDLE_RANGE_METER);
+    lv_meter_set_indicator_end_value(meter_1, indic_1, MAX_RANGE_METER);
+
+    /*เข็มชี้*/
+    indic_1 = lv_meter_add_needle_line(meter_1, scale_1, 4, lv_color_hex(0x0F1215), 0);
+
     ui_arc_inner_2 = lv_obj_create(ui_monitor_screen_1);
     lv_obj_set_width(ui_arc_inner_2, SIZE_WIDTH_ARC_INNER2);
     lv_obj_set_height(ui_arc_inner_2, SIZE_HEIGHT_ARC_INNER2);
     lv_obj_set_x(ui_arc_inner_2, X_MID_14);
-    lv_obj_set_y(ui_arc_inner_2, Y_POS_ARCTEMP_123);
+    lv_obj_set_y(ui_arc_inner_2, Y_POS_METER_123);
     lv_obj_set_align(ui_arc_inner_2, LV_ALIGN_CENTER);
     lv_obj_clear_flag(ui_arc_inner_2, LV_OBJ_FLAG_CLICKABLE);
     lv_obj_set_style_radius(ui_arc_inner_2, RAD_INNER2_ARC, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -115,14 +94,15 @@ void ui_monitor_screen_1_init(void){
     lv_obj_set_style_border_color(ui_arc_inner_2, lv_color_hex(0x2D323C), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_opa(ui_arc_inner_2, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
+    
     //Temp text in arc
     ui_temp_t_device1 = lv_label_create(ui_monitor_screen_1);
     lv_obj_set_width(ui_temp_t_device1, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_temp_t_device1, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_x(ui_temp_t_device1, X_MID_14);          
-    lv_obj_set_y(ui_temp_t_device1, Y_POS_ARCTEMP_123);  
+    lv_obj_set_y(ui_temp_t_device1, Y_POS_METER_123);  
     lv_obj_set_align(ui_temp_t_device1, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_temp_t_device1, "0 °C");
+    lv_label_set_text(ui_temp_t_device1, t_text.temp_text1);
     lv_obj_set_style_text_color(ui_temp_t_device1, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_temp_t_device1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_temp_t_device1, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -135,7 +115,7 @@ void ui_monitor_screen_1_init(void){
     lv_obj_set_x(ui_last_up_t_device1, X_MID_14); 
     lv_obj_set_y(ui_last_up_t_device1, Y_POS_LASTUP_123);
     lv_obj_set_align(ui_last_up_t_device1, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_last_up_t_device1, "Last update : 3:50 PM");
+    lv_label_set_text(ui_last_up_t_device1, dev_uptime.dev1);
     lv_obj_set_style_text_color(ui_last_up_t_device1, lv_color_hex(0xB3B3B3), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_last_up_t_device1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_last_up_t_device1, &lv_font_montserrat_10, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -166,60 +146,47 @@ void ui_monitor_screen_1_init(void){
     lv_obj_set_y(ui_name_t_device2, Y_POS_NAMEDEVICE_123);
     lv_obj_set_align(ui_name_t_device2, LV_ALIGN_CENTER);
     lv_obj_clear_flag(ui_name_t_device2, LV_OBJ_FLAG_CLICKABLE);
-    lv_label_set_text(ui_name_t_device2,"Device 2"); 
+    lv_label_set_text(ui_name_t_device2,name.device2); 
     lv_obj_set_style_text_color(ui_name_t_device2, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_name_t_device2, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_decor(ui_name_t_device2, LV_TEXT_DECOR_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_name_t_device2, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_arc_temp_2 = lv_arc_create(ui_monitor_screen_1);
-    lv_obj_set_width(ui_arc_temp_2, SIZE_WIDTH_ARC);
-    lv_obj_set_height(ui_arc_temp_2, SIZE_WIDTH_ARC);
-    lv_obj_set_x(ui_arc_temp_2, X_MID_25);
-    lv_obj_set_y(ui_arc_temp_2, Y_POS_ARCTEMP_123);  
-    lv_obj_set_align(ui_arc_temp_2, LV_ALIGN_CENTER);
-    lv_arc_set_range(ui_arc_temp_2, MIN_RANGE_ARC, MAX_RANGE_ARC);
-    lv_arc_set_value(ui_arc_temp_2, START_VALUE_ARC);
-    lv_arc_set_bg_angles(ui_arc_temp_2, START_ANGLE_ARC, END_ANGLE_ARC);
-    lv_obj_set_style_radius(ui_arc_temp_2, RAD_ARC, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_arc_temp_2, lv_color_hex(0x1E232D), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_arc_temp_2, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(ui_arc_temp_2, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(ui_arc_temp_2, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(ui_arc_temp_2, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(ui_arc_temp_2, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_arc_color(ui_arc_temp_2, lv_color_hex(0x0F1215), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_arc_opa(ui_arc_temp_2, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_arc_width(ui_arc_temp_2, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_arc_rounded(ui_arc_temp_2, true, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_arc_width(ui_arc_temp_2, 5, LV_PART_INDICATOR | LV_STATE_DEFAULT);
-    lv_obj_set_style_arc_rounded(ui_arc_temp_2, true, LV_PART_INDICATOR | LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(ui_arc_temp_2, 10, LV_PART_KNOB | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_arc_temp_2, lv_color_hex(0xFFFFFF), LV_PART_KNOB | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_arc_temp_2, 0, LV_PART_KNOB | LV_STATE_DEFAULT);
-    lv_obj_clear_flag(ui_arc_temp_2, LV_OBJ_FLAG_CLICKABLE);
+    meter_2 = lv_meter_create(ui_monitor_screen_1);
+    lv_obj_set_size(meter_2, SIZE_WIDTH_METER, SIZE_HEIGHT_METER);
+    lv_obj_set_x(meter_2, POS_X_METER25);  
+    lv_obj_set_y(meter_2, POS_Y_METER123);
+    lv_obj_set_style_bg_color(meter_2, lv_color_hex(0x57626C), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(meter_2, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(meter_2, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(meter_2, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(meter_2, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    
+    /*Add a scale first*/
+    lv_meter_scale_t * scale_2 = lv_meter_add_scale(meter_2);
+    lv_meter_set_scale_range(meter_2,scale_2,MIN_RANGE_METER,MAX_RANGE_METER,METER_ANGLE,METER_ROTATION);
+    lv_meter_set_scale_ticks(meter_2, scale_2, 5, 2, 5, lv_color_hex(0xFFFFFF));
+    
+    // lv_meter_indicator_t * indic_2;
 
-    ui_arc_inner_1 = lv_obj_create(ui_monitor_screen_1);
-    lv_obj_set_width(ui_arc_inner_1, SIZE_WIDTH_ARC_INNER1);
-    lv_obj_set_height(ui_arc_inner_1, SIZE_HEIGHT_ARC_INNER1);
-    lv_obj_set_x(ui_arc_inner_1, X_MID_25);
-    lv_obj_set_y(ui_arc_inner_1, Y_POS_ARCTEMP_123);
-    lv_obj_set_align(ui_arc_inner_1, LV_ALIGN_CENTER);
-    lv_obj_clear_flag(ui_arc_inner_1, LV_OBJ_FLAG_CLICKABLE);      /// Flags
-    lv_obj_set_style_radius(ui_arc_inner_1, RAD_INNER1_ARC, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_arc_inner_1, lv_color_hex(0x646464), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_arc_inner_1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_color(ui_arc_inner_1, lv_color_hex(0x3C414B), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_dir(ui_arc_inner_1, LV_GRAD_DIR_VER, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_color(ui_arc_inner_1, lv_color_hex(0x2D323C), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_opa(ui_arc_inner_1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_width(ui_arc_inner_1, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    /*Add a blue arc to the start*/
+    indic_2 = lv_meter_add_arc(meter_2, scale_2, 3, lv_palette_main(LV_PALETTE_BLUE), 0);
+    lv_meter_set_indicator_start_value(meter_2, indic_2, MIN_RANGE_METER);
+    lv_meter_set_indicator_end_value(meter_2, indic_2, MIDDLE_RANGE_METER);
+
+    /*Add a red arc to the end เลข Arcฝั่งสีแดง*/
+    indic_2 = lv_meter_add_arc(meter_2, scale_2, 3, lv_palette_main(LV_PALETTE_RED), 0);
+    lv_meter_set_indicator_start_value(meter_2, indic_2, MIDDLE_RANGE_METER);
+    lv_meter_set_indicator_end_value(meter_2, indic_2, MAX_RANGE_METER);
+
+    /*เข็มชี้*/
+    indic_2 = lv_meter_add_needle_line(meter_2, scale_2, 4, lv_color_hex(0x0F1215), 0);
 
     ui_arc_inner_2 = lv_obj_create(ui_monitor_screen_1);
     lv_obj_set_width(ui_arc_inner_2, SIZE_WIDTH_ARC_INNER2);
     lv_obj_set_height(ui_arc_inner_2, SIZE_HEIGHT_ARC_INNER2);
     lv_obj_set_x(ui_arc_inner_2, X_MID_25);
-    lv_obj_set_y(ui_arc_inner_2, Y_POS_ARCTEMP_123);
+    lv_obj_set_y(ui_arc_inner_2, Y_POS_METER_123);
     lv_obj_set_align(ui_arc_inner_2, LV_ALIGN_CENTER);
     lv_obj_clear_flag(ui_arc_inner_2, LV_OBJ_FLAG_CLICKABLE);
     lv_obj_set_style_radius(ui_arc_inner_2, RAD_INNER2_ARC, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -234,9 +201,9 @@ void ui_monitor_screen_1_init(void){
     lv_obj_set_width(ui_temp_t_device2, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_temp_t_device2, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_x(ui_temp_t_device2, X_MID_25);          
-    lv_obj_set_y(ui_temp_t_device2, Y_POS_ARCTEMP_123);  
+    lv_obj_set_y(ui_temp_t_device2, Y_POS_METER_123);  
     lv_obj_set_align(ui_temp_t_device2, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_temp_t_device2, "0 °C");
+    lv_label_set_text(ui_temp_t_device2, t_text.temp_text2);
     lv_obj_set_style_text_color(ui_temp_t_device2, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_temp_t_device2, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_temp_t_device2, &lv_font_montserrat_16, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -248,7 +215,7 @@ void ui_monitor_screen_1_init(void){
     lv_obj_set_x(ui_last_up_t_device2, X_MID_25); 
     lv_obj_set_y(ui_last_up_t_device2, Y_POS_LASTUP_123);
     lv_obj_set_align(ui_last_up_t_device2, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_last_up_t_device2, "Last update : 3:50 PM");
+    lv_label_set_text(ui_last_up_t_device2, dev_uptime.dev2);
     lv_obj_set_style_text_color(ui_last_up_t_device2, lv_color_hex(0xB3B3B3), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_last_up_t_device2, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_last_up_t_device2, &lv_font_montserrat_10, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -280,60 +247,47 @@ void ui_monitor_screen_1_init(void){
     lv_obj_set_y(ui_name_t_device3, Y_POS_NAMEDEVICE_123);
     lv_obj_set_align(ui_name_t_device3, LV_ALIGN_CENTER);
     lv_obj_clear_flag(ui_name_t_device3, LV_OBJ_FLAG_CLICKABLE);
-    lv_label_set_text(ui_name_t_device3,"Device 3"); 
+    lv_label_set_text(ui_name_t_device3,name.device3); 
     lv_obj_set_style_text_color(ui_name_t_device3, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_name_t_device3, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_decor(ui_name_t_device3, LV_TEXT_DECOR_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_name_t_device3, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_arc_temp_3 = lv_arc_create(ui_monitor_screen_1);
-    lv_obj_set_width(ui_arc_temp_3, SIZE_WIDTH_ARC);
-    lv_obj_set_height(ui_arc_temp_3, SIZE_WIDTH_ARC);
-    lv_obj_set_x(ui_arc_temp_3, X_MID_36);
-    lv_obj_set_y(ui_arc_temp_3, Y_POS_ARCTEMP_123);  
-    lv_obj_set_align(ui_arc_temp_3, LV_ALIGN_CENTER);
-    lv_arc_set_range(ui_arc_temp_3, MIN_RANGE_ARC, MAX_RANGE_ARC);
-    lv_arc_set_value(ui_arc_temp_3, START_VALUE_ARC);
-    lv_arc_set_bg_angles(ui_arc_temp_3, START_ANGLE_ARC, END_ANGLE_ARC);
-    lv_obj_set_style_radius(ui_arc_temp_3, RAD_ARC, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_arc_temp_3, lv_color_hex(0x1E232D), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_arc_temp_3, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(ui_arc_temp_3, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(ui_arc_temp_3, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(ui_arc_temp_3, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(ui_arc_temp_3, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_arc_color(ui_arc_temp_3, lv_color_hex(0x0F1215), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_arc_opa(ui_arc_temp_3, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_arc_width(ui_arc_temp_3, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_arc_rounded(ui_arc_temp_3, true, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_arc_width(ui_arc_temp_3, 5, LV_PART_INDICATOR | LV_STATE_DEFAULT);
-    lv_obj_set_style_arc_rounded(ui_arc_temp_3, true, LV_PART_INDICATOR | LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(ui_arc_temp_3, 10, LV_PART_KNOB | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_arc_temp_3, lv_color_hex(0xFFFFFF), LV_PART_KNOB | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_arc_temp_3, 0, LV_PART_KNOB | LV_STATE_DEFAULT);
-    lv_obj_clear_flag(ui_arc_temp_3, LV_OBJ_FLAG_CLICKABLE);
+    meter_3 = lv_meter_create(ui_monitor_screen_1);
+    lv_obj_set_size(meter_3, SIZE_WIDTH_METER, SIZE_HEIGHT_METER);
+    lv_obj_set_x(meter_3, POS_X_METER36);  
+    lv_obj_set_y(meter_3, POS_Y_METER123);
+    lv_obj_set_style_bg_color(meter_3, lv_color_hex(0x57626C), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(meter_3, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(meter_3, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(meter_3, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(meter_3, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    
+    /*Add a scale first*/
+    lv_meter_scale_t * scale_3 = lv_meter_add_scale(meter_3);
+    lv_meter_set_scale_range(meter_3,scale_3,MIN_RANGE_METER,MAX_RANGE_METER,METER_ANGLE,METER_ROTATION);
+    lv_meter_set_scale_ticks(meter_3, scale_3, 5, 2, 5, lv_color_hex(0xFFFFFF));
+    
+    // lv_meter_indicator_t * indic_3;
 
-    ui_arc_inner_1 = lv_obj_create(ui_monitor_screen_1);
-    lv_obj_set_width(ui_arc_inner_1, SIZE_WIDTH_ARC_INNER1);
-    lv_obj_set_height(ui_arc_inner_1, SIZE_HEIGHT_ARC_INNER1);
-    lv_obj_set_x(ui_arc_inner_1, X_MID_36);
-    lv_obj_set_y(ui_arc_inner_1, Y_POS_ARCTEMP_123);
-    lv_obj_set_align(ui_arc_inner_1, LV_ALIGN_CENTER);
-    lv_obj_clear_flag(ui_arc_inner_1, LV_OBJ_FLAG_CLICKABLE);      /// Flags
-    lv_obj_set_style_radius(ui_arc_inner_1, RAD_INNER1_ARC, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_arc_inner_1, lv_color_hex(0x646464), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_arc_inner_1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_color(ui_arc_inner_1, lv_color_hex(0x3C414B), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_dir(ui_arc_inner_1, LV_GRAD_DIR_VER, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_color(ui_arc_inner_1, lv_color_hex(0x2D323C), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_opa(ui_arc_inner_1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_width(ui_arc_inner_1, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    /*Add a blue arc to the start*/
+    indic_3 = lv_meter_add_arc(meter_3, scale_3, 3, lv_palette_main(LV_PALETTE_BLUE), 0);
+    lv_meter_set_indicator_start_value(meter_3, indic_3, MIN_RANGE_METER);
+    lv_meter_set_indicator_end_value(meter_3, indic_3, MIDDLE_RANGE_METER);
+
+    /*Add a red arc to the end เลข Arcฝั่งสีแดง*/
+    indic_3 = lv_meter_add_arc(meter_3, scale_3, 3, lv_palette_main(LV_PALETTE_RED), 0);
+    lv_meter_set_indicator_start_value(meter_3, indic_3, MIDDLE_RANGE_METER);
+    lv_meter_set_indicator_end_value(meter_3, indic_3, MAX_RANGE_METER);
+
+    /*เข็มชี้*/
+    indic_3 = lv_meter_add_needle_line(meter_3, scale_3, 4, lv_color_hex(0x0F1215), 0);
 
     ui_arc_inner_2 = lv_obj_create(ui_monitor_screen_1);
     lv_obj_set_width(ui_arc_inner_2, SIZE_WIDTH_ARC_INNER2);
     lv_obj_set_height(ui_arc_inner_2, SIZE_HEIGHT_ARC_INNER2);
     lv_obj_set_x(ui_arc_inner_2, X_MID_36);
-    lv_obj_set_y(ui_arc_inner_2, Y_POS_ARCTEMP_123);
+    lv_obj_set_y(ui_arc_inner_2, Y_POS_METER_123);
     lv_obj_set_align(ui_arc_inner_2, LV_ALIGN_CENTER);
     lv_obj_clear_flag(ui_arc_inner_2, LV_OBJ_FLAG_CLICKABLE);
     lv_obj_set_style_radius(ui_arc_inner_2, RAD_INNER2_ARC, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -348,9 +302,9 @@ void ui_monitor_screen_1_init(void){
     lv_obj_set_width(ui_temp_t_device3, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_temp_t_device3, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_x(ui_temp_t_device3, X_MID_36);          
-    lv_obj_set_y(ui_temp_t_device3, Y_POS_ARCTEMP_123);  
+    lv_obj_set_y(ui_temp_t_device3, Y_POS_METER_123);  
     lv_obj_set_align(ui_temp_t_device3, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_temp_t_device3, "0 °C");
+    lv_label_set_text(ui_temp_t_device3, t_text.temp_text3);
     lv_obj_set_style_text_color(ui_temp_t_device3, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_temp_t_device3, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_temp_t_device3, &lv_font_montserrat_16, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -362,7 +316,7 @@ void ui_monitor_screen_1_init(void){
     lv_obj_set_x(ui_last_up_t_device3, X_MID_36); 
     lv_obj_set_y(ui_last_up_t_device3, Y_POS_LASTUP_123);
     lv_obj_set_align(ui_last_up_t_device3, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_last_up_t_device3, "Last update : 3:50 PM");
+    lv_label_set_text(ui_last_up_t_device3, dev_uptime.dev3);
     lv_obj_set_style_text_color(ui_last_up_t_device3, lv_color_hex(0xB3B3B3), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_last_up_t_device3, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_last_up_t_device3, &lv_font_montserrat_10, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -394,60 +348,47 @@ void ui_monitor_screen_1_init(void){
     lv_obj_set_y(ui_name_t_device4, Y_POS_NAMEDEVICE_456);
     lv_obj_set_align(ui_name_t_device4, LV_ALIGN_CENTER);
     lv_obj_clear_flag(ui_name_t_device4, LV_OBJ_FLAG_CLICKABLE);
-    lv_label_set_text(ui_name_t_device4,"Device 4"); 
+    lv_label_set_text(ui_name_t_device4,name.device4); 
     lv_obj_set_style_text_color(ui_name_t_device4, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_name_t_device4, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_decor(ui_name_t_device4, LV_TEXT_DECOR_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_name_t_device4, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_arc_temp_4 = lv_arc_create(ui_monitor_screen_1);
-    lv_obj_set_width(ui_arc_temp_4, SIZE_WIDTH_ARC);
-    lv_obj_set_height(ui_arc_temp_4, SIZE_WIDTH_ARC);
-    lv_obj_set_x(ui_arc_temp_4, X_MID_14);
-    lv_obj_set_y(ui_arc_temp_4, Y_POS_ARCTEMP_456);  
-    lv_obj_set_align(ui_arc_temp_4, LV_ALIGN_CENTER);
-    lv_arc_set_range(ui_arc_temp_4, MIN_RANGE_ARC, MAX_RANGE_ARC);
-    lv_arc_set_value(ui_arc_temp_4, START_VALUE_ARC);
-    lv_arc_set_bg_angles(ui_arc_temp_4, START_ANGLE_ARC, END_ANGLE_ARC);
-    lv_obj_set_style_radius(ui_arc_temp_4, RAD_ARC, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_arc_temp_4, lv_color_hex(0x1E232D), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_arc_temp_4, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(ui_arc_temp_4, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(ui_arc_temp_4, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(ui_arc_temp_4, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(ui_arc_temp_4, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_arc_color(ui_arc_temp_4, lv_color_hex(0x0F1215), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_arc_opa(ui_arc_temp_4, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_arc_width(ui_arc_temp_4, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_arc_rounded(ui_arc_temp_4, true, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_arc_width(ui_arc_temp_4, 5, LV_PART_INDICATOR | LV_STATE_DEFAULT);
-    lv_obj_set_style_arc_rounded(ui_arc_temp_4, true, LV_PART_INDICATOR | LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(ui_arc_temp_4, 10, LV_PART_KNOB | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_arc_temp_4, lv_color_hex(0xFFFFFF), LV_PART_KNOB | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_arc_temp_4, 0, LV_PART_KNOB | LV_STATE_DEFAULT);
-    lv_obj_clear_flag(ui_arc_temp_4, LV_OBJ_FLAG_CLICKABLE);
+    meter_4 = lv_meter_create(ui_monitor_screen_1);
+    lv_obj_set_size(meter_4, SIZE_WIDTH_METER, SIZE_HEIGHT_METER);
+    lv_obj_set_x(meter_4, POS_X_METER14);  
+    lv_obj_set_y(meter_4, Y_POS_METER_456);
+    lv_obj_set_style_bg_color(meter_4, lv_color_hex(0x57626C), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(meter_4, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(meter_4, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(meter_4, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(meter_4, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    
+    /*Add a scale first*/
+    lv_meter_scale_t * scale_4 = lv_meter_add_scale(meter_4);
+    lv_meter_set_scale_range(meter_4,scale_4,MIN_RANGE_METER,MAX_RANGE_METER,METER_ANGLE,METER_ROTATION);
+    lv_meter_set_scale_ticks(meter_4, scale_4, 5, 2, 5, lv_color_hex(0xFFFFFF));
+    
+    // lv_meter_indicator_t * indic_4;
 
-    ui_arc_inner_1 = lv_obj_create(ui_monitor_screen_1);
-    lv_obj_set_width(ui_arc_inner_1, SIZE_WIDTH_ARC_INNER1);
-    lv_obj_set_height(ui_arc_inner_1, SIZE_HEIGHT_ARC_INNER1);
-    lv_obj_set_x(ui_arc_inner_1, X_MID_14);
-    lv_obj_set_y(ui_arc_inner_1, Y_POS_ARCTEMP_456);
-    lv_obj_set_align(ui_arc_inner_1, LV_ALIGN_CENTER);
-    lv_obj_clear_flag(ui_arc_inner_1, LV_OBJ_FLAG_CLICKABLE);      /// Flags
-    lv_obj_set_style_radius(ui_arc_inner_1, RAD_INNER1_ARC, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_arc_inner_1, lv_color_hex(0x646464), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_arc_inner_1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_color(ui_arc_inner_1, lv_color_hex(0x3C414B), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_dir(ui_arc_inner_1, LV_GRAD_DIR_VER, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_color(ui_arc_inner_1, lv_color_hex(0x2D323C), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_opa(ui_arc_inner_1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_width(ui_arc_inner_1, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    /*Add a blue arc to the start*/
+    indic_4 = lv_meter_add_arc(meter_4, scale_4, 3, lv_palette_main(LV_PALETTE_BLUE), 0);
+    lv_meter_set_indicator_start_value(meter_4, indic_4, MIN_RANGE_METER);
+    lv_meter_set_indicator_end_value(meter_4, indic_4, MIDDLE_RANGE_METER);
+
+    /*Add a red arc to the end เลข Arcฝั่งสีแดง*/
+    indic_4 = lv_meter_add_arc(meter_4, scale_4, 3, lv_palette_main(LV_PALETTE_RED), 0);
+    lv_meter_set_indicator_start_value(meter_4, indic_4, MIDDLE_RANGE_METER);
+    lv_meter_set_indicator_end_value(meter_4, indic_4, MAX_RANGE_METER);
+
+    /*เข็มชี้*/
+    indic_4 = lv_meter_add_needle_line(meter_4, scale_4, 4, lv_color_hex(0x0F1215), 0);
 
     ui_arc_inner_2 = lv_obj_create(ui_monitor_screen_1);
     lv_obj_set_width(ui_arc_inner_2, SIZE_WIDTH_ARC_INNER2);
     lv_obj_set_height(ui_arc_inner_2, SIZE_HEIGHT_ARC_INNER2);
     lv_obj_set_x(ui_arc_inner_2, X_MID_14);
-    lv_obj_set_y(ui_arc_inner_2, Y_POS_ARCTEMP_456);
+    lv_obj_set_y(ui_arc_inner_2, Y_POS_TEMPT_456);
     lv_obj_set_align(ui_arc_inner_2, LV_ALIGN_CENTER);
     lv_obj_clear_flag(ui_arc_inner_2, LV_OBJ_FLAG_CLICKABLE);
     lv_obj_set_style_radius(ui_arc_inner_2, RAD_INNER2_ARC, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -462,9 +403,9 @@ void ui_monitor_screen_1_init(void){
     lv_obj_set_width(ui_temp_t_device4, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_temp_t_device4, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_x(ui_temp_t_device4, X_MID_14);          
-    lv_obj_set_y(ui_temp_t_device4, Y_POS_ARCTEMP_456);  
+    lv_obj_set_y(ui_temp_t_device4, Y_POS_TEMPT_456);  
     lv_obj_set_align(ui_temp_t_device4, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_temp_t_device4, "0 °C");
+    lv_label_set_text(ui_temp_t_device4, t_text.temp_text3);
     lv_obj_set_style_text_color(ui_temp_t_device4, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_temp_t_device4, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_temp_t_device4, &lv_font_montserrat_16, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -476,7 +417,7 @@ void ui_monitor_screen_1_init(void){
     lv_obj_set_x(ui_last_up_t_device4, X_MID_14); 
     lv_obj_set_y(ui_last_up_t_device4, Y_POS_LASTUP_456);
     lv_obj_set_align(ui_last_up_t_device4, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_last_up_t_device4, "Last update : 3:50 PM");
+    lv_label_set_text(ui_last_up_t_device4, dev_uptime.dev4);
     lv_obj_set_style_text_color(ui_last_up_t_device4, lv_color_hex(0xB3B3B3), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_last_up_t_device4, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_last_up_t_device4, &lv_font_montserrat_10, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -509,60 +450,47 @@ void ui_monitor_screen_1_init(void){
     lv_obj_set_y(ui_name_t_device5, Y_POS_NAMEDEVICE_456);
     lv_obj_set_align(ui_name_t_device5, LV_ALIGN_CENTER);
     lv_obj_clear_flag(ui_name_t_device5, LV_OBJ_FLAG_CLICKABLE);
-    lv_label_set_text(ui_name_t_device5,"Device 5"); 
+    lv_label_set_text(ui_name_t_device5,name.device5); 
     lv_obj_set_style_text_color(ui_name_t_device5, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_name_t_device5, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_decor(ui_name_t_device5, LV_TEXT_DECOR_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_name_t_device5, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_arc_temp_5 = lv_arc_create(ui_monitor_screen_1);
-    lv_obj_set_width(ui_arc_temp_5, SIZE_WIDTH_ARC);
-    lv_obj_set_height(ui_arc_temp_5, SIZE_WIDTH_ARC);
-    lv_obj_set_x(ui_arc_temp_5, X_MID_25);
-    lv_obj_set_y(ui_arc_temp_5, Y_POS_ARCTEMP_456);  
-    lv_obj_set_align(ui_arc_temp_5, LV_ALIGN_CENTER);
-    lv_arc_set_range(ui_arc_temp_5, MIN_RANGE_ARC, MAX_RANGE_ARC);
-    lv_arc_set_value(ui_arc_temp_5, START_VALUE_ARC);
-    lv_arc_set_bg_angles(ui_arc_temp_5, START_ANGLE_ARC, END_ANGLE_ARC);
-    lv_obj_set_style_radius(ui_arc_temp_5, RAD_ARC, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_arc_temp_5, lv_color_hex(0x1E232D), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_arc_temp_5, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(ui_arc_temp_5, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(ui_arc_temp_5, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(ui_arc_temp_5, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(ui_arc_temp_5, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_arc_color(ui_arc_temp_5, lv_color_hex(0x0F1215), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_arc_opa(ui_arc_temp_5, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_arc_width(ui_arc_temp_5, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_arc_rounded(ui_arc_temp_5, true, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_arc_width(ui_arc_temp_5, 5, LV_PART_INDICATOR | LV_STATE_DEFAULT);
-    lv_obj_set_style_arc_rounded(ui_arc_temp_5, true, LV_PART_INDICATOR | LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(ui_arc_temp_5, 10, LV_PART_KNOB | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_arc_temp_5, lv_color_hex(0xFFFFFF), LV_PART_KNOB | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_arc_temp_5, 0, LV_PART_KNOB | LV_STATE_DEFAULT);
-    lv_obj_clear_flag(ui_arc_temp_5, LV_OBJ_FLAG_CLICKABLE);
+    meter_5 = lv_meter_create(ui_monitor_screen_1);
+    lv_obj_set_size(meter_5, SIZE_WIDTH_METER, SIZE_HEIGHT_METER);
+    lv_obj_set_x(meter_5, POS_X_METER25);  
+    lv_obj_set_y(meter_5, Y_POS_METER_456);
+    lv_obj_set_style_bg_color(meter_5, lv_color_hex(0x57626C), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(meter_5, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(meter_5, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(meter_5, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(meter_5, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    
+    /*Add a scale first*/
+    lv_meter_scale_t * scale_5 = lv_meter_add_scale(meter_5);
+    lv_meter_set_scale_range(meter_5,scale_5,MIN_RANGE_METER,MAX_RANGE_METER,METER_ANGLE,METER_ROTATION);
+    lv_meter_set_scale_ticks(meter_5, scale_5, 5, 2, 5, lv_color_hex(0xFFFFFF));
+    
+    // lv_meter_indicator_t * indic_5;
 
-    ui_arc_inner_1 = lv_obj_create(ui_monitor_screen_1);
-    lv_obj_set_width(ui_arc_inner_1, SIZE_WIDTH_ARC_INNER1);
-    lv_obj_set_height(ui_arc_inner_1, SIZE_HEIGHT_ARC_INNER1);
-    lv_obj_set_x(ui_arc_inner_1, X_MID_25);
-    lv_obj_set_y(ui_arc_inner_1, Y_POS_ARCTEMP_456);
-    lv_obj_set_align(ui_arc_inner_1, LV_ALIGN_CENTER);
-    lv_obj_clear_flag(ui_arc_inner_1, LV_OBJ_FLAG_CLICKABLE);      /// Flags
-    lv_obj_set_style_radius(ui_arc_inner_1, RAD_INNER1_ARC, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_arc_inner_1, lv_color_hex(0x646464), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_arc_inner_1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_color(ui_arc_inner_1, lv_color_hex(0x3C414B), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_dir(ui_arc_inner_1, LV_GRAD_DIR_VER, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_color(ui_arc_inner_1, lv_color_hex(0x2D323C), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_opa(ui_arc_inner_1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_width(ui_arc_inner_1, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    /*Add a blue arc to the start*/
+    indic_5 = lv_meter_add_arc(meter_5, scale_5, 3, lv_palette_main(LV_PALETTE_BLUE), 0);
+    lv_meter_set_indicator_start_value(meter_5, indic_5, MIN_RANGE_METER);
+    lv_meter_set_indicator_end_value(meter_5, indic_5, MIDDLE_RANGE_METER);
+
+    /*Add a red arc to the end เลข Arcฝั่งสีแดง*/
+    indic_5 = lv_meter_add_arc(meter_5, scale_5, 3, lv_palette_main(LV_PALETTE_RED), 0);
+    lv_meter_set_indicator_start_value(meter_5, indic_5, MIDDLE_RANGE_METER);
+    lv_meter_set_indicator_end_value(meter_5, indic_5, MAX_RANGE_METER);
+
+    /*เข็มชี้*/
+    indic_5 = lv_meter_add_needle_line(meter_5, scale_5, 4, lv_color_hex(0x0F1215), 0);
 
     ui_arc_inner_2 = lv_obj_create(ui_monitor_screen_1);
     lv_obj_set_width(ui_arc_inner_2, SIZE_WIDTH_ARC_INNER2);
     lv_obj_set_height(ui_arc_inner_2, SIZE_HEIGHT_ARC_INNER2);
     lv_obj_set_x(ui_arc_inner_2, X_MID_25);
-    lv_obj_set_y(ui_arc_inner_2, Y_POS_ARCTEMP_456);
+    lv_obj_set_y(ui_arc_inner_2, Y_POS_TEMPT_456);
     lv_obj_set_align(ui_arc_inner_2, LV_ALIGN_CENTER);
     lv_obj_clear_flag(ui_arc_inner_2, LV_OBJ_FLAG_CLICKABLE);
     lv_obj_set_style_radius(ui_arc_inner_2, RAD_INNER2_ARC, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -579,7 +507,7 @@ void ui_monitor_screen_1_init(void){
     lv_obj_set_x(ui_temp_t_device5, X_MID_25);          
     lv_obj_set_y(ui_temp_t_device5, Y_POS_ARCTEMP_456);  
     lv_obj_set_align(ui_temp_t_device5, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_temp_t_device5, "0 °C");
+    lv_label_set_text(ui_temp_t_device5, t_text.temp_text3);
     lv_obj_set_style_text_color(ui_temp_t_device5, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_temp_t_device5, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_temp_t_device5, &lv_font_montserrat_16, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -591,7 +519,7 @@ void ui_monitor_screen_1_init(void){
     lv_obj_set_x(ui_last_up_t_device5, X_MID_25); 
     lv_obj_set_y(ui_last_up_t_device5, Y_POS_LASTUP_456);
     lv_obj_set_align(ui_last_up_t_device5, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_last_up_t_device5, "Last update : 3:50 PM");
+    lv_label_set_text(ui_last_up_t_device5, dev_uptime.dev5);
     lv_obj_set_style_text_color(ui_last_up_t_device5, lv_color_hex(0xB3B3B3), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_last_up_t_device5, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_last_up_t_device5, &lv_font_montserrat_10, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -623,60 +551,47 @@ void ui_monitor_screen_1_init(void){
     lv_obj_set_y(ui_name_t_device6, Y_POS_NAMEDEVICE_456);
     lv_obj_set_align(ui_name_t_device6, LV_ALIGN_CENTER);
     lv_obj_clear_flag(ui_name_t_device6, LV_OBJ_FLAG_CLICKABLE);
-    lv_label_set_text(ui_name_t_device6,"Device 6"); 
+    lv_label_set_text(ui_name_t_device6,name.device6); 
     lv_obj_set_style_text_color(ui_name_t_device6, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_name_t_device6, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_decor(ui_name_t_device6, LV_TEXT_DECOR_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_name_t_device6, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_arc_temp_6 = lv_arc_create(ui_monitor_screen_1);
-    lv_obj_set_width(ui_arc_temp_6, SIZE_WIDTH_ARC);
-    lv_obj_set_height(ui_arc_temp_6, SIZE_WIDTH_ARC);
-    lv_obj_set_x(ui_arc_temp_6, X_MID_36);
-    lv_obj_set_y(ui_arc_temp_6, Y_POS_ARCTEMP_456);  
-    lv_obj_set_align(ui_arc_temp_6, LV_ALIGN_CENTER);
-    lv_arc_set_range(ui_arc_temp_6, MIN_RANGE_ARC, MAX_RANGE_ARC);
-    lv_arc_set_value(ui_arc_temp_6, START_VALUE_ARC);
-    lv_arc_set_bg_angles(ui_arc_temp_6, START_ANGLE_ARC, END_ANGLE_ARC);
-    lv_obj_set_style_radius(ui_arc_temp_6, RAD_ARC, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_arc_temp_6, lv_color_hex(0x1E232D), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_arc_temp_6, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(ui_arc_temp_6, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(ui_arc_temp_6, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(ui_arc_temp_6, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(ui_arc_temp_6, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_arc_color(ui_arc_temp_6, lv_color_hex(0x0F1215), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_arc_opa(ui_arc_temp_6, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_arc_width(ui_arc_temp_6, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_arc_rounded(ui_arc_temp_6, true, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_arc_width(ui_arc_temp_6, 5, LV_PART_INDICATOR | LV_STATE_DEFAULT);
-    lv_obj_set_style_arc_rounded(ui_arc_temp_6, true, LV_PART_INDICATOR | LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(ui_arc_temp_6, 10, LV_PART_KNOB | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_arc_temp_6, lv_color_hex(0xFFFFFF), LV_PART_KNOB | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_arc_temp_6, 0, LV_PART_KNOB | LV_STATE_DEFAULT);
-    lv_obj_clear_flag(ui_arc_temp_6, LV_OBJ_FLAG_CLICKABLE);
+    meter_6 = lv_meter_create(ui_monitor_screen_1);
+    lv_obj_set_size(meter_6, SIZE_WIDTH_METER, SIZE_HEIGHT_METER);
+    lv_obj_set_x(meter_6, POS_X_METER36);  
+    lv_obj_set_y(meter_6, Y_POS_METER_456);
+    lv_obj_set_style_bg_color(meter_6, lv_color_hex(0x57626C), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(meter_6, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(meter_6, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(meter_6, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(meter_6, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    
+    /*Add a scale first*/
+    lv_meter_scale_t * scale_6 = lv_meter_add_scale(meter_6);
+    lv_meter_set_scale_range(meter_6,scale_6,MIN_RANGE_METER,MAX_RANGE_METER,METER_ANGLE,METER_ROTATION);
+    lv_meter_set_scale_ticks(meter_6, scale_6, 5, 2, 5, lv_color_hex(0xFFFFFF));
+    
+    // lv_meter_indicator_t * indic_6;
 
-    ui_arc_inner_1 = lv_obj_create(ui_monitor_screen_1);
-    lv_obj_set_width(ui_arc_inner_1, SIZE_WIDTH_ARC_INNER1);
-    lv_obj_set_height(ui_arc_inner_1, SIZE_HEIGHT_ARC_INNER1);
-    lv_obj_set_x(ui_arc_inner_1, X_MID_36);
-    lv_obj_set_y(ui_arc_inner_1, Y_POS_ARCTEMP_456);
-    lv_obj_set_align(ui_arc_inner_1, LV_ALIGN_CENTER);
-    lv_obj_clear_flag(ui_arc_inner_1, LV_OBJ_FLAG_CLICKABLE);      /// Flags
-    lv_obj_set_style_radius(ui_arc_inner_1, RAD_INNER1_ARC, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_arc_inner_1, lv_color_hex(0x646464), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_arc_inner_1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_color(ui_arc_inner_1, lv_color_hex(0x3C414B), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_dir(ui_arc_inner_1, LV_GRAD_DIR_VER, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_color(ui_arc_inner_1, lv_color_hex(0x2D323C), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_opa(ui_arc_inner_1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_width(ui_arc_inner_1, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    /*Add a blue arc to the start*/
+    indic_6 = lv_meter_add_arc(meter_6, scale_6, 3, lv_palette_main(LV_PALETTE_BLUE), 0);
+    lv_meter_set_indicator_start_value(meter_6, indic_6, MIN_RANGE_METER);
+    lv_meter_set_indicator_end_value(meter_6, indic_6, MIDDLE_RANGE_METER);
+
+    /*Add a red arc to the end เลข Arcฝั่งสีแดง*/
+    indic_6 = lv_meter_add_arc(meter_6, scale_6, 3, lv_palette_main(LV_PALETTE_RED), 0);
+    lv_meter_set_indicator_start_value(meter_6, indic_6, MIDDLE_RANGE_METER);
+    lv_meter_set_indicator_end_value(meter_6, indic_6, MAX_RANGE_METER);
+
+    /*เข็มชี้*/
+    indic_6 = lv_meter_add_needle_line(meter_6, scale_6, 4, lv_color_hex(0x0F1215), 0);
 
     ui_arc_inner_2 = lv_obj_create(ui_monitor_screen_1);
     lv_obj_set_width(ui_arc_inner_2, SIZE_WIDTH_ARC_INNER2);
     lv_obj_set_height(ui_arc_inner_2, SIZE_HEIGHT_ARC_INNER2);
     lv_obj_set_x(ui_arc_inner_2, X_MID_36);
-    lv_obj_set_y(ui_arc_inner_2, Y_POS_ARCTEMP_456);
+    lv_obj_set_y(ui_arc_inner_2, Y_POS_TEMPT_456);
     lv_obj_set_align(ui_arc_inner_2, LV_ALIGN_CENTER);
     lv_obj_clear_flag(ui_arc_inner_2, LV_OBJ_FLAG_CLICKABLE);
     lv_obj_set_style_radius(ui_arc_inner_2, RAD_INNER2_ARC, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -705,7 +620,7 @@ void ui_monitor_screen_1_init(void){
     lv_obj_set_x(ui_last_up_t_device6, X_MID_36); 
     lv_obj_set_y(ui_last_up_t_device6, Y_POS_LASTUP_456);
     lv_obj_set_align(ui_last_up_t_device6, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_last_up_t_device6, "Last update : 3:50 PM");
+    lv_label_set_text(ui_last_up_t_device6, dev_uptime.dev6);
     lv_obj_set_style_text_color(ui_last_up_t_device6, lv_color_hex(0xB3B3B3), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_last_up_t_device6, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_last_up_t_device6, &lv_font_montserrat_10, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -735,4 +650,46 @@ void ui_monitor_screen_1_init(void){
     lv_obj_center(ui_label_t_btn);
 
     lv_obj_add_event_cb(ui_next_page_btn, ui_event_next_page_btn, LV_EVENT_ALL, NULL);
+
+    ui_chart1_temp = lv_chart_create(ui_monitor_screen_1);
+    lv_obj_set_width(ui_chart1_temp, SIZE_WIDTH_CHART);
+    lv_obj_set_height(ui_chart1_temp, SIZE_HEIGHT_CHART);
+    lv_obj_set_x(ui_chart1_temp, POS_X_CHART);
+    lv_obj_set_y(ui_chart1_temp, POS_Y_CHART);
+    lv_obj_add_flag(ui_chart1_temp, LV_OBJ_FLAG_HIDDEN);
+
+    // ui_chart2_temp = lv_chart_create(ui_monitor_screen_1);
+    // lv_obj_set_width(ui_chart2_temp, SIZE_WIDTH_CHART);
+    // lv_obj_set_height(ui_chart2_temp, SIZE_HEIGHT_CHART);
+    // lv_obj_set_x(ui_chart2_temp, POS_X_CHART);
+    // lv_obj_set_y(ui_chart2_temp, POS_Y_CHART);
+    // lv_obj_add_flag(ui_chart2_temp, LV_OBJ_FLAG_HIDDEN);
+
+    // ui_chart3_temp = lv_chart_create(ui_monitor_screen_1);
+    // lv_obj_set_width(ui_chart3_temp, SIZE_WIDTH_CHART);
+    // lv_obj_set_height(ui_chart3_temp, SIZE_HEIGHT_CHART);
+    // lv_obj_set_x(ui_chart3_temp, POS_X_CHART);
+    // lv_obj_set_y(ui_chart3_temp, POS_Y_CHART);
+    // lv_obj_add_flag(ui_chart3_temp, LV_OBJ_FLAG_HIDDEN);
+
+    // ui_chart4_temp = lv_chart_create(ui_monitor_screen_1);
+    // lv_obj_set_width(ui_chart4_temp, SIZE_WIDTH_CHART);
+    // lv_obj_set_height(ui_chart4_temp, SIZE_HEIGHT_CHART);
+    // lv_obj_set_x(ui_chart4_temp, POS_X_CHART);
+    // lv_obj_set_y(ui_chart4_temp, POS_Y_CHART);
+    // lv_obj_add_flag(ui_chart4_temp, LV_OBJ_FLAG_HIDDEN);
+
+    // ui_chart5_temp = lv_chart_create(ui_monitor_screen_1);
+    // lv_obj_set_width(ui_chart5_temp, SIZE_WIDTH_CHART);
+    // lv_obj_set_height(ui_chart5_temp, SIZE_HEIGHT_CHART);
+    // lv_obj_set_x(ui_chart5_temp, POS_X_CHART);
+    // lv_obj_set_y(ui_chart5_temp, POS_Y_CHART);
+    // lv_obj_add_flag(ui_chart5_temp, LV_OBJ_FLAG_HIDDEN);
+
+    // ui_chart6_temp = lv_chart_create(ui_monitor_screen_1);
+    // lv_obj_set_width(ui_chart6_temp, SIZE_WIDTH_CHART);
+    // lv_obj_set_height(ui_chart6_temp, SIZE_HEIGHT_CHART);
+    // lv_obj_set_x(ui_chart6_temp, POS_X_CHART);
+    // lv_obj_set_y(ui_chart6_temp, POS_Y_CHART);
+    // lv_obj_add_flag(ui_chart6_temp, LV_OBJ_FLAG_HIDDEN);
 }

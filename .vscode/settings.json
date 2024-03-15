@@ -13,7 +13,8 @@
         "lvgl.h": "c",
         "object.h": "c",
         "ui_events.h": "c",
-        "ratio": "c"
+        "ratio": "c",
+        "lv_gauge.h": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }
