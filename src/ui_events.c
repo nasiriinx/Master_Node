@@ -15,7 +15,6 @@ void ui_event_keyboard(lv_event_t *e)
         normal_state_pos();
     }
 }
-
 /********************************************** EVENT GET START SCREEN **********************************************/
 
 void ui_event_ssid_t_area(lv_event_t *e)
@@ -101,10 +100,10 @@ void ui_event_submit_setting_btn(lv_event_t *e)
     if (event_code == LV_EVENT_CLICKED)
     {
         strcpy(getstart.pj_name,lv_textarea_get_text(ui_name_t_area));
-        // ui_monitor_screen_1_init();
-        lv_scr_load(ui_monitor_screen_1);
         // strcpy(getstart.ssid,lv_textarea_get_text(ui_ssid_t_area));
         // strcpy(getstart.password,lv_textarea_get_text(ui_pwd_t_area));
+        ui_monitor_screen_1_init();
+        lv_scr_load(ui_monitor_screen_1);
         lv_obj_del(ui_get_start_screen);
     }
 }
@@ -116,6 +115,7 @@ void ui_event_next_page_btn(lv_event_t *e)
     lv_obj_t *target = lv_event_get_target(e);
     if (event_code == LV_EVENT_CLICKED)
     {
+        ui_monitor_screen_2_init();
         lv_scr_load(ui_monitor_screen_2);
     }
 }
@@ -128,7 +128,7 @@ void ui_event_card1(lv_event_t *e)
     {
         ui_infor_screen_1_init();
         lv_scr_load(ui_infor_screen_1);
-        lv_obj_del(ui_monitor_screen_1);
+        // lv_obj_del(ui_monitor_screen_1);
     }
 }
 
@@ -138,7 +138,6 @@ void ui_event_card2(lv_event_t * e){
     if(event_code == LV_EVENT_CLICKED){
         ui_infor_screen_2_init();
         lv_scr_load(ui_infor_screen_2);
-        lv_obj_del(ui_monitor_screen_1);
     }
 }
 
@@ -148,7 +147,6 @@ void ui_event_card3(lv_event_t * e){
     if(event_code == LV_EVENT_CLICKED){
         ui_infor_screen_3_init();
         lv_scr_load(ui_infor_screen_3);
-        lv_obj_del(ui_monitor_screen_1);
     }
 }
 
@@ -159,7 +157,6 @@ void ui_event_card4(lv_event_t * e){
     if(event_code == LV_EVENT_CLICKED){
         ui_infor_screen_4_init();
         lv_scr_load(ui_infor_screen_4);
-        lv_obj_del(ui_monitor_screen_1);
     }
 }
 
@@ -170,7 +167,6 @@ void ui_event_card5(lv_event_t * e){
     if(event_code == LV_EVENT_CLICKED){
         ui_infor_screen_5_init();
         lv_scr_load(ui_infor_screen_5);
-        lv_obj_del(ui_monitor_screen_1);
     }
 }
 
@@ -181,7 +177,6 @@ void ui_event_card6(lv_event_t * e){
     if(event_code == LV_EVENT_CLICKED){
         ui_infor_screen_6_init();
         lv_scr_load(ui_infor_screen_6);
-        lv_obj_del(ui_monitor_screen_1);
     }
 }
 
@@ -204,7 +199,6 @@ void ui_event_card7(lv_event_t * e){
     if(event_code == LV_EVENT_CLICKED){
         ui_infor_screen_7_init();
         lv_scr_load(ui_infor_screen_7);
-        lv_obj_del(ui_monitor_screen_2); 
     }
 }
 
@@ -215,7 +209,6 @@ void ui_event_card8(lv_event_t * e){
     if(event_code == LV_EVENT_CLICKED){
         ui_infor_screen_8_init();
         lv_scr_load(ui_infor_screen_8);
-        lv_obj_del(ui_monitor_screen_2); 
     }
 }
 
@@ -226,7 +219,6 @@ void ui_event_card9(lv_event_t * e){
     if(event_code == LV_EVENT_CLICKED){
         ui_infor_screen_9_init();
         lv_scr_load(ui_infor_screen_9);
-        lv_obj_del(ui_monitor_screen_2); 
     }
 }
 
@@ -237,7 +229,6 @@ void ui_event_card10(lv_event_t * e){
     if(event_code == LV_EVENT_CLICKED){
         ui_infor_screen_10_init();
         lv_scr_load(ui_infor_screen_10);
-        lv_obj_del(ui_monitor_screen_2); 
     }
 }
 
@@ -258,16 +249,15 @@ void ui_event_view_btn_dev1(lv_event_t *e){
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t *target = lv_event_get_target(e);
     if (event_code == LV_EVENT_CLICKED){
-        // _ui_flag_modify(ui_option_card_info1, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_pos_op_t_1, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_name_op_t_1, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_name_t_area_device1, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_pos_name_t_area_device1, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_save_btn_1, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_cancel_btn_1, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(ui_infor_card3, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_chart1_temp, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_chart1_t, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
-     //   _ui_flag_modify(ui_btn_back1, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_view_btn1, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
     }
 }
@@ -276,16 +266,15 @@ void ui_event_cancel_btn_dev1(lv_event_t * e){
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t *target = lv_event_get_target(e);
      if (event_code == LV_EVENT_CLICKED){
-        // _ui_flag_modify(ui_option_card_info1, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_pos_op_t_1, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_name_op_t_1, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_name_t_area_device1, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_pos_name_t_area_device1, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(ui_infor_card3, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_save_btn_1, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_cancel_btn_1, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_chart1_temp, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_chart1_t, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-     //   _ui_flag_modify(ui_btn_back1, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_view_btn1, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
      }
 }
@@ -360,17 +349,16 @@ void ui_event_view_btn_dev2(lv_event_t *e){
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t *target = lv_event_get_target(e);
     if (event_code == LV_EVENT_CLICKED){
-        // _ui_flag_modify(ui_option_card_info2, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_pos_op_t_2, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_name_op_t_2, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_name_t_area_device2, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_pos_name_t_area_device2, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_save_btn_2, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(ui_infor_card3, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_cancel_btn_2, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_chart2_temp, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_chart2_t, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
-        //// _ui_flag_modify(ui_btn_back2, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
-        //// _ui_flag_modify(ui_btn_back, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(ui_infor_card3, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_view_btn2, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
     }
 }
@@ -391,7 +379,6 @@ void ui_event_cancel_btn_dev2(lv_event_t * e){
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t *target = lv_event_get_target(e);
      if (event_code == LV_EVENT_CLICKED){
-        // _ui_flag_modify(ui_option_card_info2, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_pos_op_t_2, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_name_op_t_2, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_name_t_area_device2, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
@@ -400,8 +387,7 @@ void ui_event_cancel_btn_dev2(lv_event_t * e){
         _ui_flag_modify(ui_cancel_btn_2, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_chart2_temp, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_chart2_t, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-        //// _ui_flag_modify(ui_btn_back2, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-        //// _ui_flag_modify(ui_btn_back, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(ui_infor_card3, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_view_btn2, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
      }
 }
@@ -486,7 +472,6 @@ void ui_event_view_btn_dev3(lv_event_t *e){
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t *target = lv_event_get_target(e);
     if (event_code == LV_EVENT_CLICKED){
-        // _ui_flag_modify(ui_option_card_info3, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_pos_op_t_3, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_name_op_t_3, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_name_t_area_device3, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
@@ -495,8 +480,7 @@ void ui_event_view_btn_dev3(lv_event_t *e){
         _ui_flag_modify(ui_cancel_btn_3, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_chart3_temp, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_chart3_t, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
-        //// _ui_flag_modify(ui_btn_back3, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
-        //// _ui_flag_modify(ui_btn_back, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(ui_infor_card3, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_view_btn3, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
     }
 }
@@ -505,7 +489,6 @@ void ui_event_cancel_btn_dev3(lv_event_t * e){
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t *target = lv_event_get_target(e);
      if (event_code == LV_EVENT_CLICKED){
-        // _ui_flag_modify(ui_option_card_info3, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_pos_op_t_3, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_name_op_t_3, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_name_t_area_device3, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
@@ -514,8 +497,7 @@ void ui_event_cancel_btn_dev3(lv_event_t * e){
         _ui_flag_modify(ui_cancel_btn_3, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_chart3_temp, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_chart3_t, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-        //// _ui_flag_modify(ui_btn_back3, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-        //// _ui_flag_modify(ui_btn_back, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(ui_infor_card3, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_view_btn3, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
      }
 }
@@ -604,6 +586,7 @@ void ui_event_view_btn_dev4(lv_event_t *e){
         _ui_flag_modify(ui_name_op_t_4, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_name_t_area_device4, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_pos_name_t_area_device4, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(ui_infor_card3, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_save_btn_4, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_cancel_btn_4, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_chart4_temp, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
@@ -616,7 +599,6 @@ void ui_event_cancel_btn_dev4(lv_event_t * e){
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t *target = lv_event_get_target(e);
      if (event_code == LV_EVENT_CLICKED){
-        // _ui_flag_modify(ui_option_card_info4, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_pos_op_t_4, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_name_op_t_4, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_name_t_area_device4, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
@@ -625,8 +607,7 @@ void ui_event_cancel_btn_dev4(lv_event_t * e){
         _ui_flag_modify(ui_cancel_btn_4, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_chart4_temp, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_chart4_t, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-        //// _ui_flag_modify(ui_btn_back4, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-     //   _ui_flag_modify(ui_btn_back, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(ui_infor_card3, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_view_btn4, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
      }
 }
@@ -711,7 +692,6 @@ void ui_event_view_btn_dev5(lv_event_t *e){
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t *target = lv_event_get_target(e);
     if (event_code == LV_EVENT_CLICKED){
-        // _ui_flag_modify(ui_option_card_info5, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_pos_op_t_5, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_name_op_t_5, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_name_t_area_device5, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
@@ -720,8 +700,7 @@ void ui_event_view_btn_dev5(lv_event_t *e){
         _ui_flag_modify(ui_cancel_btn_5, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_chart5_temp, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_chart5_t, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
-        //// _ui_flag_modify(ui_btn_back5, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
-        //// _ui_flag_modify(ui_btn_back, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(ui_infor_card3, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_view_btn5, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
     }
 }
@@ -730,7 +709,6 @@ void ui_event_cancel_btn_dev5(lv_event_t * e){
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t *target = lv_event_get_target(e);
      if (event_code == LV_EVENT_CLICKED){
-        // _ui_flag_modify(ui_option_card_info5, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_pos_op_t_5, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_name_op_t_5, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_name_t_area_device5, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
@@ -739,8 +717,7 @@ void ui_event_cancel_btn_dev5(lv_event_t * e){
         _ui_flag_modify(ui_cancel_btn_5, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_chart5_temp, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_chart5_t, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-        //// _ui_flag_modify(ui_btn_back5, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-     //   _ui_flag_modify(ui_btn_back, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(ui_infor_card3, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_view_btn5, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
      }
 }
@@ -825,7 +802,6 @@ void ui_event_view_btn_dev6(lv_event_t *e){
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t *target = lv_event_get_target(e);
     if (event_code == LV_EVENT_CLICKED){
-        _ui_flag_modify(ui_option_card_info6, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_pos_op_t_6, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_name_op_t_6, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_name_t_area_device6, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
@@ -834,8 +810,7 @@ void ui_event_view_btn_dev6(lv_event_t *e){
         _ui_flag_modify(ui_cancel_btn_6, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_chart6_temp, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_chart6_t, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
-        //// _ui_flag_modify(ui_btn_back6, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
-        //// _ui_flag_modify(ui_btn_back, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(ui_infor_card3, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_view_btn6, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
     }
 }
@@ -844,7 +819,6 @@ void ui_event_cancel_btn_dev6(lv_event_t * e){
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t *target = lv_event_get_target(e);
      if (event_code == LV_EVENT_CLICKED){
-        _ui_flag_modify(ui_option_card_info6, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_pos_op_t_6, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_name_op_t_6, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_name_t_area_device6, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
@@ -853,8 +827,7 @@ void ui_event_cancel_btn_dev6(lv_event_t * e){
         _ui_flag_modify(ui_cancel_btn_6, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_chart6_temp, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_chart6_t, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-        //// _ui_flag_modify(ui_btn_back6, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-     //   _ui_flag_modify(ui_btn_back, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(ui_infor_card3, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_view_btn6, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
      }
 }
@@ -940,7 +913,6 @@ void ui_event_view_btn_dev7(lv_event_t *e){
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t *target = lv_event_get_target(e);
     if (event_code == LV_EVENT_CLICKED){
-        _ui_flag_modify(ui_option_card_info7, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_pos_op_t_7, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_name_op_t_7, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_name_t_area_device7, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
@@ -949,7 +921,7 @@ void ui_event_view_btn_dev7(lv_event_t *e){
         _ui_flag_modify(ui_cancel_btn_7, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_chart7_temp, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_chart7_t, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
-        //// _ui_flag_modify(ui_btn_back7, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(ui_infor_card3, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_view_btn7, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
     }
 }
@@ -958,7 +930,6 @@ void ui_event_cancel_btn_dev7(lv_event_t * e){
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t *target = lv_event_get_target(e);
      if (event_code == LV_EVENT_CLICKED){
-        _ui_flag_modify(ui_option_card_info7, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_pos_op_t_7, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_name_op_t_7, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_name_t_area_device7, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
@@ -967,7 +938,7 @@ void ui_event_cancel_btn_dev7(lv_event_t * e){
         _ui_flag_modify(ui_cancel_btn_7, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_chart7_temp, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_chart7_t, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-     //   _ui_flag_modify(ui_btn_back7, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(ui_infor_card3, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_view_btn7, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
      }
 }
@@ -1052,7 +1023,6 @@ void ui_event_view_btn_dev8(lv_event_t *e){
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t *target = lv_event_get_target(e);
     if (event_code == LV_EVENT_CLICKED){
-        _ui_flag_modify(ui_option_card_info8, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_pos_op_t_8, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_name_op_t_8, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_name_t_area_device8, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
@@ -1061,7 +1031,7 @@ void ui_event_view_btn_dev8(lv_event_t *e){
         _ui_flag_modify(ui_cancel_btn_8, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_chart8_temp, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_chart8_t, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
-        //// _ui_flag_modify(ui_btn_back8, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(ui_infor_card3, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_view_btn8, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
     }
 }
@@ -1070,7 +1040,6 @@ void ui_event_cancel_btn_dev8(lv_event_t * e){
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t *target = lv_event_get_target(e);
      if (event_code == LV_EVENT_CLICKED){
-        _ui_flag_modify(ui_option_card_info8, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_pos_op_t_8, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_name_op_t_8, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_name_t_area_device8, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
@@ -1079,7 +1048,7 @@ void ui_event_cancel_btn_dev8(lv_event_t * e){
         _ui_flag_modify(ui_cancel_btn_8, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_chart8_temp, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_chart8_t, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-     //   _ui_flag_modify(ui_btn_back8, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(ui_infor_card3, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_view_btn8, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
      }
 }
@@ -1164,17 +1133,16 @@ void ui_event_view_btn_dev9(lv_event_t *e){
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t *target = lv_event_get_target(e);
     if (event_code == LV_EVENT_CLICKED){
-        _ui_flag_modify(ui_option_card_info9, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-        _ui_flag_modify(ui_pos_op_t_9, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-        _ui_flag_modify(ui_name_op_t_9, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-        _ui_flag_modify(ui_name_t_area_device9, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-        _ui_flag_modify(ui_pos_name_t_area_device9, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-        _ui_flag_modify(ui_save_btn_9, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-        _ui_flag_modify(ui_cancel_btn_9, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-        _ui_flag_modify(ui_chart9_temp, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
-        _ui_flag_modify(ui_chart9_t, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
-        //// _ui_flag_modify(ui_btn_back9, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
-        _ui_flag_modify(ui_view_btn9, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(ui_pos_op_t_8, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(ui_name_op_t_8, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(ui_name_t_area_device8, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(ui_pos_name_t_area_device8, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(ui_save_btn_8, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(ui_cancel_btn_8, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(ui_chart8_temp, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(ui_chart8_t, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(ui_infor_card3, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(ui_view_btn8, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
     }
 }
 
@@ -1182,7 +1150,6 @@ void ui_event_cancel_btn_dev9(lv_event_t * e){
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t *target = lv_event_get_target(e);
      if (event_code == LV_EVENT_CLICKED){
-        _ui_flag_modify(ui_option_card_info9, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_pos_op_t_9, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_name_op_t_9, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_name_t_area_device9, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
@@ -1191,7 +1158,7 @@ void ui_event_cancel_btn_dev9(lv_event_t * e){
         _ui_flag_modify(ui_cancel_btn_9, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_chart9_temp, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_chart9_t, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-     //   _ui_flag_modify(ui_btn_back9, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(ui_infor_card3, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_view_btn9, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
      }
 }
@@ -1276,7 +1243,6 @@ void ui_event_view_btn_dev10(lv_event_t *e){
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t *target = lv_event_get_target(e);
     if (event_code == LV_EVENT_CLICKED){
-        _ui_flag_modify(ui_option_card_info10, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_pos_op_t_10, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_name_op_t_10, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_name_t_area_device10, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
@@ -1285,7 +1251,7 @@ void ui_event_view_btn_dev10(lv_event_t *e){
         _ui_flag_modify(ui_cancel_btn_10, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_chart10_temp, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_chart10_t, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
-        //// _ui_flag_modify(ui_btn_back10, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(ui_infor_card3, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_view_btn10, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
     }
 }
@@ -1294,7 +1260,6 @@ void ui_event_cancel_btn_dev10(lv_event_t * e){
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t *target = lv_event_get_target(e);
      if (event_code == LV_EVENT_CLICKED){
-        _ui_flag_modify(ui_option_card_info10, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_pos_op_t_10, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_name_op_t_10, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_name_t_area_device10, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
@@ -1303,7 +1268,7 @@ void ui_event_cancel_btn_dev10(lv_event_t * e){
         _ui_flag_modify(ui_cancel_btn_10, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_chart10_temp, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_chart10_t, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-     //   _ui_flag_modify(ui_btn_back10, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(ui_infor_card3, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_view_btn10, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
      }
 }

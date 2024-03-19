@@ -1,9 +1,6 @@
 #include "object.h"
 #include "ui_events.h"
-
-/***************** DEFINE GET START PAGE *****************/
-#define SIZE_WIDTH_WIFI_CARD    414
-#define SIZE_HEIGHT_WIFI_CARD   126
+#include "data_struct.h"
 
 void get_start_screen_init(void){
 
@@ -136,7 +133,7 @@ void get_start_screen_init(void){
     lv_obj_set_x(ui_name_t_area, POS_X_NAME_T_AREA);
     lv_obj_set_y(ui_name_t_area, POS_Y_NAME_SYS);
     lv_obj_set_align(ui_name_t_area, LV_ALIGN_CENTER);
-    lv_textarea_set_placeholder_text(ui_name_t_area, "Project name");
+    lv_textarea_set_placeholder_text(ui_name_t_area,getstart.pj_name);
     lv_obj_set_style_text_font(ui_name_t_area, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_textarea_set_one_line(ui_name_t_area,true);
 

@@ -4,6 +4,25 @@
 #include "screens/object.h"
 #include "screens/data_struct.h"
 
+#define SIZE_W_HEADER       783
+#define SIZE_H_HEADER       56
+#define SIZE_H_NOR_HEADER   37
+#define POS_X_HEADER        -9
+#define POS_Y_HEADER        -133
+#define POS_X_HEADER_GT_T   0
+#define POS_Y_HEADER_GT_T   -131
+#define POS_X_HEADER_NOR    0
+#define POS_Y_HEADER_NOR    -143
+#define POS_X_SYS_NAME_T    -170
+#define POS_Y_SYS_NAME_T    0
+#define POS_X_TIME_HEAD_T   120
+#define POS_Y_TIME_HEAD_T   0
+#define POS_X_WIFI_HEAD     220
+#define POS_Y_WIFI_HEAD     0
+#define POS_X_VIEW_BTN      -85
+#define SIZE_W_SAVE_BTN     110
+#define SIZE_H_SAVE_BTN     100
+
 /********************************************** NORMAL FUNCTION **********************************************/
 void create_ui_header(lv_obj_t *screen, int page)
 {
@@ -19,19 +38,19 @@ void create_ui_header(lv_obj_t *screen, int page)
     if (page == GET_START_PAGE)
     {
         // Set width and height of headerpanel
-        lv_obj_set_width(ui_header_panel, 783);
-        lv_obj_set_height(ui_header_panel, 56);
+        lv_obj_set_width(ui_header_panel, SIZE_W_HEADER);
+        lv_obj_set_height(ui_header_panel, SIZE_H_HEADER);
 
         // Set header panel position
-        lv_obj_set_x(ui_header_panel, -9);
-        lv_obj_set_y(ui_header_panel, -133);
+        lv_obj_set_x(ui_header_panel, POS_X_HEADER);
+        lv_obj_set_y(ui_header_panel, POS_Y_HEADER);
         lv_obj_set_align(ui_header_panel, LV_ALIGN_CENTER);
 
         ui_header_panel_t = lv_label_create(screen);
         lv_obj_set_width(ui_header_panel_t, LV_SIZE_CONTENT);  /// 1
         lv_obj_set_height(ui_header_panel_t, LV_SIZE_CONTENT); /// 1
-        lv_obj_set_x(ui_header_panel_t, 0);
-        lv_obj_set_y(ui_header_panel_t, -131);
+        lv_obj_set_x(ui_header_panel_t, POS_X_HEADER_GT_T);
+        lv_obj_set_y(ui_header_panel_t, POS_Y_HEADER_GT_T);
         lv_obj_set_align(ui_header_panel_t, LV_ALIGN_CENTER);
         lv_label_set_text(ui_header_panel_t, "Getting start");
         lv_obj_set_style_text_color(ui_header_panel_t, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -41,41 +60,42 @@ void create_ui_header(lv_obj_t *screen, int page)
     else if (page == GET_MONITOR_PAGE || page == GET_INFOR_PAGE)
     {
         // Set width and height of headerpanel
-        lv_obj_set_width(ui_header_panel, 783);
-        lv_obj_set_height(ui_header_panel, 37);
+        lv_obj_set_width(ui_header_panel, SIZE_W_HEADER);
+        lv_obj_set_height(ui_header_panel, SIZE_H_NOR_HEADER);
 
         // Set header panel position
-        lv_obj_set_x(ui_header_panel, 0);
-        lv_obj_set_y(ui_header_panel, -143);
+        lv_obj_set_x(ui_header_panel, POS_X_HEADER_NOR);
+        lv_obj_set_y(ui_header_panel, POS_Y_HEADER_NOR);
         lv_obj_set_align(ui_header_panel, LV_ALIGN_CENTER);
 
-        ui_label_sys_name_header = lv_label_create(screen);
+        ui_label_sys_name_header = lv_label_create(ui_header_panel);
         lv_obj_set_width(ui_label_sys_name_header, LV_SIZE_CONTENT);  /// 1
         lv_obj_set_height(ui_label_sys_name_header, LV_SIZE_CONTENT); /// 1
-        lv_obj_set_x(ui_label_sys_name_header, -181);
-        lv_obj_set_y(ui_label_sys_name_header, -141);
+        lv_obj_set_x(ui_label_sys_name_header, POS_X_SYS_NAME_T);
+        lv_obj_set_y(ui_label_sys_name_header, POS_Y_SYS_NAME_T);
         lv_obj_set_align(ui_label_sys_name_header, LV_ALIGN_CENTER);
         lv_label_set_text(ui_label_sys_name_header, getstart.pj_name);
         lv_obj_set_style_text_color(ui_label_sys_name_header, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
         lv_obj_set_style_text_opa(ui_label_sys_name_header, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-        lv_obj_set_style_text_font(ui_label_sys_name_header, &lv_font_montserrat_12, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_text_font(ui_label_sys_name_header, &lv_font_montserrat_16, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-        ui_label_time_header = lv_label_create(screen);
+        ui_label_time_header = lv_label_create(ui_header_panel);
+        lv_obj_set_align(ui_label_time_header,LV_ALIGN_OUT_LEFT_MID);
         lv_obj_set_width(ui_label_time_header, LV_SIZE_CONTENT);  /// 1
         lv_obj_set_height(ui_label_time_header, LV_SIZE_CONTENT); /// 1
-        lv_obj_set_x(ui_label_time_header, 100);
-        lv_obj_set_y(ui_label_time_header, -141);
+        lv_obj_set_x(ui_label_time_header, POS_X_TIME_HEAD_T);
+        lv_obj_set_y(ui_label_time_header, POS_Y_TIME_HEAD_T);
         lv_obj_set_align(ui_label_time_header, LV_ALIGN_CENTER);
-        // lv_label_set_text(ui_label_time_header, dt.date_time_header);
+        lv_label_set_text(ui_label_time_header, dt.date_time_header);
         lv_obj_set_style_text_color(ui_label_time_header, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
         lv_obj_set_style_text_opa(ui_label_time_header, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
         lv_obj_set_style_text_font(ui_label_time_header, &lv_font_montserrat_16, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-        ui_icon_header_WiFi = lv_label_create(screen);
+        ui_icon_header_WiFi = lv_label_create(ui_header_panel);
         lv_obj_set_width(ui_icon_header_WiFi, LV_SIZE_CONTENT);  /// 1
         lv_obj_set_height(ui_icon_header_WiFi, LV_SIZE_CONTENT); /// 1
-        lv_obj_set_x(ui_icon_header_WiFi, 220);
-        lv_obj_set_y(ui_icon_header_WiFi, -141);
+        lv_obj_set_x(ui_icon_header_WiFi, POS_X_WIFI_HEAD);
+        lv_obj_set_y(ui_icon_header_WiFi, POS_Y_WIFI_HEAD);
         lv_obj_set_align(ui_icon_header_WiFi, LV_ALIGN_CENTER);
         lv_label_set_text(ui_icon_header_WiFi, "D");
         lv_obj_set_style_text_color(ui_icon_header_WiFi, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -125,7 +145,6 @@ void create_ui_card_infor(lv_obj_t *screen)
     lv_obj_set_style_bg_grad_dir(ui_infor_card1, LV_GRAD_DIR_VER, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_color(ui_infor_card1, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_opa(ui_infor_card1, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    // lv_obj_add_flag(ui_infor_card1, LV_OBJ_FLAG_HIDDEN);
 
     ui_infor_card2 = lv_obj_create(screen);
     lv_obj_set_width(ui_infor_card2, WIDTH_CARD2_INFO);
@@ -142,7 +161,22 @@ void create_ui_card_infor(lv_obj_t *screen)
     lv_obj_set_style_border_color(ui_infor_card2, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_opa(ui_infor_card2, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    // lv_obj_add_flag(ui_infor_card2, LV_OBJ_FLAG_HIDDEN);
+    
+    ui_infor_card3 = lv_obj_create(screen);
+    lv_obj_set_width(ui_infor_card3, WIDTH_CARD2_INFO);
+    lv_obj_set_height(ui_infor_card3, HEIGHT_CARD_INFO);
+    lv_obj_set_x(ui_infor_card3, POS_X_CARD2_INFO);
+    lv_obj_set_y(ui_infor_card3, POS_Y_CARD_INFO);
+    lv_obj_set_align(ui_infor_card3, LV_ALIGN_CENTER);
+    lv_obj_clear_flag(ui_infor_card3, LV_OBJ_FLAG_SCROLLABLE); /// Flags
+    lv_obj_set_style_radius(ui_infor_card3, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_infor_card3, lv_color_hex(0x464B55), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_infor_card3, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_color(ui_infor_card3, lv_color_hex(0x2D323C), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_dir(ui_infor_card3, LV_GRAD_DIR_VER, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_infor_card3, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_infor_card3, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_add_flag(ui_infor_card3, LV_OBJ_FLAG_HIDDEN);
 
 }
 
@@ -151,7 +185,7 @@ void create_ui_view_btn(lv_obj_t * screen,lv_obj_t * view_btn_num){
     view_btn_num = lv_btn_create(screen);
     lv_obj_set_width(view_btn_num, SIZE_WIDTH_BACK_BTN);
     lv_obj_set_height(view_btn_num, SIZE_HEIGHT_BACK_BTN);
-    lv_obj_set_x(view_btn_num, -85);
+    lv_obj_set_x(view_btn_num, POS_X_VIEW_BTN);
     lv_obj_set_y(view_btn_num, POS_Y_BACK_BTN);
     lv_obj_set_align(view_btn_num, LV_ALIGN_CENTER);
     lv_obj_add_flag(view_btn_num, LV_OBJ_FLAG_SCROLL_ON_FOCUS); /// Flags
@@ -236,41 +270,6 @@ void create_ui_chart(lv_obj_t * screen,lv_obj_t * view_chart_t_num,lv_obj_t * vi
     lv_obj_set_style_bg_opa(view_chart_num, 0, LV_PART_INDICATOR | LV_STATE_DEFAULT);
     lv_chart_set_axis_tick(view_chart_num, LV_CHART_AXIS_PRIMARY_X, 2, 1, 1000, 10, false, 20);
     lv_obj_add_flag(view_chart_num, LV_OBJ_FLAG_HIDDEN);
-}
-
-void create_ui_back_btn(lv_obj_t * screen,lv_obj_t * btn,int part)
-{
-    // create_ui_back_btn(ui_infor_screen_1,GET_INFOR_PAGE_123456);
-    btn = lv_btn_create(screen);
-    lv_obj_set_width(btn, SIZE_WIDTH_BACK_BTN);
-    lv_obj_set_height(btn, SIZE_HEIGHT_BACK_BTN);
-    lv_obj_set_x(btn, POS_X_BACK_BTN);
-    lv_obj_set_y(btn, POS_Y_BACK_BTN);
-    lv_obj_set_align(btn, LV_ALIGN_CENTER);
-    lv_obj_add_flag(btn, LV_OBJ_FLAG_SCROLL_ON_FOCUS); /// Flags
-    lv_obj_clear_flag(btn, LV_OBJ_FLAG_SCROLLABLE);    /// Flags
-    lv_obj_set_style_bg_color(btn, lv_color_hex(0x292929), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(btn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_dir(btn, LV_GRAD_DIR_VER, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_color(btn, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_opa(btn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_color(btn, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_opa(btn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    lv_obj_t *label_sym_btn;
-    label_sym_btn = lv_label_create(btn);
-    lv_label_set_text(label_sym_btn, "< Back");
-    lv_obj_set_style_text_font(label_sym_btn, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_center(label_sym_btn);
-
-    lv_obj_add_flag(btn, LV_OBJ_FLAG_HIDDEN);
-
-    if (part == GET_INFOR_PAGE_123456){
-        lv_obj_add_event_cb(btn, ui_event_back_btn1, LV_EVENT_ALL, NULL);
-    }else if(part == GET_INFOR_PAGE_78910){
-        lv_obj_add_event_cb(btn, ui_event_back_btn2, LV_EVENT_ALL, NULL);
-    }
-
 }
 
 void create_ui_option_card(lv_obj_t * screen,lv_obj_t * option_card,lv_obj_t * name_op_t,lv_obj_t * pos_op_t){
@@ -468,8 +467,8 @@ void create_ui_save_btn(lv_obj_t * screen,lv_obj_t * save_btn){
     save_btn = lv_btn_create(screen);
     lv_obj_set_width(save_btn, SIZE_WIDTH_BACK_BTN);
     lv_obj_set_height(save_btn, SIZE_HEIGHT_BACK_BTN);
-    lv_obj_set_x(save_btn, 110);
-    lv_obj_set_y(save_btn, 100);
+    lv_obj_set_x(save_btn, SIZE_W_SAVE_BTN);
+    lv_obj_set_y(save_btn, SIZE_H_SAVE_BTN);
     lv_obj_set_align(save_btn, LV_ALIGN_CENTER);
     lv_obj_add_flag(save_btn, LV_OBJ_FLAG_SCROLL_ON_FOCUS); /// Flags
     lv_obj_clear_flag(save_btn, LV_OBJ_FLAG_SCROLLABLE);    /// Flags
@@ -583,11 +582,8 @@ void delete_obj_getstart(){
 
 void ui_init(void)
 {
-    // testscreen_init();
-    // ui_information_screen_init();
-    // get_start_screen_init();
+    get_start_screen_init();
     ui_monitor_screen_1_init();
-    // ui_monitor_screen_2_init();
-    // lv_disp_load_scr(ui_get_start_screen);
-    lv_disp_load_scr(ui_monitor_screen_1);    
+    ui_monitor_screen_2_init();
+    lv_disp_load_scr(ui_get_start_screen); 
 }

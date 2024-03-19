@@ -8,7 +8,7 @@
 #define RESET_COUNTER             0
 
 #define CHART
-#define DEBUG 0
+#define DEBUG
 /********************************************************/
 
 /************************ INCLUDE ************************/
@@ -22,10 +22,6 @@
 #include "NTPClient.h"
 #include "Arduino.h"
 #include <WiFiUdp.h>
-#include "time.h"
-#include "FreeRTOS.h"
-#include "FreeRTOSConfig.h"
-
 
 #include "screens/object.h"
 #include "screens/data_struct.h"
@@ -186,7 +182,6 @@ char date_time[20] = "";
 
 /************************ FUNCTION ************************/
 
-
 void my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p) {
   uint32_t w = (area->x2 - area->x1 + 1);
   uint32_t h = (area->y2 - area->y1 + 1);
@@ -213,8 +208,8 @@ void send_sheet()
   if (WiFi.status() == WL_CONNECTED)
   {
     HTTPClient http;
-    String url = "https://script.google.com/macros/s/AKfycbzZBsXxVEVItSIlgcv4uo8Zf3Uzs-SfzHhQ_QEZaDoPTzrY8y0SGX0A2WMVkso9os7BoA/exec?device_node=" + recv_num_node + "&" + "value=" + String(temp.Node2);
-    Serial.println("Making a request");
+    String url = "https://script.google.com/macros/s/AKfycbzZBsXxVEVItSIlgcv4uo8Zf3Uzs-SfzHhQ_QEZaDoPTzrY8y0SGX0A2WMVkso9os7BoA/exec?device_node=" + recv_num_node + "&" + "value=" + String(recv_temperature_message);
+    // Serial.println("Making a request");
     http.begin(url.c_str()); // Specify the URL and certificate
     http.setFollowRedirects(HTTPC_STRICT_FOLLOW_REDIRECTS);
     int httpCode = http.GET();
@@ -232,30 +227,23 @@ void send_sheet()
 }
 
 void GetDateTime() {
-  // Week Days
-  String weekDays[7] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
-  
-  // Month names
-  String months[12] = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
-
   timeClient.update();
 
   unsigned long epochTime = timeClient.getEpochTime();
-  String formattedTime = timeClient.getFormattedTime();
   int currentHour = timeClient.getHours();
   int currentMinute = timeClient.getMinutes();
-  int currentSecond = timeClient.getSeconds();
-  String weekDay = weekDays[timeClient.getDay()];
 
   struct tm *ptm = gmtime((time_t *)&epochTime);
   int monthDay = ptm->tm_mday;
   int currentMonth = ptm->tm_mon + 1;
-  String currentMonthName = months[currentMonth - 1];
   int currentYear = ptm->tm_year + 1900;
   
-  sprintf(dt.date_time_header, "%02d-%02d-%02d %02d:%02d:%02d",currentYear, currentMonth, monthDay, currentHour, currentMinute);
+  //00-00-00 00:00:00 >17 +\0<
+  sprintf(dt.date_time_header, "%02d-%02d-%02d %02d:%02d",currentYear, currentMonth, monthDay, currentHour, currentMinute);
+  lv_label_set_text(ui_label_time_header, dt.date_time_header);
 
-  sprintf(dt.time_update, "Last update %02d:%02d", currentHour, currentMinute);
+  //Last update 00:00 >17 +\0<
+  sprintf(dt.time_update, "Last update %02d:%02d", currentHour, currentMinute); 
 
 }
 
@@ -275,18 +263,16 @@ void OnDataRecv(const uint8_t *mac_addr, const uint8_t *incomingData, int len)
     sprintf(t_text.temp_text1, "%.1f°C", temp.Node1);
     lv_label_set_text(ui_temp_t_device1, t_text.temp_text1);
 
-    // lv_arc_set_value(ui_arc_temp_1, temp.Node1);
-    lv_meter_set_indicator_value(meter_1,indic_1,temp.Node1);
+    // lv_meter_set_indicator_value(meter_1,indic_1,temp.Node1);
 
-    GetDateTime();
     strcpy(dev_uptime.dev1,dt.time_update);
     lv_label_set_text(ui_last_up_t_device1, dev_uptime.dev1);
+
     
     #ifdef DEBUG
       Serial.println(recv_num_node);
       Serial.println(temp.Node1);
-      Serial.print("Update");
-      Serial.println(date_time);
+      Serial.println(t_text.temp_text1);
       Serial.println(dev_uptime.dev1);
       Serial.println("/");
     #endif
@@ -308,28 +294,27 @@ void OnDataRecv(const uint8_t *mac_addr, const uint8_t *incomingData, int len)
       count_pos_array_dev1 = RESET_COUNTER;
     }
 #endif
+
   }
 
   //IF RECEIVE FROM NODE 2
   else if (recv_num_node == "node:2")
   {
-
     temp.Node2 = recv_temperature_message; 
 
     sprintf(t_text.temp_text2, "%.1f°C", temp.Node2);
     lv_label_set_text(ui_temp_t_device2, t_text.temp_text2);
 
-    lv_obj_update_layout(ui_arc_temp_2);
-    lv_arc_set_value(ui_arc_temp_2, temp.Node2);
+    //lv_meter_set_indicator_value(meter_2,indic_2,temp.Node2);
 
     strcpy(dev_uptime.dev2,dt.time_update);
     lv_label_set_text(ui_last_up_t_device2, dev_uptime.dev2);
-    
+
+
     #ifdef DEBUG
       Serial.println(recv_num_node);
       Serial.println(temp.Node2);
-      Serial.print("System update time : ");
-      Serial.println(date_time);
+      Serial.println(t_text.temp_text2);
       Serial.println(dev_uptime.dev2);
       Serial.println("/");
     #endif
@@ -356,24 +341,21 @@ void OnDataRecv(const uint8_t *mac_addr, const uint8_t *incomingData, int len)
   //IF RECEIVE FROM NODE 3
   else if (recv_num_node == "node:3")
   {
-
-    // GetDateTime();
     temp.Node3 = recv_temperature_message; 
 
     sprintf(t_text.temp_text3, "%.1f°C", temp.Node3);
     lv_label_set_text(ui_temp_t_device3, t_text.temp_text3);
 
-    lv_obj_update_layout(ui_arc_temp_3);
-    lv_arc_set_value(ui_arc_temp_3, temp.Node3);
-
+    // lv_meter_set_indicator_value(meter_3,indic_3,temp.Node3);
 
     strcpy(dev_uptime.dev3,dt.time_update);
     lv_label_set_text(ui_last_up_t_device3, dev_uptime.dev3);
-    
+
+
     #ifdef DEBUG
       Serial.println(recv_num_node);
       Serial.println(temp.Node3);
-      Serial.print("Update");
+      Serial.println(t_text.temp_text3);
       Serial.println(dev_uptime.dev3);
       Serial.print(" ");
     #endif
@@ -400,14 +382,12 @@ void OnDataRecv(const uint8_t *mac_addr, const uint8_t *incomingData, int len)
   //IF RECEIVE FROM NODE 4
   else if (recv_num_node == "node:4")
   {
-
-    // GetDateTime();
     temp.Node4 = recv_temperature_message; 
 
     sprintf(t_text.temp_text4, "%.1f°C", temp.Node4);
     lv_label_set_text(ui_temp_t_device4, t_text.temp_text4);
 
-    lv_arc_set_value(ui_arc_temp_4, temp.Node4);
+    // lv_meter_set_indicator_value(meter_4,indic_4,temp.Node4);
 
     strcpy(dev_uptime.dev4,dt.time_update);
     lv_label_set_text(ui_last_up_t_device4, dev_uptime.dev4);
@@ -415,9 +395,9 @@ void OnDataRecv(const uint8_t *mac_addr, const uint8_t *incomingData, int len)
     #ifdef DEBUG
       Serial.println(recv_num_node);
       Serial.println(temp.Node4);
-      Serial.print("Update");
+      Serial.println(t_text.temp_text4);
       Serial.println(dev_uptime.dev4);
-      Serial.print(" ");
+      Serial.print("/");
     #endif
     
 #ifdef CHART
@@ -442,23 +422,22 @@ void OnDataRecv(const uint8_t *mac_addr, const uint8_t *incomingData, int len)
    //IF RECEIVE FROM NODE 5
   else if (recv_num_node == "node:5")
   {
-
-    temp.Node5 = recv_temperature_message; 
+    temp.Node5 = recv_temperature_message;
 
     sprintf(t_text.temp_text5, "%.1f°C", temp.Node5);
     lv_label_set_text(ui_temp_t_device5, t_text.temp_text5);
 
-    lv_obj_update_layout(ui_arc_temp_5);
-    lv_arc_set_value(ui_arc_temp_5, temp.Node5);
+    // lv_meter_set_indicator_value(meter_5,indic_5,temp.Node5);
 
     strcpy(dev_uptime.dev5,dt.time_update);
-    lv_label_set_text(ui_last_up_t_device5, dt.time_update);
+    lv_label_set_text(ui_last_up_t_device5, dev_uptime.dev5);
     
     #ifdef DEBUG
       Serial.println(recv_num_node);
       Serial.println(temp.Node5);
+      Serial.println(t_text.temp_text5);
       Serial.println(dev_uptime.dev5);
-      Serial.print(" ");
+      Serial.print("/");
     #endif
     
 #ifdef CHART
@@ -479,140 +458,225 @@ void OnDataRecv(const uint8_t *mac_addr, const uint8_t *incomingData, int len)
     }
 #endif
   }
-  // else if (recv_num_node == "node:6")
-  // {
-  //   static int count_position_array = 0;
-  //   temp.Node6 = recv_temperature_message;
-  //   chart_temp_6_series = lv_chart_add_series(ui_chart6_temp, lv_color_hex(0x464B55), LV_CHART_AXIS_SECONDARY_Y);
-  //   chart_temp_6_array[count_position_array] = temp.Node6;
-  //   lv_arc_set_value(ui_arc_temp_6, temp.Node6);
-  //   // lv_arc_set_value(ui_arc_temp_info_1, temp.Node1);
-  //   sprintf(t_text.temp_text6, "%.1f°C", temp.Node6);
-  //   lv_label_set_text(ui_temp_t_device6, t_text.temp_text6);
-  //   lv_label_set_text(ui_temp_t_info_device6, t_text.temp_text6);
 
-  //   if (count_position_array <= BUFFER_OF_CHART - 1)
-  //   {
-  //     count_position_array++;
-  //     lv_chart_set_point_count(ui_chart6_temp, count_position_array);
-  //     lv_chart_set_axis_tick(ui_chart6_temp, LV_CHART_AXIS_PRIMARY_X, 4, 1, 1000, 10, false, 20);
-  //     lv_chart_set_ext_y_array(ui_chart6_temp, chart_temp_6_series, chart_temp_6_array);
-  //   }
-  //   else
-  //   {
-  //     count_position_array = 0;
-  //   }
-  // }
+    else if (recv_num_node == "node:6")
+  {
+    temp.Node6 = recv_temperature_message;
 
-  // else if (recv_num_node == "node:7")
-  // {
-  //   static int count_position_array = 0;
-  //   temp.Node7 = recv_temperature_message;
-  //   chart_temp_7_series = lv_chart_add_series(ui_chart7_temp, lv_color_hex(0x464B55), LV_CHART_AXIS_SECONDARY_Y);
-  //   chart_temp_7_array[count_position_array] = temp.Node7;
-  //   lv_arc_set_value(ui_arc_temp_7, temp.Node7);
-  //   // lv_arc_set_value(ui_arc_temp_info_1, temp.Node1);
-  //   sprintf(t_text.temp_text7, "%.1f°C", temp.Node7);
-  //   lv_label_set_text(ui_temp_t_device7, t_text.temp_text7);
-  //   lv_label_set_text(ui_temp_t_info_device7, t_text.temp_text7);
+    sprintf(t_text.temp_text6, "%.1f°C", temp.Node6);
+    lv_label_set_text(ui_temp_t_device6, t_text.temp_text6);
 
-  //   if (count_position_array <= BUFFER_OF_CHART - 1)
-  //   {
-  //     count_position_array++;
-  //     lv_chart_set_point_count(ui_chart7_temp, count_position_array);
-  //     lv_chart_set_axis_tick(ui_chart7_temp, LV_CHART_AXIS_PRIMARY_X, 2, 1, 1000, 10, false, 20);
-  //     lv_chart_set_ext_y_array(ui_chart7_temp, chart_temp_7_series, chart_temp_7_array);
-  //   }
-  //   else
-  //   {
-  //     count_position_array = 0;
-  //   }
-  // }
+    // lv_meter_set_indicator_value(meter_6,indic_6,temp.Node6);
 
-  // else if (recv_num_node == "node:8")
-  // {
-  //   static int count_position_array = 0;
-  //   temp.Node8 = recv_temperature_message;
-  //   chart_temp_8_series = lv_chart_add_series(ui_chart8_temp, lv_color_hex(0x464B55), LV_CHART_AXIS_SECONDARY_Y);
-  //   chart_temp_8_array[count_position_array] = temp.Node8;
-  //   lv_arc_set_value(ui_arc_temp_8, temp.Node8);
-  //   // lv_arc_set_value(ui_arc_temp_info_1, temp.Node1);
-  //   sprintf(t_text.temp_text8, "%.1f°C", temp.Node8);
-  //   lv_label_set_text(ui_temp_t_device8, t_text.temp_text8);
-  //   lv_label_set_text(ui_temp_t_info_device8, t_text.temp_text8);
+    strcpy(dev_uptime.dev6,dt.time_update);
+    lv_label_set_text(ui_last_up_t_device6, dev_uptime.dev6);
+    
+    #ifdef DEBUG
+      Serial.println(recv_num_node);
+      Serial.println(temp.Node6);
+      Serial.println(t_text.temp_text6);
+      Serial.println(dev_uptime.dev6);
+      Serial.print("/");
+    #endif
+    
+#ifdef CHART
+    
+    chart_temp_6_series = lv_chart_add_series(ui_chart6_temp, lv_color_hex(0x464B55), LV_CHART_AXIS_SECONDARY_Y);
+    chart_temp_6_array[count_pos_array_dev6] = temp.Node6;
 
-  //   if (count_position_array <= BUFFER_OF_CHART - 1)
-  //   {
-  //     count_position_array++;
-  //     lv_chart_set_point_count(ui_chart8_temp, count_position_array);
-  //     lv_chart_set_axis_tick(ui_chart8_temp, LV_CHART_AXIS_PRIMARY_X, 2, 1, 1000, 10, false, 20);
-  //     lv_chart_set_ext_y_array(ui_chart8_temp, chart_temp_8_series, chart_temp_8_array);
-  //   }
-  //   else
-  //   {
-  //     count_position_array = 0;
-  //   }
-  // }
+    if (count_pos_array_dev6 <= BUFFER_OF_CHART - 1)
+    {
+      Serial.println(count_pos_array_dev6);
+      count_pos_array_dev6++;
+      lv_chart_set_point_count(ui_chart6_temp, count_pos_array_dev6);
+      lv_chart_set_ext_y_array(ui_chart6_temp, chart_temp_6_series, chart_temp_6_array);
+    }
+    else
+    {
+      count_pos_array_dev6 = RESET_COUNTER;
+    }
+#endif
+  }
 
-  // else if (recv_num_node == "node:9")
-  // {
-  //   static int count_position_array = 0;
-  //   temp.Node9 = recv_temperature_message;
-  //   chart_temp_9_series = lv_chart_add_series(ui_chart9_temp, lv_color_hex(0x464B55), LV_CHART_AXIS_SECONDARY_Y);
-  //   chart_temp_9_array[count_position_array] = temp.Node9;
-  //   lv_arc_set_value(ui_arc_temp_9, temp.Node9);
-  //   // lv_arc_set_value(ui_arc_temp_info_1, temp.Node1);
-  //   sprintf(t_text.temp_text9, "%.1f°C", temp.Node9);
-  //   lv_label_set_text(ui_temp_t_device9, t_text.temp_text9);
-  //   lv_label_set_text(ui_temp_t_info_device9, t_text.temp_text9);
+    else if (recv_num_node == "node:7")
+  {
+    temp.Node7 = recv_temperature_message;
 
-  //   if (count_position_array <= BUFFER_OF_CHART - 1)
-  //   {
-  //     count_position_array++;
-  //     lv_chart_set_point_count(ui_chart9_temp, count_position_array);
-  //     lv_chart_set_axis_tick(ui_chart9_temp, LV_CHART_AXIS_PRIMARY_X, 2, 1, 1000, 10, false, 20);
-  //     lv_chart_set_ext_y_array(ui_chart9_temp, chart_temp_9_series, chart_temp_9_array);
-  //   }
-  //   else
-  //   {
-  //     count_position_array = 0;
-  //   }
-  // }
+    sprintf(t_text.temp_text7, "%.1f°C", temp.Node7);
+    lv_label_set_text(ui_temp_t_device7, t_text.temp_text7);
 
-  // else if (recv_num_node == "node:10")
-  // {
-  //   static int count_position_array = 0;
-  //   temp.Node10 = recv_temperature_message;
-  //   chart_temp_10_series = lv_chart_add_series(ui_chart10_temp, lv_color_hex(0x464B55), LV_CHART_AXIS_SECONDARY_Y);
-  //   chart_temp_10_array[count_position_array] = temp.Node10;
-  //   lv_arc_set_value(ui_arc_temp_10, temp.Node10);
-  //   // lv_arc_set_value(ui_arc_temp_info_1, temp.Node1);
-  //   sprintf(t_text.temp_text10, "%.1f°C", temp.Node10);
-  //   lv_label_set_text(ui_temp_t_device10, t_text.temp_text10);
-  //   lv_label_set_text(ui_temp_t_info_device10, t_text.temp_text10);
+    // lv_meter_set_indicator_value(meter_7,indic_7,temp.Node7);
 
-  //   if (count_position_array <= BUFFER_OF_CHART - 1)
-  //   {
-  //     count_position_array++;
-  //     lv_chart_set_point_count(ui_chart10_temp, count_position_array);
-  //     lv_chart_set_axis_tick(ui_chart10_temp, LV_CHART_AXIS_PRIMARY_X, 2, 1, 1000, 10, false, 20);
-  //     lv_chart_set_ext_y_array(ui_chart10_temp, chart_temp_10_series, chart_temp_10_array);
-  //   }
-  //   else
-  //   {
-  //     count_position_array = 0;
-  //   }
-  // }
+    strcpy(dev_uptime.dev7,dt.time_update);
+    lv_label_set_text(ui_last_up_t_device7, dev_uptime.dev7);
+    
+    #ifdef DEBUG
+      Serial.println(recv_num_node);
+      Serial.println(temp.Node7);
+      Serial.println(t_text.temp_text7);
+      Serial.println(dev_uptime.dev7);
+      Serial.print("/");
+    #endif
+    
+#ifdef CHART
+    
+    chart_temp_7_series = lv_chart_add_series(ui_chart7_temp, lv_color_hex(0x464B55), LV_CHART_AXIS_SECONDARY_Y);
+    chart_temp_7_array[count_pos_array_dev7] = temp.Node7;
+
+    if (count_pos_array_dev7 <= BUFFER_OF_CHART - 1)
+    {
+      Serial.println(count_pos_array_dev7);
+      count_pos_array_dev7++;
+      lv_chart_set_point_count(ui_chart7_temp, count_pos_array_dev7);
+      lv_chart_set_ext_y_array(ui_chart7_temp, chart_temp_7_series, chart_temp_7_array);
+    }
+    else
+    {
+      count_pos_array_dev7 = RESET_COUNTER;
+    }
+#endif
+  }
+
+    else if (recv_num_node == "node:8")
+  {
+    temp.Node8 = recv_temperature_message;
+
+    sprintf(t_text.temp_text8, "%.1f°C", temp.Node8);
+    lv_label_set_text(ui_temp_t_device8, t_text.temp_text8);
+
+    // lv_meter_set_indicator_value(meter_8,indic_8,temp.Node8);
+
+    strcpy(dev_uptime.dev8,dt.time_update);
+    lv_label_set_text(ui_last_up_t_device8, dev_uptime.dev8);
+    
+    #ifdef DEBUG
+      Serial.println(recv_num_node);
+      Serial.println(temp.Node8);
+      Serial.println(t_text.temp_text8);
+      Serial.println(dev_uptime.dev8);
+      Serial.print("/");
+    #endif
+    
+#ifdef CHART
+    
+    chart_temp_8_series = lv_chart_add_series(ui_chart8_temp, lv_color_hex(0x464B55), LV_CHART_AXIS_SECONDARY_Y);
+    chart_temp_8_array[count_pos_array_dev8] = temp.Node8;
+
+    if (count_pos_array_dev8 <= BUFFER_OF_CHART - 1)
+    {
+      Serial.println(count_pos_array_dev8);
+      count_pos_array_dev8++;
+      lv_chart_set_point_count(ui_chart8_temp, count_pos_array_dev8);
+      lv_chart_set_ext_y_array(ui_chart8_temp, chart_temp_8_series, chart_temp_8_array);
+    }
+    else
+    {
+      count_pos_array_dev8 = RESET_COUNTER;
+    }
+#endif
+  }
+
+    else if (recv_num_node == "node:9")
+  {
+    temp.Node9 = recv_temperature_message;
+
+    sprintf(t_text.temp_text9, "%.1f°C", temp.Node9);
+    lv_label_set_text(ui_temp_t_device9, t_text.temp_text9);
+
+    // lv_meter_set_indicator_value(meter_9,indic_9,temp.Node9);
+
+    strcpy(dev_uptime.dev9,dt.time_update);
+    lv_label_set_text(ui_last_up_t_device9, dev_uptime.dev9);
+    
+    #ifdef DEBUG
+      Serial.println(recv_num_node);
+      Serial.println(temp.Node9);
+      Serial.println(t_text.temp_text9);
+      Serial.println(dev_uptime.dev9);
+      Serial.print("/");
+    #endif
+    
+#ifdef CHART
+    
+    chart_temp_9_series = lv_chart_add_series(ui_chart9_temp, lv_color_hex(0x464B55), LV_CHART_AXIS_SECONDARY_Y);
+    chart_temp_9_array[count_pos_array_dev9] = temp.Node9;
+
+    if (count_pos_array_dev9 <= BUFFER_OF_CHART - 1)
+    {
+      Serial.println(count_pos_array_dev9);
+      count_pos_array_dev9++;
+      lv_chart_set_point_count(ui_chart9_temp, count_pos_array_dev9);
+      lv_chart_set_ext_y_array(ui_chart9_temp, chart_temp_9_series, chart_temp_9_array);
+    }
+    else
+    {
+      count_pos_array_dev9 = RESET_COUNTER;
+    }
+#endif
+  }
+
+    else if (recv_num_node == "node:10")
+  {
+    temp.Node10 = recv_temperature_message;
+
+    sprintf(t_text.temp_text10, "%.1f°C", temp.Node10);
+    lv_label_set_text(ui_temp_t_device10, t_text.temp_text10);
+
+    // lv_meter_set_indicator_value(meter_10,indic_10,temp.Node10);
+
+    strcpy(dev_uptime.dev10,dt.time_update);
+    lv_label_set_text(ui_last_up_t_device10, dev_uptime.dev10);
+    
+    #ifdef DEBUG
+      Serial.println(recv_num_node);
+      Serial.println(temp.Node10);
+      Serial.println(t_text.temp_text10);
+      Serial.println(dev_uptime.dev10);
+      Serial.print("/");
+    #endif
+    
+#ifdef CHART
+    
+    chart_temp_10_series = lv_chart_add_series(ui_chart10_temp, lv_color_hex(0x464B55), LV_CHART_AXIS_SECONDARY_Y);
+    chart_temp_10_array[count_pos_array_dev10] = temp.Node10;
+
+    if (count_pos_array_dev10 <= BUFFER_OF_CHART - 1)
+    {
+      Serial.println(count_pos_array_dev10);
+      count_pos_array_dev10++;
+      lv_chart_set_point_count(ui_chart10_temp, count_pos_array_dev10);
+      lv_chart_set_ext_y_array(ui_chart10_temp, chart_temp_10_series, chart_temp_10_array);
+    }
+    else
+    {
+      count_pos_array_dev10 = RESET_COUNTER;
+    }
+#endif
+  }
+
   else
   {
     // Nothing
   }
+  // send_sheet();
 }
 
-void setup_receiver_espnow()
+void init_esp_now(){
+  WiFi.disconnect();
+  if (esp_now_init() == ESP_OK)
+  {
+    Serial.println("Initializing ESP-NOW Success");
+  }else{
+    Serial.println("Initializing ESP-NOW Fail");
+    ESP.restart();
+  }
+
+}
+void setup_wifi()
 {
   WiFi.mode(WIFI_AP_STA);
   WiFi.begin(ssid, password);
+
   while (WiFi.status() != WL_CONNECTED)
   {
     delay(1000);
@@ -623,12 +687,11 @@ void setup_receiver_espnow()
   Serial.print("Wi-Fi Channel: ");
   Serial.println(WiFi.channel());
 
-  if (esp_now_init() != ESP_OK)
-  {
-    Serial.println("Error initializing ESP-NOW");
-    return;
-  }
-  esp_now_register_recv_cb(OnDataRecv);
+  // if (esp_now_init() != ESP_OK)
+  // {
+  //   Serial.println("Error initializing ESP-NOW");
+  // }
+  // esp_now_register_recv_cb(OnDataRecv);
 }
 
 void setup()
@@ -643,6 +706,17 @@ void setup()
   char start_name_8[10]   = "Device 8";
   char start_name_9[10]   = "Device 9";
   char start_name_10[10]  = "Device 10";
+
+  char start_pos_1[11]   = "Position 1";
+  char start_pos_2[11]   = "Position 2";
+  char start_pos_3[11]   = "Position 3";
+  char start_pos_4[11]   = "Position 4";
+  char start_pos_5[11]   = "Position 5";
+  char start_pos_6[11]   = "Position 6";
+  char start_pos_7[11]   = "Position 7";
+  char start_pos_8[11]   = "Position 8";
+  char start_pos_9[11]   = "Position 9";
+  char start_pos_10[12]  = "Position 10";
 
   char start_temp[10] = "0 °C";
 
@@ -660,6 +734,17 @@ void setup()
   strcpy(name.device8,start_name_8);
   strcpy(name.device9,start_name_9);
   strcpy(name.device10,start_name_10);
+
+  strcpy(pos_n.device1,start_pos_1);
+  strcpy(pos_n.device2,start_pos_2);
+  strcpy(pos_n.device3,start_pos_3);
+  strcpy(pos_n.device4,start_pos_4);
+  strcpy(pos_n.device5,start_pos_5);
+  strcpy(pos_n.device6,start_pos_6);
+  strcpy(pos_n.device7,start_pos_7);
+  strcpy(pos_n.device8,start_pos_8);
+  strcpy(pos_n.device9,start_pos_9);
+  strcpy(pos_n.device10,start_pos_10);
 
   strcpy(t_text.temp_text1,start_temp);
   strcpy(t_text.temp_text2,start_temp);
@@ -691,7 +776,14 @@ void setup()
   tft.setBrightness(255);
   Serial.begin(115200);
 
-  setup_receiver_espnow();
+
+  setup_wifi();
+  init_esp_now();
+  if (esp_now_init() != ESP_OK)
+  {
+    Serial.println("Error initializing ESP-NOW");
+  }
+  esp_now_register_recv_cb(OnDataRecv);
 
   lv_init();
   // initialize LVGL draw buffers
@@ -713,10 +805,10 @@ void setup()
   
 }
 
-void loop(){
-  while(1) {
-    uint32_t time_till_next = lv_timer_handler();
-    delay(time_till_next);
-  }
+void loop()
+{
+  GetDateTime();
+  uint32_t time_till_next = lv_timer_handler();
+  delay(time_till_next);
 }
 /***********************************************************/

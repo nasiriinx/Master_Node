@@ -34,14 +34,9 @@ void normal_pos_t_area_info_scr(int num);
 void delete_obj_getstart();
 
 void create_ui_view_btn(lv_obj_t * screen,lv_obj_t * view_btn_num);
-void create_ui_chart(lv_obj_t * screen,lv_obj_t * view_chart_t_num,lv_obj_t * view_chart_num);
 void create_ui_back_btn(lv_obj_t * screen,lv_obj_t * btn,int part);
-// void create_ui_option_card(lv_obj_t * screen,lv_obj_t * option_card,lv_obj_t * name_op_t,lv_obj_t * pos_op_t);
-void create_ui_op_name_t_area(lv_obj_t * screen,lv_obj_t * name_t_area);
-void create_ui_op_pos_t_area(lv_obj_t * screen,lv_obj_t * pos_t_area);
 void create_ui_save_btn(lv_obj_t * screen,lv_obj_t * save_btn);
 void create_ui_cancel_btn(lv_obj_t * screen,lv_obj_t * cancel_btn);
-
 
 void ui_init(void);
 

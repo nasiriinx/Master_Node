@@ -3,8 +3,6 @@
 
 #include "stdio.h"
 
-
-
 typedef struct Temperature
 {
     float Node1;
@@ -21,16 +19,16 @@ typedef struct Temperature
 
 typedef struct TempText
 {
-    char temp_text1[10];
-    char temp_text2[10];
-    char temp_text3[10];
-    char temp_text4[10];
-    char temp_text5[10];
-    char temp_text6[10];
-    char temp_text7[10];
-    char temp_text8[10];
-    char temp_text9[10];
-    char temp_text10[10];
+    char temp_text1[8];
+    char temp_text2[8];
+    char temp_text3[8];
+    char temp_text4[8];
+    char temp_text5[8];
+    char temp_text6[8];
+    char temp_text7[8];
+    char temp_text8[8];
+    char temp_text9[8];
+    char temp_text10[8];
 
 }TempText;
 
@@ -70,7 +68,7 @@ typedef struct GetStart
 }GetStart;
 
 typedef struct DateandTime{
-    char date_time_header[16];
+    char date_time_header[18];
     char time_update[18];
 }DateandTime;
 

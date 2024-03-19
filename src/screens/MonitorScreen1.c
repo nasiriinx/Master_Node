@@ -4,7 +4,6 @@
 
 void ui_monitor_screen_1_init(void){
 
-
     /********************************************** MONITOR 1 SCREEN **********************************************/
     ui_monitor_screen_1 = lv_obj_create(NULL);
     lv_obj_clear_flag(ui_monitor_screen_1, LV_OBJ_FLAG_SCROLLABLE);/// Flags
@@ -49,35 +48,35 @@ void ui_monitor_screen_1_init(void){
     lv_obj_set_style_text_decor(ui_name_t_device1, LV_TEXT_DECOR_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_name_t_device1, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    meter_1 = lv_meter_create(ui_monitor_screen_1);
-    lv_obj_set_size(meter_1, SIZE_WIDTH_METER, SIZE_HEIGHT_METER);
-    lv_obj_set_x(meter_1, POS_X_METER14);  
-    lv_obj_set_y(meter_1, POS_Y_METER123);
-    lv_obj_set_style_bg_color(meter_1, lv_color_hex(0x57626C), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(meter_1, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(meter_1, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(meter_1, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(meter_1, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    meter = lv_meter_create(ui_monitor_screen_1);
+    lv_obj_set_size(meter, SIZE_WIDTH_METER, SIZE_HEIGHT_METER);
+    lv_obj_set_x(meter, POS_X_METER14);  
+    lv_obj_set_y(meter, POS_Y_METER123);
+    lv_obj_set_style_bg_color(meter, lv_color_hex(0x57626C), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(meter, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(meter, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(meter, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(meter, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
     
     /*Add a scale first*/
-    lv_meter_scale_t * scale_1 = lv_meter_add_scale(meter_1);
-    lv_meter_set_scale_range(meter_1,scale_1,MIN_RANGE_METER,MAX_RANGE_METER,METER_ANGLE,METER_ROTATION);
-    lv_meter_set_scale_ticks(meter_1, scale_1, 5, 2, 5, lv_color_hex(0xFFFFFF));
+    scale = lv_meter_add_scale(meter);
+    lv_meter_set_scale_range(meter,scale,MIN_RANGE_METER,MAX_RANGE_METER,METER_ANGLE,METER_ROTATION);
+    lv_meter_set_scale_ticks(meter, scale, 5, 2, 5, lv_color_hex(0xFFFFFF));
     
-    // lv_meter_indicator_t * indic_1;
+    // lv_meter_indicator_t * indic;
 
     /*Add a blue arc to the start*/
-    indic_1 = lv_meter_add_arc(meter_1, scale_1, 3, lv_palette_main(LV_PALETTE_BLUE), 0);
-    lv_meter_set_indicator_start_value(meter_1, indic_1, MIN_RANGE_METER);
-    lv_meter_set_indicator_end_value(meter_1, indic_1, MIDDLE_RANGE_METER);
+    indic = lv_meter_add_arc(meter, scale, 3, lv_palette_main(LV_PALETTE_BLUE), 0);
+    lv_meter_set_indicator_start_value(meter, indic, MIN_RANGE_METER);
+    lv_meter_set_indicator_end_value(meter, indic, MIDDLE_RANGE_METER);
 
     /*Add a red arc to the end เลข Arcฝั่งสีแดง*/
-    indic_1 = lv_meter_add_arc(meter_1, scale_1, 3, lv_palette_main(LV_PALETTE_RED), 0);
-    lv_meter_set_indicator_start_value(meter_1, indic_1, MIDDLE_RANGE_METER);
-    lv_meter_set_indicator_end_value(meter_1, indic_1, MAX_RANGE_METER);
+    indic = lv_meter_add_arc(meter, scale, 3, lv_palette_main(LV_PALETTE_RED), 0);
+    lv_meter_set_indicator_start_value(meter, indic, MIDDLE_RANGE_METER);
+    lv_meter_set_indicator_end_value(meter, indic, MAX_RANGE_METER);
 
     /*เข็มชี้*/
-    indic_1 = lv_meter_add_needle_line(meter_1, scale_1, 4, lv_color_hex(0x0F1215), 0);
+    // indic_1 = lv_meter_add_needle_line(meter_1, scale_1, 4, lv_color_hex(0x0F1215), 0);
 
     ui_arc_inner_2 = lv_obj_create(ui_monitor_screen_1);
     lv_obj_set_width(ui_arc_inner_2, SIZE_WIDTH_ARC_INNER2);
@@ -152,35 +151,35 @@ void ui_monitor_screen_1_init(void){
     lv_obj_set_style_text_decor(ui_name_t_device2, LV_TEXT_DECOR_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_name_t_device2, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    meter_2 = lv_meter_create(ui_monitor_screen_1);
-    lv_obj_set_size(meter_2, SIZE_WIDTH_METER, SIZE_HEIGHT_METER);
-    lv_obj_set_x(meter_2, POS_X_METER25);  
-    lv_obj_set_y(meter_2, POS_Y_METER123);
-    lv_obj_set_style_bg_color(meter_2, lv_color_hex(0x57626C), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(meter_2, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(meter_2, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(meter_2, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(meter_2, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    meter = lv_meter_create(ui_monitor_screen_1);
+    lv_obj_set_size(meter, SIZE_WIDTH_METER, SIZE_HEIGHT_METER);
+    lv_obj_set_x(meter, POS_X_METER25);  
+    lv_obj_set_y(meter, POS_Y_METER123);
+    lv_obj_set_style_bg_color(meter, lv_color_hex(0x57626C), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(meter, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(meter, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(meter, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(meter, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
     
     /*Add a scale first*/
-    lv_meter_scale_t * scale_2 = lv_meter_add_scale(meter_2);
-    lv_meter_set_scale_range(meter_2,scale_2,MIN_RANGE_METER,MAX_RANGE_METER,METER_ANGLE,METER_ROTATION);
-    lv_meter_set_scale_ticks(meter_2, scale_2, 5, 2, 5, lv_color_hex(0xFFFFFF));
+    scale = lv_meter_add_scale(meter);
+    lv_meter_set_scale_range(meter,scale,MIN_RANGE_METER,MAX_RANGE_METER,METER_ANGLE,METER_ROTATION);
+    lv_meter_set_scale_ticks(meter, scale, 5, 2, 5, lv_color_hex(0xFFFFFF));
     
-    // lv_meter_indicator_t * indic_2;
+    // lv_meter_indicator_t * indic;
 
     /*Add a blue arc to the start*/
-    indic_2 = lv_meter_add_arc(meter_2, scale_2, 3, lv_palette_main(LV_PALETTE_BLUE), 0);
-    lv_meter_set_indicator_start_value(meter_2, indic_2, MIN_RANGE_METER);
-    lv_meter_set_indicator_end_value(meter_2, indic_2, MIDDLE_RANGE_METER);
+    indic = lv_meter_add_arc(meter, scale, 3, lv_palette_main(LV_PALETTE_BLUE), 0);
+    lv_meter_set_indicator_start_value(meter, indic, MIN_RANGE_METER);
+    lv_meter_set_indicator_end_value(meter, indic, MIDDLE_RANGE_METER);
 
     /*Add a red arc to the end เลข Arcฝั่งสีแดง*/
-    indic_2 = lv_meter_add_arc(meter_2, scale_2, 3, lv_palette_main(LV_PALETTE_RED), 0);
-    lv_meter_set_indicator_start_value(meter_2, indic_2, MIDDLE_RANGE_METER);
-    lv_meter_set_indicator_end_value(meter_2, indic_2, MAX_RANGE_METER);
+    indic = lv_meter_add_arc(meter, scale, 3, lv_palette_main(LV_PALETTE_RED), 0);
+    lv_meter_set_indicator_start_value(meter, indic, MIDDLE_RANGE_METER);
+    lv_meter_set_indicator_end_value(meter, indic, MAX_RANGE_METER);
 
     /*เข็มชี้*/
-    indic_2 = lv_meter_add_needle_line(meter_2, scale_2, 4, lv_color_hex(0x0F1215), 0);
+    // indic_2 = lv_meter_add_needle_line(meter_2, scale_2, 4, lv_color_hex(0x0F1215), 0);
 
     ui_arc_inner_2 = lv_obj_create(ui_monitor_screen_1);
     lv_obj_set_width(ui_arc_inner_2, SIZE_WIDTH_ARC_INNER2);
@@ -253,35 +252,35 @@ void ui_monitor_screen_1_init(void){
     lv_obj_set_style_text_decor(ui_name_t_device3, LV_TEXT_DECOR_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_name_t_device3, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    meter_3 = lv_meter_create(ui_monitor_screen_1);
-    lv_obj_set_size(meter_3, SIZE_WIDTH_METER, SIZE_HEIGHT_METER);
-    lv_obj_set_x(meter_3, POS_X_METER36);  
-    lv_obj_set_y(meter_3, POS_Y_METER123);
-    lv_obj_set_style_bg_color(meter_3, lv_color_hex(0x57626C), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(meter_3, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(meter_3, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(meter_3, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(meter_3, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    meter = lv_meter_create(ui_monitor_screen_1);
+    lv_obj_set_size(meter, SIZE_WIDTH_METER, SIZE_HEIGHT_METER);
+    lv_obj_set_x(meter, POS_X_METER36);  
+    lv_obj_set_y(meter, POS_Y_METER123);
+    lv_obj_set_style_bg_color(meter, lv_color_hex(0x57626C), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(meter, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(meter, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(meter, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(meter, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
     
     /*Add a scale first*/
-    lv_meter_scale_t * scale_3 = lv_meter_add_scale(meter_3);
-    lv_meter_set_scale_range(meter_3,scale_3,MIN_RANGE_METER,MAX_RANGE_METER,METER_ANGLE,METER_ROTATION);
-    lv_meter_set_scale_ticks(meter_3, scale_3, 5, 2, 5, lv_color_hex(0xFFFFFF));
+    scale = lv_meter_add_scale(meter);
+    lv_meter_set_scale_range(meter,scale,MIN_RANGE_METER,MAX_RANGE_METER,METER_ANGLE,METER_ROTATION);
+    lv_meter_set_scale_ticks(meter, scale, 5, 2, 5, lv_color_hex(0xFFFFFF));
     
-    // lv_meter_indicator_t * indic_3;
+    // lv_meter_indicator_t * indic;
 
     /*Add a blue arc to the start*/
-    indic_3 = lv_meter_add_arc(meter_3, scale_3, 3, lv_palette_main(LV_PALETTE_BLUE), 0);
-    lv_meter_set_indicator_start_value(meter_3, indic_3, MIN_RANGE_METER);
-    lv_meter_set_indicator_end_value(meter_3, indic_3, MIDDLE_RANGE_METER);
+    indic = lv_meter_add_arc(meter, scale, 3, lv_palette_main(LV_PALETTE_BLUE), 0);
+    lv_meter_set_indicator_start_value(meter, indic, MIN_RANGE_METER);
+    lv_meter_set_indicator_end_value(meter, indic, MIDDLE_RANGE_METER);
 
     /*Add a red arc to the end เลข Arcฝั่งสีแดง*/
-    indic_3 = lv_meter_add_arc(meter_3, scale_3, 3, lv_palette_main(LV_PALETTE_RED), 0);
-    lv_meter_set_indicator_start_value(meter_3, indic_3, MIDDLE_RANGE_METER);
-    lv_meter_set_indicator_end_value(meter_3, indic_3, MAX_RANGE_METER);
+    indic = lv_meter_add_arc(meter, scale, 3, lv_palette_main(LV_PALETTE_RED), 0);
+    lv_meter_set_indicator_start_value(meter, indic, MIDDLE_RANGE_METER);
+    lv_meter_set_indicator_end_value(meter, indic, MAX_RANGE_METER);
 
     /*เข็มชี้*/
-    indic_3 = lv_meter_add_needle_line(meter_3, scale_3, 4, lv_color_hex(0x0F1215), 0);
+    // indic = lv_meter_add_needle_line(meter, scale, 4, lv_color_hex(0x0F1215), 0);
 
     ui_arc_inner_2 = lv_obj_create(ui_monitor_screen_1);
     lv_obj_set_width(ui_arc_inner_2, SIZE_WIDTH_ARC_INNER2);
@@ -354,35 +353,35 @@ void ui_monitor_screen_1_init(void){
     lv_obj_set_style_text_decor(ui_name_t_device4, LV_TEXT_DECOR_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_name_t_device4, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    meter_4 = lv_meter_create(ui_monitor_screen_1);
-    lv_obj_set_size(meter_4, SIZE_WIDTH_METER, SIZE_HEIGHT_METER);
-    lv_obj_set_x(meter_4, POS_X_METER14);  
-    lv_obj_set_y(meter_4, Y_POS_METER_456);
-    lv_obj_set_style_bg_color(meter_4, lv_color_hex(0x57626C), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(meter_4, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(meter_4, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(meter_4, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(meter_4, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    meter = lv_meter_create(ui_monitor_screen_1);
+    lv_obj_set_size(meter, SIZE_WIDTH_METER, SIZE_HEIGHT_METER);
+    lv_obj_set_x(meter, POS_X_METER14);  
+    lv_obj_set_y(meter, Y_POS_METER_456);
+    lv_obj_set_style_bg_color(meter, lv_color_hex(0x57626C), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(meter, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(meter, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(meter, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(meter, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
     
     /*Add a scale first*/
-    lv_meter_scale_t * scale_4 = lv_meter_add_scale(meter_4);
-    lv_meter_set_scale_range(meter_4,scale_4,MIN_RANGE_METER,MAX_RANGE_METER,METER_ANGLE,METER_ROTATION);
-    lv_meter_set_scale_ticks(meter_4, scale_4, 5, 2, 5, lv_color_hex(0xFFFFFF));
+    scale = lv_meter_add_scale(meter);
+    lv_meter_set_scale_range(meter,scale,MIN_RANGE_METER,MAX_RANGE_METER,METER_ANGLE,METER_ROTATION);
+    lv_meter_set_scale_ticks(meter, scale, 5, 2, 5, lv_color_hex(0xFFFFFF));
     
     // lv_meter_indicator_t * indic_4;
 
     /*Add a blue arc to the start*/
-    indic_4 = lv_meter_add_arc(meter_4, scale_4, 3, lv_palette_main(LV_PALETTE_BLUE), 0);
-    lv_meter_set_indicator_start_value(meter_4, indic_4, MIN_RANGE_METER);
-    lv_meter_set_indicator_end_value(meter_4, indic_4, MIDDLE_RANGE_METER);
+    indic = lv_meter_add_arc(meter, scale, 3, lv_palette_main(LV_PALETTE_BLUE), 0);
+    lv_meter_set_indicator_start_value(meter, indic, MIN_RANGE_METER);
+    lv_meter_set_indicator_end_value(meter, indic, MIDDLE_RANGE_METER);
 
     /*Add a red arc to the end เลข Arcฝั่งสีแดง*/
-    indic_4 = lv_meter_add_arc(meter_4, scale_4, 3, lv_palette_main(LV_PALETTE_RED), 0);
-    lv_meter_set_indicator_start_value(meter_4, indic_4, MIDDLE_RANGE_METER);
-    lv_meter_set_indicator_end_value(meter_4, indic_4, MAX_RANGE_METER);
+    indic = lv_meter_add_arc(meter, scale, 3, lv_palette_main(LV_PALETTE_RED), 0);
+    lv_meter_set_indicator_start_value(meter, indic, MIDDLE_RANGE_METER);
+    lv_meter_set_indicator_end_value(meter, indic, MAX_RANGE_METER);
 
     /*เข็มชี้*/
-    indic_4 = lv_meter_add_needle_line(meter_4, scale_4, 4, lv_color_hex(0x0F1215), 0);
+    // indic_4 = lv_meter_add_needle_line(meter_4, scale_4, 4, lv_color_hex(0x0F1215), 0);
 
     ui_arc_inner_2 = lv_obj_create(ui_monitor_screen_1);
     lv_obj_set_width(ui_arc_inner_2, SIZE_WIDTH_ARC_INNER2);
@@ -456,35 +455,35 @@ void ui_monitor_screen_1_init(void){
     lv_obj_set_style_text_decor(ui_name_t_device5, LV_TEXT_DECOR_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_name_t_device5, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    meter_5 = lv_meter_create(ui_monitor_screen_1);
-    lv_obj_set_size(meter_5, SIZE_WIDTH_METER, SIZE_HEIGHT_METER);
-    lv_obj_set_x(meter_5, POS_X_METER25);  
-    lv_obj_set_y(meter_5, Y_POS_METER_456);
-    lv_obj_set_style_bg_color(meter_5, lv_color_hex(0x57626C), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(meter_5, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(meter_5, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(meter_5, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(meter_5, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    meter = lv_meter_create(ui_monitor_screen_1);
+    lv_obj_set_size(meter, SIZE_WIDTH_METER, SIZE_HEIGHT_METER);
+    lv_obj_set_x(meter, POS_X_METER25);  
+    lv_obj_set_y(meter, Y_POS_METER_456);
+    lv_obj_set_style_bg_color(meter, lv_color_hex(0x57626C), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(meter, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(meter, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(meter, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(meter, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
     
     /*Add a scale first*/
-    lv_meter_scale_t * scale_5 = lv_meter_add_scale(meter_5);
-    lv_meter_set_scale_range(meter_5,scale_5,MIN_RANGE_METER,MAX_RANGE_METER,METER_ANGLE,METER_ROTATION);
-    lv_meter_set_scale_ticks(meter_5, scale_5, 5, 2, 5, lv_color_hex(0xFFFFFF));
+    scale = lv_meter_add_scale(meter);
+    lv_meter_set_scale_range(meter,scale,MIN_RANGE_METER,MAX_RANGE_METER,METER_ANGLE,METER_ROTATION);
+    lv_meter_set_scale_ticks(meter, scale, 5, 2, 5, lv_color_hex(0xFFFFFF));
     
-    // lv_meter_indicator_t * indic_5;
+    // lv_meter_indicator_t * indic;
 
     /*Add a blue arc to the start*/
-    indic_5 = lv_meter_add_arc(meter_5, scale_5, 3, lv_palette_main(LV_PALETTE_BLUE), 0);
-    lv_meter_set_indicator_start_value(meter_5, indic_5, MIN_RANGE_METER);
-    lv_meter_set_indicator_end_value(meter_5, indic_5, MIDDLE_RANGE_METER);
+    indic = lv_meter_add_arc(meter, scale, 3, lv_palette_main(LV_PALETTE_BLUE), 0);
+    lv_meter_set_indicator_start_value(meter, indic, MIN_RANGE_METER);
+    lv_meter_set_indicator_end_value(meter, indic, MIDDLE_RANGE_METER);
 
     /*Add a red arc to the end เลข Arcฝั่งสีแดง*/
-    indic_5 = lv_meter_add_arc(meter_5, scale_5, 3, lv_palette_main(LV_PALETTE_RED), 0);
-    lv_meter_set_indicator_start_value(meter_5, indic_5, MIDDLE_RANGE_METER);
-    lv_meter_set_indicator_end_value(meter_5, indic_5, MAX_RANGE_METER);
+    indic = lv_meter_add_arc(meter, scale, 3, lv_palette_main(LV_PALETTE_RED), 0);
+    lv_meter_set_indicator_start_value(meter, indic, MIDDLE_RANGE_METER);
+    lv_meter_set_indicator_end_value(meter, indic, MAX_RANGE_METER);
 
     /*เข็มชี้*/
-    indic_5 = lv_meter_add_needle_line(meter_5, scale_5, 4, lv_color_hex(0x0F1215), 0);
+    // indic = lv_meter_add_needle_line(meter, scale, 4, lv_color_hex(0x0F1215), 0);
 
     ui_arc_inner_2 = lv_obj_create(ui_monitor_screen_1);
     lv_obj_set_width(ui_arc_inner_2, SIZE_WIDTH_ARC_INNER2);
@@ -557,35 +556,35 @@ void ui_monitor_screen_1_init(void){
     lv_obj_set_style_text_decor(ui_name_t_device6, LV_TEXT_DECOR_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_name_t_device6, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    meter_6 = lv_meter_create(ui_monitor_screen_1);
-    lv_obj_set_size(meter_6, SIZE_WIDTH_METER, SIZE_HEIGHT_METER);
-    lv_obj_set_x(meter_6, POS_X_METER36);  
-    lv_obj_set_y(meter_6, Y_POS_METER_456);
-    lv_obj_set_style_bg_color(meter_6, lv_color_hex(0x57626C), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(meter_6, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(meter_6, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(meter_6, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(meter_6, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    meter = lv_meter_create(ui_monitor_screen_1);
+    lv_obj_set_size(meter, SIZE_WIDTH_METER, SIZE_HEIGHT_METER);
+    lv_obj_set_x(meter, POS_X_METER36);  
+    lv_obj_set_y(meter, Y_POS_METER_456);
+    lv_obj_set_style_bg_color(meter, lv_color_hex(0x57626C), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(meter, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(meter, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(meter, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(meter, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
     
     /*Add a scale first*/
-    lv_meter_scale_t * scale_6 = lv_meter_add_scale(meter_6);
-    lv_meter_set_scale_range(meter_6,scale_6,MIN_RANGE_METER,MAX_RANGE_METER,METER_ANGLE,METER_ROTATION);
-    lv_meter_set_scale_ticks(meter_6, scale_6, 5, 2, 5, lv_color_hex(0xFFFFFF));
+    scale = lv_meter_add_scale(meter);
+    lv_meter_set_scale_range(meter,scale,MIN_RANGE_METER,MAX_RANGE_METER,METER_ANGLE,METER_ROTATION);
+    lv_meter_set_scale_ticks(meter, scale, 5, 2, 5, lv_color_hex(0xFFFFFF));
     
-    // lv_meter_indicator_t * indic_6;
+    // lv_meter_indicator_t * indic;
 
     /*Add a blue arc to the start*/
-    indic_6 = lv_meter_add_arc(meter_6, scale_6, 3, lv_palette_main(LV_PALETTE_BLUE), 0);
-    lv_meter_set_indicator_start_value(meter_6, indic_6, MIN_RANGE_METER);
-    lv_meter_set_indicator_end_value(meter_6, indic_6, MIDDLE_RANGE_METER);
+    indic = lv_meter_add_arc(meter, scale, 3, lv_palette_main(LV_PALETTE_BLUE), 0);
+    lv_meter_set_indicator_start_value(meter, indic, MIN_RANGE_METER);
+    lv_meter_set_indicator_end_value(meter, indic, MIDDLE_RANGE_METER);
 
     /*Add a red arc to the end เลข Arcฝั่งสีแดง*/
-    indic_6 = lv_meter_add_arc(meter_6, scale_6, 3, lv_palette_main(LV_PALETTE_RED), 0);
-    lv_meter_set_indicator_start_value(meter_6, indic_6, MIDDLE_RANGE_METER);
-    lv_meter_set_indicator_end_value(meter_6, indic_6, MAX_RANGE_METER);
+    indic = lv_meter_add_arc(meter, scale, 3, lv_palette_main(LV_PALETTE_RED), 0);
+    lv_meter_set_indicator_start_value(meter, indic, MIDDLE_RANGE_METER);
+    lv_meter_set_indicator_end_value(meter, indic, MAX_RANGE_METER);
 
     /*เข็มชี้*/
-    indic_6 = lv_meter_add_needle_line(meter_6, scale_6, 4, lv_color_hex(0x0F1215), 0);
+    // indic = lv_meter_add_needle_line(meter, scale, 4, lv_color_hex(0x0F1215), 0);
 
     ui_arc_inner_2 = lv_obj_create(ui_monitor_screen_1);
     lv_obj_set_width(ui_arc_inner_2, SIZE_WIDTH_ARC_INNER2);
@@ -658,38 +657,38 @@ void ui_monitor_screen_1_init(void){
     lv_obj_set_y(ui_chart1_temp, POS_Y_CHART);
     lv_obj_add_flag(ui_chart1_temp, LV_OBJ_FLAG_HIDDEN);
 
-    // ui_chart2_temp = lv_chart_create(ui_monitor_screen_1);
-    // lv_obj_set_width(ui_chart2_temp, SIZE_WIDTH_CHART);
-    // lv_obj_set_height(ui_chart2_temp, SIZE_HEIGHT_CHART);
-    // lv_obj_set_x(ui_chart2_temp, POS_X_CHART);
-    // lv_obj_set_y(ui_chart2_temp, POS_Y_CHART);
-    // lv_obj_add_flag(ui_chart2_temp, LV_OBJ_FLAG_HIDDEN);
+    ui_chart2_temp = lv_chart_create(ui_monitor_screen_1);
+    lv_obj_set_width(ui_chart2_temp, SIZE_WIDTH_CHART);
+    lv_obj_set_height(ui_chart2_temp, SIZE_HEIGHT_CHART);
+    lv_obj_set_x(ui_chart2_temp, POS_X_CHART);
+    lv_obj_set_y(ui_chart2_temp, POS_Y_CHART);
+    lv_obj_add_flag(ui_chart2_temp, LV_OBJ_FLAG_HIDDEN);
 
-    // ui_chart3_temp = lv_chart_create(ui_monitor_screen_1);
-    // lv_obj_set_width(ui_chart3_temp, SIZE_WIDTH_CHART);
-    // lv_obj_set_height(ui_chart3_temp, SIZE_HEIGHT_CHART);
-    // lv_obj_set_x(ui_chart3_temp, POS_X_CHART);
-    // lv_obj_set_y(ui_chart3_temp, POS_Y_CHART);
-    // lv_obj_add_flag(ui_chart3_temp, LV_OBJ_FLAG_HIDDEN);
+    ui_chart3_temp = lv_chart_create(ui_monitor_screen_1);
+    lv_obj_set_width(ui_chart3_temp, SIZE_WIDTH_CHART);
+    lv_obj_set_height(ui_chart3_temp, SIZE_HEIGHT_CHART);
+    lv_obj_set_x(ui_chart3_temp, POS_X_CHART);
+    lv_obj_set_y(ui_chart3_temp, POS_Y_CHART);
+    lv_obj_add_flag(ui_chart3_temp, LV_OBJ_FLAG_HIDDEN);
 
-    // ui_chart4_temp = lv_chart_create(ui_monitor_screen_1);
-    // lv_obj_set_width(ui_chart4_temp, SIZE_WIDTH_CHART);
-    // lv_obj_set_height(ui_chart4_temp, SIZE_HEIGHT_CHART);
-    // lv_obj_set_x(ui_chart4_temp, POS_X_CHART);
-    // lv_obj_set_y(ui_chart4_temp, POS_Y_CHART);
-    // lv_obj_add_flag(ui_chart4_temp, LV_OBJ_FLAG_HIDDEN);
+    ui_chart4_temp = lv_chart_create(ui_monitor_screen_1);
+    lv_obj_set_width(ui_chart4_temp, SIZE_WIDTH_CHART);
+    lv_obj_set_height(ui_chart4_temp, SIZE_HEIGHT_CHART);
+    lv_obj_set_x(ui_chart4_temp, POS_X_CHART);
+    lv_obj_set_y(ui_chart4_temp, POS_Y_CHART);
+    lv_obj_add_flag(ui_chart4_temp, LV_OBJ_FLAG_HIDDEN);
 
-    // ui_chart5_temp = lv_chart_create(ui_monitor_screen_1);
-    // lv_obj_set_width(ui_chart5_temp, SIZE_WIDTH_CHART);
-    // lv_obj_set_height(ui_chart5_temp, SIZE_HEIGHT_CHART);
-    // lv_obj_set_x(ui_chart5_temp, POS_X_CHART);
-    // lv_obj_set_y(ui_chart5_temp, POS_Y_CHART);
-    // lv_obj_add_flag(ui_chart5_temp, LV_OBJ_FLAG_HIDDEN);
+    ui_chart5_temp = lv_chart_create(ui_monitor_screen_1);
+    lv_obj_set_width(ui_chart5_temp, SIZE_WIDTH_CHART);
+    lv_obj_set_height(ui_chart5_temp, SIZE_HEIGHT_CHART);
+    lv_obj_set_x(ui_chart5_temp, POS_X_CHART);
+    lv_obj_set_y(ui_chart5_temp, POS_Y_CHART);
+    lv_obj_add_flag(ui_chart5_temp, LV_OBJ_FLAG_HIDDEN);
 
-    // ui_chart6_temp = lv_chart_create(ui_monitor_screen_1);
-    // lv_obj_set_width(ui_chart6_temp, SIZE_WIDTH_CHART);
-    // lv_obj_set_height(ui_chart6_temp, SIZE_HEIGHT_CHART);
-    // lv_obj_set_x(ui_chart6_temp, POS_X_CHART);
-    // lv_obj_set_y(ui_chart6_temp, POS_Y_CHART);
-    // lv_obj_add_flag(ui_chart6_temp, LV_OBJ_FLAG_HIDDEN);
+    ui_chart6_temp = lv_chart_create(ui_monitor_screen_1);
+    lv_obj_set_width(ui_chart6_temp, SIZE_WIDTH_CHART);
+    lv_obj_set_height(ui_chart6_temp, SIZE_HEIGHT_CHART);
+    lv_obj_set_x(ui_chart6_temp, POS_X_CHART);
+    lv_obj_set_y(ui_chart6_temp, POS_Y_CHART);
+    lv_obj_add_flag(ui_chart6_temp, LV_OBJ_FLAG_HIDDEN);
 }

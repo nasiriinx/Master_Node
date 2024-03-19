@@ -31,15 +31,17 @@ extern "C" {
 #define INFOR_DEVICE10  10
 
 /***************** DEFINE GET START PAGE *****************/
+#define SIZE_WIDTH_WIFI_CARD    414
+#define SIZE_HEIGHT_WIFI_CARD   126
 #define POS_X_WIFI_CARD         0
 #define POS_Y_WIFI_CARD         -35
 #define POS_X_WIFI_SET_T        -134
 #define POS_Y_WIFI_SET_T        -75
 #define POS_X_SSID_T            -138
 #define POS_Y_SSID_T            -42
+#define POS_X_T_AREA            68 
 #define SIZE_WIDTH_T_AREA       256
 #define SIZE_HEIGHT_T_AREA      25
-#define POS_X_T_AREA            68 
 #define POS_Y_SSID_T_AREA       -42
 #define POS_X_PWD_T             -141
 #define POS_Y_PWD_T             0
@@ -113,7 +115,7 @@ extern "C" {
 #define X_MID_25                    -14
 
 #define POS_X_METER36               332
-#define X_MID_36                    135
+#define X_MID_36                    134
 
 #define X_MID_710                   -160
 #define X_MID_8                     -13
@@ -214,65 +216,54 @@ lv_obj_t * ui_label_time_header;
 lv_obj_t * ui_icon_header_WiFi;
                 
 //Arc component
-lv_obj_t * ui_arc_inner_1;
 lv_obj_t * ui_arc_inner_2;
 
 //Arc device 1
-lv_obj_t * ui_arc_temp_1;
-lv_obj_t * ui_temp_t_device1 ;
+lv_obj_t * ui_temp_t_device1;
 lv_obj_t * ui_name_t_device1;
 lv_obj_t * ui_last_up_t_device1;
 
 //Arc device 2
-lv_obj_t * ui_arc_temp_2;
 lv_obj_t * ui_temp_t_device2;
 lv_obj_t * ui_name_t_device2;
 lv_obj_t * ui_last_up_t_device2;
 
 //Arc device 3
-lv_obj_t * ui_arc_temp_3;
 lv_obj_t * ui_temp_t_device3;
 lv_obj_t * ui_name_t_device3;
 lv_obj_t * ui_last_up_t_device3;
 
 //Arc device 4
-lv_obj_t * ui_arc_temp_4;
 lv_obj_t * ui_temp_t_device4;
 lv_obj_t * ui_name_t_device4;
 lv_obj_t * ui_last_up_t_device4;
 
 //Arc device 5
-lv_obj_t * ui_arc_temp_5;
 lv_obj_t * ui_temp_t_device5;
 lv_obj_t * ui_name_t_device5;
 lv_obj_t * ui_last_up_t_device5;
 
 //Arc device 6
-lv_obj_t * ui_arc_temp_6;
 lv_obj_t * ui_temp_t_device6;
 lv_obj_t * ui_name_t_device6;
 lv_obj_t * ui_last_up_t_device6;
 
 //Arc device 7
-lv_obj_t * ui_arc_temp_7;
 lv_obj_t * ui_temp_t_device7;
 lv_obj_t * ui_name_t_device7;
 lv_obj_t * ui_last_up_t_device7;
 
 //Arc device 8
-lv_obj_t * ui_arc_temp_8;
 lv_obj_t * ui_temp_t_device8;
 lv_obj_t * ui_name_t_device8;
 lv_obj_t * ui_last_up_t_device8;
 
 //Arc device 9
-lv_obj_t * ui_arc_temp_9;
 lv_obj_t * ui_temp_t_device9;
 lv_obj_t * ui_name_t_device9;
 lv_obj_t * ui_last_up_t_device9;
 
 //Arc device 10
-lv_obj_t * ui_arc_temp_10;
 lv_obj_t * ui_temp_t_device10;
 lv_obj_t * ui_name_t_device10;
 lv_obj_t * ui_last_up_t_device10;
@@ -280,6 +271,10 @@ lv_obj_t * ui_last_up_t_device10;
 //Information screen
 lv_obj_t * ui_infor_card1;
 lv_obj_t * ui_infor_card2;
+lv_obj_t * ui_infor_card3;
+lv_obj_t * meter;
+lv_meter_scale_t * scale;
+lv_meter_indicator_t * indic;
 
 /***************** GET START SCREEN *****************/
 void get_start_screen_init(void);
@@ -308,18 +303,7 @@ lv_obj_t * ui_card_device4;
 lv_obj_t * ui_card_device5;
 lv_obj_t * ui_card_device6;
 lv_obj_t * ui_next_page_btn;  
-lv_obj_t * meter_1;
-lv_obj_t * meter_2;
-lv_obj_t * meter_3;
-lv_obj_t * meter_4;
-lv_obj_t * meter_5;
-lv_obj_t * meter_6;
-lv_meter_indicator_t * indic_1;
-lv_meter_indicator_t * indic_2;
-lv_meter_indicator_t * indic_3;
-lv_meter_indicator_t * indic_4;
-lv_meter_indicator_t * indic_5;
-lv_meter_indicator_t * indic_6;
+
 /***************** MONITOR SCREEN 2 *****************/
 void ui_monitor_screen_2_init(void);
 lv_obj_t * ui_monitor_screen_2;
@@ -328,22 +312,16 @@ lv_obj_t * ui_card_device8;
 lv_obj_t * ui_card_device9;
 lv_obj_t * ui_card_device10;
 lv_obj_t * ui_prev_page_btn;
-lv_obj_t * meter_7;
-lv_obj_t * meter_8;
-lv_obj_t * meter_9;
-lv_obj_t * meter_10;
-/***************** INFORMATION SCREEN *****************/
 
+/***************** INFORMATION SCREEN *****************/
 void ui_infor_screen_1_init(void);
 lv_obj_t * ui_keyboard_info_1;
 lv_obj_t * ui_infor_screen_1;
-lv_obj_t * ui_option_card_info1;
 lv_obj_t * ui_name_op_t_1;
 lv_obj_t * ui_pos_op_t_1;
 lv_obj_t * ui_save_btn_1;
 lv_obj_t * ui_cancel_btn_1;
 lv_obj_t * ui_chart1_t;
-lv_obj_t * ui_arc_temp_info_1;
 lv_obj_t * ui_chart1_temp;
 lv_obj_t * ui_temp_t_info_device1;
 lv_obj_t * ui_name_t_info_device1;
@@ -359,13 +337,11 @@ lv_obj_t * ui_btn_back1;
 void ui_infor_screen_2_init(void);
 lv_obj_t * ui_keyboard_info_2;
 lv_obj_t * ui_infor_screen_2;
-lv_obj_t * ui_option_card_info2;
 lv_obj_t * ui_name_op_t_2;
 lv_obj_t * ui_pos_op_t_2;
 lv_obj_t * ui_save_btn_2;
 lv_obj_t * ui_cancel_btn_2;
 lv_obj_t * ui_chart2_t;
-lv_obj_t * ui_arc_temp_info_2;
 lv_obj_t * ui_chart2_temp;
 lv_obj_t * ui_temp_t_info_device2;
 lv_obj_t * ui_name_t_info_device2;
@@ -381,13 +357,11 @@ lv_obj_t * ui_btn_back2;
 void ui_infor_screen_3_init(void);
 lv_obj_t * ui_keyboard_info_3;
 lv_obj_t * ui_infor_screen_3;
-lv_obj_t * ui_option_card_info3;
 lv_obj_t * ui_name_op_t_3;
 lv_obj_t * ui_pos_op_t_3;
 lv_obj_t * ui_save_btn_3;
 lv_obj_t * ui_cancel_btn_3;
 lv_obj_t * ui_chart3_t;
-lv_obj_t * ui_arc_temp_info_3;
 lv_obj_t * ui_chart3_temp;
 lv_obj_t * ui_temp_t_info_device3;
 lv_obj_t * ui_name_t_info_device3;
@@ -403,13 +377,11 @@ lv_obj_t * ui_btn_back3;
 void ui_infor_screen_4_init(void);
 lv_obj_t * ui_keyboard_info_4;
 lv_obj_t * ui_infor_screen_4;
-lv_obj_t * ui_option_card_info4;
 lv_obj_t * ui_name_op_t_4;
 lv_obj_t * ui_pos_op_t_4;
 lv_obj_t * ui_save_btn_4;
 lv_obj_t * ui_cancel_btn_4;
 lv_obj_t * ui_chart4_t;
-lv_obj_t * ui_arc_temp_info_4;
 lv_obj_t * ui_chart4_temp;
 lv_obj_t * ui_temp_t_info_device4;
 lv_obj_t * ui_name_t_info_device4;
@@ -425,13 +397,11 @@ lv_obj_t * ui_btn_back4;
 void ui_infor_screen_5_init(void);
 lv_obj_t * ui_keyboard_info_5;
 lv_obj_t * ui_infor_screen_5;
-lv_obj_t * ui_option_card_info5;
 lv_obj_t * ui_name_op_t_5;
 lv_obj_t * ui_pos_op_t_5;
 lv_obj_t * ui_save_btn_5;
 lv_obj_t * ui_cancel_btn_5;
 lv_obj_t * ui_chart5_t;
-lv_obj_t * ui_arc_temp_info_5;
 lv_obj_t * ui_chart5_temp;
 lv_obj_t * ui_temp_t_info_device5;
 lv_obj_t * ui_name_t_info_device5;
@@ -447,13 +417,11 @@ lv_obj_t * ui_btn_back5;
 void ui_infor_screen_6_init(void);
 lv_obj_t * ui_keyboard_info_6;
 lv_obj_t * ui_infor_screen_6;
-lv_obj_t * ui_option_card_info6;
 lv_obj_t * ui_name_op_t_6;
 lv_obj_t * ui_pos_op_t_6;
 lv_obj_t * ui_save_btn_6;
 lv_obj_t * ui_cancel_btn_6;
 lv_obj_t * ui_chart6_t;
-lv_obj_t * ui_arc_temp_info_6;
 lv_obj_t * ui_chart6_temp;
 lv_obj_t * ui_temp_t_info_device6;
 lv_obj_t * ui_name_t_info_device6;
@@ -469,13 +437,11 @@ lv_obj_t * ui_btn_back6;
 void ui_infor_screen_7_init(void);
 lv_obj_t * ui_keyboard_info_7;
 lv_obj_t * ui_infor_screen_7;
-lv_obj_t * ui_option_card_info7;
 lv_obj_t * ui_name_op_t_7;
 lv_obj_t * ui_pos_op_t_7;
 lv_obj_t * ui_save_btn_7;
 lv_obj_t * ui_cancel_btn_7;
 lv_obj_t * ui_chart7_t;
-lv_obj_t * ui_arc_temp_info_7;
 lv_obj_t * ui_chart7_temp;
 lv_obj_t * ui_temp_t_info_device7;
 lv_obj_t * ui_name_t_info_device7;
@@ -491,13 +457,11 @@ lv_obj_t * ui_btn_back7;
 void ui_infor_screen_8_init(void);
 lv_obj_t * ui_keyboard_info_8;
 lv_obj_t * ui_infor_screen_8;
-lv_obj_t * ui_option_card_info8;
 lv_obj_t * ui_name_op_t_8;
 lv_obj_t * ui_pos_op_t_8;
 lv_obj_t * ui_save_btn_8;
 lv_obj_t * ui_cancel_btn_8;
 lv_obj_t * ui_chart8_t;
-lv_obj_t * ui_arc_temp_info_8;
 lv_obj_t * ui_chart8_temp;
 lv_obj_t * ui_temp_t_info_device8;
 lv_obj_t * ui_name_t_info_device8;
@@ -513,13 +477,11 @@ lv_obj_t * ui_btn_back8;
 void ui_infor_screen_9_init(void);
 lv_obj_t * ui_keyboard_info_9;
 lv_obj_t * ui_infor_screen_9;
-lv_obj_t * ui_option_card_info9;
 lv_obj_t * ui_name_op_t_9;
 lv_obj_t * ui_pos_op_t_9;
 lv_obj_t * ui_save_btn_9;
 lv_obj_t * ui_cancel_btn_9;
 lv_obj_t * ui_chart9_t;
-lv_obj_t * ui_arc_temp_info_9;
 lv_obj_t * ui_chart9_temp;
 lv_obj_t * ui_temp_t_info_device9;
 lv_obj_t * ui_name_t_info_device9;
@@ -534,14 +496,12 @@ lv_obj_t * ui_btn_back9;
 
 void ui_infor_screen_10_init(void);
 lv_obj_t * ui_keyboard_info_10;
-lv_obj_t * ui_infor_screen_10;
-lv_obj_t * ui_option_card_info10;
+lv_obj_t * ui_infor_screen_10;;
 lv_obj_t * ui_name_op_t_10;
 lv_obj_t * ui_pos_op_t_10;
 lv_obj_t * ui_save_btn_10;
 lv_obj_t * ui_cancel_btn_10;
-lv_obj_t * ui_chart10_t;
-lv_obj_t * ui_arc_temp_info_10;
+lv_obj_t * ui_chart10_t;;
 lv_obj_t * ui_chart10_temp;
 lv_obj_t * ui_temp_t_info_device10;
 lv_obj_t * ui_name_t_info_device10;
@@ -554,12 +514,6 @@ lv_obj_t * ui_pos_name_t_area_device10;
 lv_obj_t * ui_view_btn10;
 lv_obj_t * ui_btn_back10;
 
-#define TESTSCR
-#ifdef TESTSCR
-void testscreen_init(void);
-lv_obj_t * testscreen;
-
-#endif
 
 #ifdef __cplusplus
 } /*extern "C"*/
