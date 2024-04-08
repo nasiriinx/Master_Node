@@ -7,6 +7,9 @@
 
 #define RESET_COUNTER             0
 
+#define FIFO_SIZE   100
+
+
 #define CHART
 #define DEBUG
 /********************************************************/
@@ -22,6 +25,7 @@
 #include "NTPClient.h"
 #include "Arduino.h"
 #include <WiFiUdp.h>
+
 
 #include "screens/object.h"
 #include "screens/data_struct.h"
@@ -139,6 +143,12 @@ typedef struct struct_message
  
 } struct_message;
 
+
+struct DataItem {
+  float temperature;
+  String node;
+  String update_time;
+};
 /***********************************************************/
 
 /************************ GLOBAL VARIABLE ************************/
@@ -173,6 +183,16 @@ int count_pos_array_dev9;
 int count_pos_array_dev10;
 
 char date_time[20] = "";
+
+DataItem fifo[FIFO_SIZE];
+int front = 0;
+int rear = -1;
+int itemCount = 0;
+
+TaskHandle_t Task1;
+
+unsigned long interval = 10000;
+unsigned long now =0;
 /*****************************************************************/
 
 /************************ FUNCTION PROTOTYPE ************************/
@@ -181,6 +201,26 @@ char date_time[20] = "";
 /********************************************************************/
 
 /************************ FUNCTION ************************/
+
+void addToFifo(String node, float temperature,String time_update) {
+  if (itemCount < FIFO_SIZE) {
+    rear = (rear + 1) % FIFO_SIZE; // นำ rear มา mod ด้วยขนาดของ FIFO เพื่อให้วนกลับไปที่ตำแหน่งแรกของ FIFO เมื่อ rear ถึงตำแหน่งสุดท้าย
+    fifo[rear].node = node;
+    fifo[rear].temperature = temperature;
+    fifo[rear].update_time = time_update;
+    itemCount++;
+  }
+}
+
+DataItem removeFromFifo() {
+  DataItem data = fifo[front];
+  front++;
+  if (front == FIFO_SIZE) {
+    front = 0;
+  }
+  itemCount--;  // ลดจำนวนข้อมูลใน FIFO
+  return data;
+}
 
 void my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p) {
   uint32_t w = (area->x2 - area->x1 + 1);
@@ -192,37 +232,62 @@ void my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color
   lv_disp_flush_ready(disp);
 }
 
-void my_touch_read(lv_indev_drv_t *indev_driver, lv_indev_data_t *data) {
-    uint16_t touchX, touchY;
-    bool touched = tft.getTouch(&touchX, &touchY);
-    if (!touched) { data->state = LV_INDEV_STATE_REL; }
-    else {
-      data->state = LV_INDEV_STATE_PR;
-      data->point.x = touchX;
-      data->point.y = touchY;
-    }
-}
-void send_sheet()
-{ 
- //WiFi.begin(ssid, password);
-  if (WiFi.status() == WL_CONNECTED)
+void my_touch_read(lv_indev_drv_t *indev_driver, lv_indev_data_t *data)
+{
+  uint16_t touchX, touchY;
+  bool touched = tft.getTouch(&touchX, &touchY);
+  if (!touched)
   {
-    HTTPClient http;
-    String url = "https://script.google.com/macros/s/AKfycbzZBsXxVEVItSIlgcv4uo8Zf3Uzs-SfzHhQ_QEZaDoPTzrY8y0SGX0A2WMVkso9os7BoA/exec?device_node=" + recv_num_node + "&" + "value=" + String(recv_temperature_message);
-    // Serial.println("Making a request");
-    http.begin(url.c_str()); // Specify the URL and certificate
-    http.setFollowRedirects(HTTPC_STRICT_FOLLOW_REDIRECTS);
-    int httpCode = http.GET();
-    String payload;
-    if (httpCode > 0)
-    { // Check for the returning code
-      payload = http.getString();
+    data->state = LV_INDEV_STATE_REL;
+  }
+  else
+  {
+    data->state = LV_INDEV_STATE_PR;
+    data->point.x = touchX;
+    data->point.y = touchY;
+  }
+}
+
+void sendSheet(void *parameter)
+{
+  for (;;)
+  {
+    if (WiFi.status() == WL_CONNECTED)
+    {
+      if (itemCount > 0)
+      {
+        Serial.println("Google sheet start");
+        DataItem data = removeFromFifo();
+        String url = "https://script.google.com/macros/s/AKfycbzZBsXxVEVItSIlgcv4uo8Zf3Uzs-SfzHhQ_QEZaDoPTzrY8y0SGX0A2WMVkso9os7BoA/exec?device_node=" + data.node + "&" + "value=" + data.temperature;
+        Serial.println("Making a request");
+        HTTPClient http;
+        http.begin(url.c_str());   // Start HTTP connection
+        int httpCode = http.GET(); // Send GET request
+        if (httpCode > 0)
+        {
+          String payload = http.getString();
+          Serial.println(payload);
+          // ลดจำนวนข้อมูลใน FIFO เมื่อส่งข้อมูลเรียบร้อยแล้ว
+          itemCount--;
+        }
+        else
+        {
+          Serial.println("Error on HTTP request");
+        }
+        http.end(); // End HTTP connection
+      }
+      else
+      {
+        // กรณี FIFO ว่าง ให้พักการทำงาน
+      }
     }
     else
     {
-      Serial.println("Error on HTTP request");
+
+      // WiFi.disconnect();
+      // WiFi.reconnect();
+      // delay(1000);
     }
-    http.end();
   }
 }
 
@@ -247,6 +312,7 @@ void GetDateTime() {
 
 }
 
+
 void OnDataRecv(const uint8_t *mac_addr, const uint8_t *incomingData, int len)
 {
 
@@ -254,6 +320,11 @@ void OnDataRecv(const uint8_t *mac_addr, const uint8_t *incomingData, int len)
   recv_num_node = my_message.num_node;
   recv_temperature_message = my_message.temperature_data;
   recv_fact_new_route = my_message.fact_new_route;
+  addToFifo(recv_num_node, recv_temperature_message,dt.time_update);
+
+  // Print FIFO size
+  Serial.print("FIFO Size: ");
+  Serial.println(itemCount);
 
   //IF RECEIVE FROM NODE 1
   if (recv_num_node == "node:1")
@@ -267,7 +338,6 @@ void OnDataRecv(const uint8_t *mac_addr, const uint8_t *incomingData, int len)
 
     strcpy(dev_uptime.dev1,dt.time_update);
     lv_label_set_text(ui_last_up_t_device1, dev_uptime.dev1);
-
     
     #ifdef DEBUG
       Serial.println(recv_num_node);
@@ -309,7 +379,6 @@ void OnDataRecv(const uint8_t *mac_addr, const uint8_t *incomingData, int len)
 
     strcpy(dev_uptime.dev2,dt.time_update);
     lv_label_set_text(ui_last_up_t_device2, dev_uptime.dev2);
-
 
     #ifdef DEBUG
       Serial.println(recv_num_node);
@@ -357,7 +426,7 @@ void OnDataRecv(const uint8_t *mac_addr, const uint8_t *incomingData, int len)
       Serial.println(temp.Node3);
       Serial.println(t_text.temp_text3);
       Serial.println(dev_uptime.dev3);
-      Serial.print(" ");
+      Serial.print("/");
     #endif
     
 #ifdef CHART
@@ -658,65 +727,94 @@ void OnDataRecv(const uint8_t *mac_addr, const uint8_t *incomingData, int len)
   {
     // Nothing
   }
-  // send_sheet();
+ 
 }
 
 void init_esp_now(){
-  WiFi.disconnect();
-  if (esp_now_init() == ESP_OK)
-  {
-    Serial.println("Initializing ESP-NOW Success");
-  }else{
-    Serial.println("Initializing ESP-NOW Fail");
-    ESP.restart();
+
+  if (esp_now_init() != ESP_OK) {
+    Serial.println("There was an error initializing ESP-NOW");
+    return;
   }
 
-}
-void setup_wifi()
-{
-  WiFi.mode(WIFI_AP_STA);
-  WiFi.begin(ssid, password);
-
-  while (WiFi.status() != WL_CONNECTED)
-  {
-    delay(1000);
-    Serial.println("Setting as a Wi-Fi Station..");
-  }
   Serial.print("Station IP Address: ");
   Serial.println(WiFi.localIP());
   Serial.print("Wi-Fi Channel: ");
   Serial.println(WiFi.channel());
+ 
+  if (esp_now_add_peer(&peerInfo) != ESP_OK)
+  {
+    Serial.println("Failed to add peer");
+    return;
+  }
+  // Register for a callback function that will be called when data is received
+  esp_now_register_recv_cb(OnDataRecv);
+}
 
-  // if (esp_now_init() != ESP_OK)
-  // {
-  //   Serial.println("Error initializing ESP-NOW");
-  // }
-  // esp_now_register_recv_cb(OnDataRecv);
+void load_scr(void){
+    ui_load_scr = lv_obj_create(NULL);
+    lv_obj_clear_flag(ui_load_scr, LV_OBJ_FLAG_SCROLLABLE);/// Flags
+    lv_obj_set_style_bg_color(ui_load_scr, lv_color_hex(0x57626C), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_load_scr, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_main_stop(ui_load_scr, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_stop(ui_load_scr, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+}
+
+void setup_wifi() {
+  WiFi.mode(WIFI_AP_STA);
+  WiFi.begin(getstart.ssid, getstart.password);
+
+  unsigned long start_time = millis();  // Record the start time
+
+  while (WiFi.status() != WL_CONNECTED && millis() - start_time < 10000) {
+    Serial.println("Try to connect..");
+    delay(1000);
+  }
+
+  if (WiFi.status() == WL_CONNECTED) {
+    Serial.print("Connected! IP address: ");
+    Serial.println(WiFi.localIP());
+    Serial.print("Wi-Fi Channel: ");
+    Serial.println(WiFi.channel());
+    lv_obj_set_style_text_color(ui_icon_header_WiFi, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    ui_monitor_screen_1_init();
+    lv_scr_load(ui_monitor_screen_1);
+    init_esp_now();
+  } else {
+    // Connection unsuccessful after 10 seconds
+    Serial.println("Connection failed. Loading get_start screen again.");
+    load_scr();
+    lv_scr_load(ui_load_scr);
+    lv_obj_del(ui_get_start_screen);
+    get_start_screen_init();
+    lv_scr_load(ui_get_start_screen);
+    lv_obj_del(ui_load_scr);
+  }
 }
 
 void setup()
 {
-  char start_name_1[10]   = "Device 1";
-  char start_name_2[10]   = "Device 2";
-  char start_name_3[10]   = "Device 3";
-  char start_name_4[10]   = "Device 4";
-  char start_name_5[10]   = "Device 5";
-  char start_name_6[10]   = "Device 6";
-  char start_name_7[10]   = "Device 7";
-  char start_name_8[10]   = "Device 8";
-  char start_name_9[10]   = "Device 9";
-  char start_name_10[10]  = "Device 10";
+  char start_name_1[10] = "Device 1";
+  char start_name_2[10] = "Device 2";
+  char start_name_3[10] = "Device 3";
+  char start_name_4[10] = "Device 4";
+  char start_name_5[10] = "Device 5";
+  char start_name_6[10] = "Device 6";
+  char start_name_7[10] = "Device 7";
+  char start_name_8[10] = "Device 8";
+  char start_name_9[10] = "Device 9";
+  char start_name_10[10] = "Device 10";
 
-  char start_pos_1[11]   = "Position 1";
-  char start_pos_2[11]   = "Position 2";
-  char start_pos_3[11]   = "Position 3";
-  char start_pos_4[11]   = "Position 4";
-  char start_pos_5[11]   = "Position 5";
-  char start_pos_6[11]   = "Position 6";
-  char start_pos_7[11]   = "Position 7";
-  char start_pos_8[11]   = "Position 8";
-  char start_pos_9[11]   = "Position 9";
-  char start_pos_10[12]  = "Position 10";
+  char start_pos_1[11] = "Position 1";
+  char start_pos_2[11] = "Position 2";
+  char start_pos_3[11] = "Position 3";
+  char start_pos_4[11] = "Position 4";
+  char start_pos_5[11] = "Position 5";
+  char start_pos_6[11] = "Position 6";
+  char start_pos_7[11] = "Position 7";
+  char start_pos_8[11] = "Position 8";
+  char start_pos_9[11] = "Position 9";
+  char start_pos_10[12] = "Position 10";
 
   char start_temp[10] = "0 °C";
 
@@ -724,68 +822,59 @@ void setup()
 
   char start_update_time[18] = "Last update 00:00";
 
-  strcpy(name.device1,start_name_1);
-  strcpy(name.device2,start_name_2);
-  strcpy(name.device3,start_name_3);
-  strcpy(name.device4,start_name_4);
-  strcpy(name.device5,start_name_5);
-  strcpy(name.device6,start_name_6);
-  strcpy(name.device7,start_name_7);
-  strcpy(name.device8,start_name_8);
-  strcpy(name.device9,start_name_9);
-  strcpy(name.device10,start_name_10);
+  strcpy(name.device1, start_name_1);
+  strcpy(name.device2, start_name_2);
+  strcpy(name.device3, start_name_3);
+  strcpy(name.device4, start_name_4);
+  strcpy(name.device5, start_name_5);
+  strcpy(name.device6, start_name_6);
+  strcpy(name.device7, start_name_7);
+  strcpy(name.device8, start_name_8);
+  strcpy(name.device9, start_name_9);
+  strcpy(name.device10, start_name_10);
 
-  strcpy(pos_n.device1,start_pos_1);
-  strcpy(pos_n.device2,start_pos_2);
-  strcpy(pos_n.device3,start_pos_3);
-  strcpy(pos_n.device4,start_pos_4);
-  strcpy(pos_n.device5,start_pos_5);
-  strcpy(pos_n.device6,start_pos_6);
-  strcpy(pos_n.device7,start_pos_7);
-  strcpy(pos_n.device8,start_pos_8);
-  strcpy(pos_n.device9,start_pos_9);
-  strcpy(pos_n.device10,start_pos_10);
+  strcpy(pos_n.device1, start_pos_1);
+  strcpy(pos_n.device2, start_pos_2);
+  strcpy(pos_n.device3, start_pos_3);
+  strcpy(pos_n.device4, start_pos_4);
+  strcpy(pos_n.device5, start_pos_5);
+  strcpy(pos_n.device6, start_pos_6);
+  strcpy(pos_n.device7, start_pos_7);
+  strcpy(pos_n.device8, start_pos_8);
+  strcpy(pos_n.device9, start_pos_9);
+  strcpy(pos_n.device10, start_pos_10);
 
-  strcpy(t_text.temp_text1,start_temp);
-  strcpy(t_text.temp_text2,start_temp);
-  strcpy(t_text.temp_text3,start_temp);
-  strcpy(t_text.temp_text4,start_temp);
-  strcpy(t_text.temp_text5,start_temp);
-  strcpy(t_text.temp_text6,start_temp);
-  strcpy(t_text.temp_text7,start_temp);
-  strcpy(t_text.temp_text8,start_temp);
-  strcpy(t_text.temp_text9,start_temp);
-  strcpy(t_text.temp_text10,start_temp);
+  strcpy(t_text.temp_text1, start_temp);
+  strcpy(t_text.temp_text2, start_temp);
+  strcpy(t_text.temp_text3, start_temp);
+  strcpy(t_text.temp_text4, start_temp);
+  strcpy(t_text.temp_text5, start_temp);
+  strcpy(t_text.temp_text6, start_temp);
+  strcpy(t_text.temp_text7, start_temp);
+  strcpy(t_text.temp_text8, start_temp);
+  strcpy(t_text.temp_text9, start_temp);
+  strcpy(t_text.temp_text10, start_temp);
 
-  strcpy(getstart.pj_name,start_project_name);
+  strcpy(getstart.pj_name, start_project_name);
 
-  strcpy(dev_uptime.dev1,start_update_time);
-  strcpy(dev_uptime.dev2,start_update_time);
-  strcpy(dev_uptime.dev3,start_update_time);
-  strcpy(dev_uptime.dev4,start_update_time);
-  strcpy(dev_uptime.dev5,start_update_time);
-  strcpy(dev_uptime.dev6,start_update_time);
-  strcpy(dev_uptime.dev7,start_update_time);
-  strcpy(dev_uptime.dev8,start_update_time);
-  strcpy(dev_uptime.dev9,start_update_time);
-  strcpy(dev_uptime.dev10,start_update_time);
-
+  strcpy(dev_uptime.dev1, start_update_time);
+  strcpy(dev_uptime.dev2, start_update_time);
+  strcpy(dev_uptime.dev3, start_update_time);
+  strcpy(dev_uptime.dev4, start_update_time);
+  strcpy(dev_uptime.dev5, start_update_time);
+  strcpy(dev_uptime.dev6, start_update_time);
+  strcpy(dev_uptime.dev7, start_update_time);
+  strcpy(dev_uptime.dev8, start_update_time);
+  strcpy(dev_uptime.dev9, start_update_time);
+  strcpy(dev_uptime.dev10, start_update_time);
 
   tft.begin();
   tft.setRotation(3);
   tft.setBrightness(255);
   Serial.begin(115200);
 
-
-  setup_wifi();
-  init_esp_now();
-  if (esp_now_init() != ESP_OK)
-  {
-    Serial.println("Error initializing ESP-NOW");
-  }
-  esp_now_register_recv_cb(OnDataRecv);
-
   lv_init();
+
   // initialize LVGL draw buffers
   lv_disp_draw_buf_init(&draw_buf, buf, NULL, screenWidth * 10);
   static lv_disp_drv_t disp_drv;
@@ -802,13 +891,34 @@ void setup()
   lv_indev_drv_register(&indev_drv);
 
   ui_init();
-  
+
+  xTaskCreatePinnedToCore(
+    sendSheet, // ชื่อฟังก์ชันที่จะรันใน task
+    "Task1",   // ชื่อ task
+    10000,     // ขนาด stack
+    NULL,      // พารามิเตอร์ที่ส่งไปยังฟังก์ชันที่รันใน task
+    1,         // ลำดับความสำคัญของ task
+    &Task1,    // ตัวแปรสำหรับเก็บ handle ของ task
+    1          // core ที่จะรัน task (0 หรือ 1)
+  );
+
+
 }
+
 
 void loop()
 {
-  GetDateTime();
-  uint32_t time_till_next = lv_timer_handler();
-  delay(time_till_next);
+  
+  if(WiFi.status() == WL_CONNECTED){
+    delay(100);
+    GetDateTime();
+    lv_obj_set_style_text_color(ui_icon_header_WiFi, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+  }else{
+    lv_obj_set_style_text_color(ui_icon_header_WiFi, lv_color_hex(0xFF0000), LV_PART_MAIN | LV_STATE_DEFAULT);
+  }
+
+  lv_timer_handler();
+
+  delay(10);
 }
 /***********************************************************/

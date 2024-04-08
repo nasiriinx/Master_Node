@@ -86,7 +86,7 @@ void create_ui_header(lv_obj_t *screen, int page)
         lv_obj_set_x(ui_label_time_header, POS_X_TIME_HEAD_T);
         lv_obj_set_y(ui_label_time_header, POS_Y_TIME_HEAD_T);
         lv_obj_set_align(ui_label_time_header, LV_ALIGN_CENTER);
-        lv_label_set_text(ui_label_time_header, dt.date_time_header);
+        lv_label_set_text(ui_label_time_header,dt.date_time_header);
         lv_obj_set_style_text_color(ui_label_time_header, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
         lv_obj_set_style_text_opa(ui_label_time_header, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
         lv_obj_set_style_text_font(ui_label_time_header, &lv_font_montserrat_16, LV_PART_MAIN | LV_STATE_DEFAULT);

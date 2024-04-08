@@ -22,7 +22,7 @@ void ui_infor_screen_10_init(void){
     ui_view_btn10 = lv_btn_create(ui_infor_screen_10);
     lv_obj_set_width(ui_view_btn10, SIZE_WIDTH_BACK_BTN);
     lv_obj_set_height(ui_view_btn10, SIZE_HEIGHT_BACK_BTN);
-    lv_obj_set_x(ui_view_btn10, -85);
+    lv_obj_set_x(ui_view_btn10, POS_X_VIEW_BTN);
     lv_obj_set_y(ui_view_btn10, POS_Y_BACK_BTN);
     lv_obj_set_align(ui_view_btn10, LV_ALIGN_CENTER);
     lv_obj_add_flag(ui_view_btn10, LV_OBJ_FLAG_SCROLL_ON_FOCUS); /// Flags

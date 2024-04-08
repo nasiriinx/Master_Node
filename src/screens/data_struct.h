@@ -62,8 +62,8 @@ typedef struct PosName
 
 typedef struct GetStart
 {
-    char ssid;
-    char password;
+    char ssid[16];
+    char password[16];
     char pj_name[15];
 }GetStart;
 

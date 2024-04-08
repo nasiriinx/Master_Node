@@ -14,7 +14,9 @@
         "object.h": "c",
         "ui_events.h": "c",
         "ratio": "c",
-        "lv_gauge.h": "c"
+        "lv_gauge.h": "c",
+        "wifi.h": "c",
+        "chrono": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

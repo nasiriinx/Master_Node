@@ -166,10 +166,10 @@ void get_start_screen_init(void){
     lv_obj_set_style_shadow_color(ui_submit_setting_btn, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_opa(ui_submit_setting_btn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    lv_obj_t * ui_label_t_btn = lv_label_create(ui_submit_setting_btn);
-    lv_label_set_text(ui_label_t_btn,"Submit");
-    lv_obj_set_style_text_font(ui_label_t_btn, &lv_font_montserrat_16, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_center(ui_label_t_btn);
+    ui_submit_t_btn = lv_label_create(ui_submit_setting_btn);
+    lv_label_set_text(ui_submit_t_btn,"Submit");
+    lv_obj_set_style_text_font(ui_submit_t_btn, &lv_font_montserrat_16, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_center(ui_submit_t_btn);
 
     lv_obj_add_event_cb(ui_submit_setting_btn, ui_event_submit_setting_btn, LV_EVENT_ALL, NULL);
 }

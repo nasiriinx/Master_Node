@@ -104,7 +104,7 @@ void ui_monitor_screen_1_init(void){
     lv_label_set_text(ui_temp_t_device1, t_text.temp_text1);
     lv_obj_set_style_text_color(ui_temp_t_device1, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_temp_t_device1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_temp_t_device1, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_temp_t_device1, &lv_font_montserrat_16, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_clear_flag(ui_temp_t_device1, LV_OBJ_FLAG_CLICKABLE);
 
     //Last update text
@@ -404,7 +404,7 @@ void ui_monitor_screen_1_init(void){
     lv_obj_set_x(ui_temp_t_device4, X_MID_14);          
     lv_obj_set_y(ui_temp_t_device4, Y_POS_TEMPT_456);  
     lv_obj_set_align(ui_temp_t_device4, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_temp_t_device4, t_text.temp_text3);
+    lv_label_set_text(ui_temp_t_device4, t_text.temp_text4);
     lv_obj_set_style_text_color(ui_temp_t_device4, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_temp_t_device4, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_temp_t_device4, &lv_font_montserrat_16, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -506,7 +506,7 @@ void ui_monitor_screen_1_init(void){
     lv_obj_set_x(ui_temp_t_device5, X_MID_25);          
     lv_obj_set_y(ui_temp_t_device5, Y_POS_ARCTEMP_456);  
     lv_obj_set_align(ui_temp_t_device5, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_temp_t_device5, t_text.temp_text3);
+    lv_label_set_text(ui_temp_t_device5, t_text.temp_text5);
     lv_obj_set_style_text_color(ui_temp_t_device5, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_temp_t_device5, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_temp_t_device5, &lv_font_montserrat_16, LV_PART_MAIN | LV_STATE_DEFAULT);

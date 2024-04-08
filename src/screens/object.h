@@ -183,6 +183,7 @@ extern "C" {
 #define POS_X_SAVE_BTN              110
 #define POS_Y_INFO_OP_BTN           100
 #define POS_X_CANCEL_BTN            180
+#define POS_X_VIEW_BTN              -85
 
 #define POS_Y_EVENT_NAME_T_AREA         -100
 #define POS_X_EVENT_NAME_T_AREA         0
@@ -276,6 +277,9 @@ lv_obj_t * meter;
 lv_meter_scale_t * scale;
 lv_meter_indicator_t * indic;
 
+void load_screen(void);
+lv_obj_t * ui_load_scr;
+
 /***************** GET START SCREEN *****************/
 void get_start_screen_init(void);
 lv_obj_t * ui_get_start_screen;
@@ -292,6 +296,7 @@ lv_obj_t * ui_name_t;
 lv_obj_t * ui_name_t_area;
 lv_obj_t * ui_submit_setting_btn;
 lv_obj_t * ui_keyboard_get_st;
+lv_obj_t * ui_submit_t_btn;
 
 /***************** MONITOR SCREEN 1 *****************/
 void ui_monitor_screen_1_init(void);
@@ -514,7 +519,7 @@ lv_obj_t * ui_pos_name_t_area_device10;
 lv_obj_t * ui_view_btn10;
 lv_obj_t * ui_btn_back10;
 
-
+void setup_wifi();
 #ifdef __cplusplus
 } /*extern "C"*/
 #endif

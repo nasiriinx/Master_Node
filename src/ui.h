@@ -15,8 +15,6 @@ extern "C" {
 #include "ui_helpers.h"
 #include "ui_events.h"
 
-LV_FONT_DECLARE(ui_font_PKNakhonSawan16);
-LV_FONT_DECLARE(ui_font_TahoMaiBold16);
 LV_FONT_DECLARE(ui_font_Arrow18);
 LV_FONT_DECLARE(ui_font_Arrow24);
 LV_FONT_DECLARE(ui_font_WiFi20);

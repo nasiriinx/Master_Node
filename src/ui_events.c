@@ -2,7 +2,7 @@
 #include "ui.h"
 #include "screens/object.h"
 #include "screens/data_struct.h"
-#include "Arduino.h"
+
 /********************************************** CO-EVENT **********************************************/
 void ui_event_keyboard(lv_event_t *e)
 {
@@ -99,12 +99,11 @@ void ui_event_submit_setting_btn(lv_event_t *e)
     lv_obj_t *target = lv_event_get_target(e);
     if (event_code == LV_EVENT_CLICKED)
     {
-        strcpy(getstart.pj_name,lv_textarea_get_text(ui_name_t_area));
-        // strcpy(getstart.ssid,lv_textarea_get_text(ui_ssid_t_area));
-        // strcpy(getstart.password,lv_textarea_get_text(ui_pwd_t_area));
-        ui_monitor_screen_1_init();
-        lv_scr_load(ui_monitor_screen_1);
-        lv_obj_del(ui_get_start_screen);
+        strcpy(getstart.pj_name, lv_textarea_get_text(ui_name_t_area));
+        strcpy(getstart.ssid, lv_textarea_get_text(ui_ssid_t_area));
+        strcpy(getstart.password, lv_textarea_get_text(ui_pwd_t_area));
+        lv_label_set_text(ui_submit_t_btn,"Connecting");
+        setup_wifi();
     }
 }
 
@@ -188,6 +187,7 @@ void ui_event_prev_page_btn(lv_event_t *e)
     lv_obj_t *target = lv_event_get_target(e);
     if (event_code == LV_EVENT_CLICKED)
     {
+        ui_monitor_screen_1_init();
         lv_scr_load(ui_monitor_screen_1);
     }
 }
