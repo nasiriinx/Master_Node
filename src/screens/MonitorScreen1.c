@@ -650,45 +650,45 @@ void ui_monitor_screen_1_init(void){
 
     lv_obj_add_event_cb(ui_next_page_btn, ui_event_next_page_btn, LV_EVENT_ALL, NULL);
 
-    ui_chart1_temp = lv_chart_create(ui_monitor_screen_1);
-    lv_obj_set_width(ui_chart1_temp, SIZE_WIDTH_CHART);
-    lv_obj_set_height(ui_chart1_temp, SIZE_HEIGHT_CHART);
-    lv_obj_set_x(ui_chart1_temp, POS_X_CHART);
-    lv_obj_set_y(ui_chart1_temp, POS_Y_CHART);
-    lv_obj_add_flag(ui_chart1_temp, LV_OBJ_FLAG_HIDDEN);
+    // ui_chart1_temp = lv_chart_create(ui_monitor_screen_1);
+    // lv_obj_set_width(ui_chart1_temp, SIZE_WIDTH_CHART);
+    // lv_obj_set_height(ui_chart1_temp, SIZE_HEIGHT_CHART);
+    // lv_obj_set_x(ui_chart1_temp, POS_X_CHART);
+    // lv_obj_set_y(ui_chart1_temp, POS_Y_CHART);
+    // lv_obj_add_flag(ui_chart1_temp, LV_OBJ_FLAG_HIDDEN);
 
-    ui_chart2_temp = lv_chart_create(ui_monitor_screen_1);
-    lv_obj_set_width(ui_chart2_temp, SIZE_WIDTH_CHART);
-    lv_obj_set_height(ui_chart2_temp, SIZE_HEIGHT_CHART);
-    lv_obj_set_x(ui_chart2_temp, POS_X_CHART);
-    lv_obj_set_y(ui_chart2_temp, POS_Y_CHART);
-    lv_obj_add_flag(ui_chart2_temp, LV_OBJ_FLAG_HIDDEN);
+    // ui_chart2_temp = lv_chart_create(ui_monitor_screen_1);
+    // lv_obj_set_width(ui_chart2_temp, SIZE_WIDTH_CHART);
+    // lv_obj_set_height(ui_chart2_temp, SIZE_HEIGHT_CHART);
+    // lv_obj_set_x(ui_chart2_temp, POS_X_CHART);
+    // lv_obj_set_y(ui_chart2_temp, POS_Y_CHART);
+    // lv_obj_add_flag(ui_chart2_temp, LV_OBJ_FLAG_HIDDEN);
 
-    ui_chart3_temp = lv_chart_create(ui_monitor_screen_1);
-    lv_obj_set_width(ui_chart3_temp, SIZE_WIDTH_CHART);
-    lv_obj_set_height(ui_chart3_temp, SIZE_HEIGHT_CHART);
-    lv_obj_set_x(ui_chart3_temp, POS_X_CHART);
-    lv_obj_set_y(ui_chart3_temp, POS_Y_CHART);
-    lv_obj_add_flag(ui_chart3_temp, LV_OBJ_FLAG_HIDDEN);
+    // ui_chart3_temp = lv_chart_create(ui_monitor_screen_1);
+    // lv_obj_set_width(ui_chart3_temp, SIZE_WIDTH_CHART);
+    // lv_obj_set_height(ui_chart3_temp, SIZE_HEIGHT_CHART);
+    // lv_obj_set_x(ui_chart3_temp, POS_X_CHART);
+    // lv_obj_set_y(ui_chart3_temp, POS_Y_CHART);
+    // lv_obj_add_flag(ui_chart3_temp, LV_OBJ_FLAG_HIDDEN);
 
-    ui_chart4_temp = lv_chart_create(ui_monitor_screen_1);
-    lv_obj_set_width(ui_chart4_temp, SIZE_WIDTH_CHART);
-    lv_obj_set_height(ui_chart4_temp, SIZE_HEIGHT_CHART);
-    lv_obj_set_x(ui_chart4_temp, POS_X_CHART);
-    lv_obj_set_y(ui_chart4_temp, POS_Y_CHART);
-    lv_obj_add_flag(ui_chart4_temp, LV_OBJ_FLAG_HIDDEN);
+    // ui_chart4_temp = lv_chart_create(ui_monitor_screen_1);
+    // lv_obj_set_width(ui_chart4_temp, SIZE_WIDTH_CHART);
+    // lv_obj_set_height(ui_chart4_temp, SIZE_HEIGHT_CHART);
+    // lv_obj_set_x(ui_chart4_temp, POS_X_CHART);
+    // lv_obj_set_y(ui_chart4_temp, POS_Y_CHART);
+    // lv_obj_add_flag(ui_chart4_temp, LV_OBJ_FLAG_HIDDEN);
 
-    ui_chart5_temp = lv_chart_create(ui_monitor_screen_1);
-    lv_obj_set_width(ui_chart5_temp, SIZE_WIDTH_CHART);
-    lv_obj_set_height(ui_chart5_temp, SIZE_HEIGHT_CHART);
-    lv_obj_set_x(ui_chart5_temp, POS_X_CHART);
-    lv_obj_set_y(ui_chart5_temp, POS_Y_CHART);
-    lv_obj_add_flag(ui_chart5_temp, LV_OBJ_FLAG_HIDDEN);
+    // ui_chart5_temp = lv_chart_create(ui_monitor_screen_1);
+    // lv_obj_set_width(ui_chart5_temp, SIZE_WIDTH_CHART);
+    // lv_obj_set_height(ui_chart5_temp, SIZE_HEIGHT_CHART);
+    // lv_obj_set_x(ui_chart5_temp, POS_X_CHART);
+    // lv_obj_set_y(ui_chart5_temp, POS_Y_CHART);
+    // lv_obj_add_flag(ui_chart5_temp, LV_OBJ_FLAG_HIDDEN);
 
-    ui_chart6_temp = lv_chart_create(ui_monitor_screen_1);
-    lv_obj_set_width(ui_chart6_temp, SIZE_WIDTH_CHART);
-    lv_obj_set_height(ui_chart6_temp, SIZE_HEIGHT_CHART);
-    lv_obj_set_x(ui_chart6_temp, POS_X_CHART);
-    lv_obj_set_y(ui_chart6_temp, POS_Y_CHART);
-    lv_obj_add_flag(ui_chart6_temp, LV_OBJ_FLAG_HIDDEN);
+    // ui_chart6_temp = lv_chart_create(ui_monitor_screen_1);
+    // lv_obj_set_width(ui_chart6_temp, SIZE_WIDTH_CHART);
+    // lv_obj_set_height(ui_chart6_temp, SIZE_HEIGHT_CHART);
+    // lv_obj_set_x(ui_chart6_temp, POS_X_CHART);
+    // lv_obj_set_y(ui_chart6_temp, POS_Y_CHART);
+    // lv_obj_add_flag(ui_chart6_temp, LV_OBJ_FLAG_HIDDEN);
 }

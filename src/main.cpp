@@ -10,7 +10,7 @@
 #define FIFO_SIZE   100
 
 
-#define CHART
+// #define CHART
 #define DEBUG
 /********************************************************/
 
@@ -162,7 +162,7 @@ String recv_num_node = "node: ";
 float recv_temperature_message = 00.0;
 struct_message my_message;
 
-const char *ssid = "Test";
+const char *ssid = "TempGATEWAY";
 const char *password = "12345678";
 
 esp_now_peer_info_t peerInfo;
@@ -189,6 +189,7 @@ int front = 0;
 int rear = -1;
 int itemCount = 0;
 
+TaskHandle_t Task0;
 TaskHandle_t Task1;
 
 unsigned long interval = 10000;
@@ -248,6 +249,27 @@ void my_touch_read(lv_indev_drv_t *indev_driver, lv_indev_data_t *data)
   }
 }
 
+void GetDateTime() {
+  timeClient.update();
+
+  unsigned long epochTime = timeClient.getEpochTime();
+  int currentHour = timeClient.getHours();
+  int currentMinute = timeClient.getMinutes();
+
+  struct tm *ptm = gmtime((time_t *)&epochTime);
+  int monthDay = ptm->tm_mday;
+  int currentMonth = ptm->tm_mon + 1;
+  int currentYear = ptm->tm_year + 1900;
+  
+  //00-00-00 00:00:00 >17 +\0<
+  sprintf(dt.date_time_header, "%02d-%02d-%02d %02d:%02d",currentYear, currentMonth, monthDay, currentHour, currentMinute);
+  // lv_label_set_text(ui_label_time_header, dt.date_time_header);
+
+  //Last update 00:00 >17 +\0<
+  sprintf(dt.time_update, "Last update %02d:%02d", currentHour, currentMinute); 
+
+}
+
 void sendSheet(void *parameter)
 {
   for (;;)
@@ -291,27 +313,23 @@ void sendSheet(void *parameter)
   }
 }
 
-void GetDateTime() {
-  timeClient.update();
+void maintask(void *parameter)
+{
+  for (;;)
+  {
+    if(WiFi.status() == WL_CONNECTED){
+    delay(100);
+    GetDateTime();
+    lv_obj_set_style_text_color(ui_icon_header_WiFi, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+  }else{
+    lv_obj_set_style_text_color(ui_icon_header_WiFi, lv_color_hex(0xFF0000), LV_PART_MAIN | LV_STATE_DEFAULT);
+  }
 
-  unsigned long epochTime = timeClient.getEpochTime();
-  int currentHour = timeClient.getHours();
-  int currentMinute = timeClient.getMinutes();
+  lv_timer_handler();
 
-  struct tm *ptm = gmtime((time_t *)&epochTime);
-  int monthDay = ptm->tm_mday;
-  int currentMonth = ptm->tm_mon + 1;
-  int currentYear = ptm->tm_year + 1900;
-  
-  //00-00-00 00:00:00 >17 +\0<
-  sprintf(dt.date_time_header, "%02d-%02d-%02d %02d:%02d",currentYear, currentMonth, monthDay, currentHour, currentMinute);
-  lv_label_set_text(ui_label_time_header, dt.date_time_header);
-
-  //Last update 00:00 >17 +\0<
-  sprintf(dt.time_update, "Last update %02d:%02d", currentHour, currentMinute); 
-
+  delay(10);
+  }
 }
-
 
 void OnDataRecv(const uint8_t *mac_addr, const uint8_t *incomingData, int len)
 {
@@ -762,7 +780,7 @@ void load_scr(void){
 
 void setup_wifi() {
   WiFi.mode(WIFI_AP_STA);
-  WiFi.begin(getstart.ssid, getstart.password);
+  WiFi.begin(ssid, password);
 
   unsigned long start_time = millis();  // Record the start time
 
@@ -776,19 +794,19 @@ void setup_wifi() {
     Serial.println(WiFi.localIP());
     Serial.print("Wi-Fi Channel: ");
     Serial.println(WiFi.channel());
-    lv_obj_set_style_text_color(ui_icon_header_WiFi, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
-    ui_monitor_screen_1_init();
-    lv_scr_load(ui_monitor_screen_1);
+    // lv_obj_set_style_text_color(ui_icon_header_WiFi, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    // ui_monitor_screen_1_init();
+    // lv_scr_load(ui_monitor_screen_1);
     init_esp_now();
   } else {
     // Connection unsuccessful after 10 seconds
-    Serial.println("Connection failed. Loading get_start screen again.");
-    load_scr();
-    lv_scr_load(ui_load_scr);
-    lv_obj_del(ui_get_start_screen);
-    get_start_screen_init();
-    lv_scr_load(ui_get_start_screen);
-    lv_obj_del(ui_load_scr);
+    // Serial.println("Connection failed. Loading get_start screen again.");
+    // load_scr();
+    // lv_scr_load(ui_load_scr);
+    // lv_obj_del(ui_get_start_screen);
+    // get_start_screen_init();
+    // lv_scr_load(ui_get_start_screen);
+    // lv_obj_del(ui_load_scr);
   }
 }
 
@@ -818,7 +836,7 @@ void setup()
 
   char start_temp[10] = "0 °C";
 
-  char start_project_name[13] = "Project name";
+  char start_project_name[12] = "Master node";
 
   char start_update_time[18] = "Last update 00:00";
 
@@ -891,6 +909,17 @@ void setup()
   lv_indev_drv_register(&indev_drv);
 
   ui_init();
+  setup_wifi();
+
+  xTaskCreatePinnedToCore(
+                    maintask,   /* Task function. */
+                    "Task0",     /* name of task. */
+                    10000,       /* Stack size of task */
+                    NULL,        /* parameter of the task */
+                    2,           /* priority of the task */
+                    &Task0,      /* Task handle to keep track of created task */
+                    0);          /* pin task to core 0 */                  
+  delay(500);
 
   xTaskCreatePinnedToCore(
     sendSheet, // ชื่อฟังก์ชันที่จะรันใน task
@@ -901,6 +930,7 @@ void setup()
     &Task1,    // ตัวแปรสำหรับเก็บ handle ของ task
     1          // core ที่จะรัน task (0 หรือ 1)
   );
+  delay(500);
 
 
 }
@@ -908,17 +938,17 @@ void setup()
 
 void loop()
 {
+  // if(WiFi.status() == WL_CONNECTED){
+  //   delay(100);
+  //   GetDateTime();
+  //   lv_obj_set_style_text_color(ui_icon_header_WiFi, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+  // }else{
+  //   lv_obj_set_style_text_color(ui_icon_header_WiFi, lv_color_hex(0xFF0000), LV_PART_MAIN | LV_STATE_DEFAULT);
+  // }
+
+  // lv_timer_handler();
+
+  // delay(10);
   
-  if(WiFi.status() == WL_CONNECTED){
-    delay(100);
-    GetDateTime();
-    lv_obj_set_style_text_color(ui_icon_header_WiFi, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
-  }else{
-    lv_obj_set_style_text_color(ui_icon_header_WiFi, lv_color_hex(0xFF0000), LV_PART_MAIN | LV_STATE_DEFAULT);
-  }
-
-  lv_timer_handler();
-
-  delay(10);
 }
 /***********************************************************/

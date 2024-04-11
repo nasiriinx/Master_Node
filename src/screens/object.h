@@ -189,7 +189,7 @@ extern "C" {
 #define POS_X_EVENT_NAME_T_AREA         0
 #define SIZE_WIDTH_EVENT_NAME_T_AREA    350
 
-#define BUFFER_OF_CHART           50
+#define BUFFER_OF_CHART           10
 
 #define SIZE_WIDTH_KEYBOARD         478
 #define SIZE_HEIGHT_KEYBOARD        214

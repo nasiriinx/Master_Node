@@ -582,8 +582,8 @@ void delete_obj_getstart(){
 
 void ui_init(void)
 {
-    get_start_screen_init();
+    // get_start_screen_init();
     ui_monitor_screen_1_init();
     ui_monitor_screen_2_init();
-    lv_disp_load_scr(ui_get_start_screen); 
+    lv_disp_load_scr(ui_monitor_screen_1); 
 }
